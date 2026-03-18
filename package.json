@@ -1,0 +1,39 @@
+{
+  "name": "alloy-design-system",
+  "version": "0.1.0",
+  "description": "Alloy — React + TypeScript component library and design system",
+  "type": "module",
+  "main": "./dist/alloy.umd.cjs",
+  "module": "./dist/alloy.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/alloy.js",
+      "require": "./dist/alloy.umd.cjs"
+    },
+    "./styles": "./src/styles/tokens.css"
+  },
+  "scripts": {
+    "build": "vite build && tsc --emitDeclarationOnly --declaration --outDir dist",
+    "preview": "cd preview && npm run dev",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "clsx": "^2.1.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "typescript": "^5.7.0",
+    "vite": "^6.0.0",
+    "vite-plugin-dts": "^4.0.0"
+  },
+  "dependencies": {
+    "clsx": "^2.1.0"
+  }
+}
