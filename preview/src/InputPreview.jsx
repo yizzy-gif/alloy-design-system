@@ -5,6 +5,9 @@
    ───────────────────────────────────────────────────────────────────────────── */
 
 import { useState } from 'react'
+import { MultiSelectField } from '../../src/components/Input/MultiSelectField'
+import { SelectField } from '../../src/components/Input/SelectField'
+import { FileUploader } from '../../src/components/FileUploader/FileUploader'
 
 /* ── Inline icons (preview mirrors) ─────────────────────────────────────────── */
 const SearchIcon = () => (
@@ -92,6 +95,109 @@ const Icon = ({ children, size = 16 }) => (
   </span>
 )
 
+const ROLE_OPTIONS  = [
+  { value: 'eng',     label: 'Engineer'    },
+  { value: 'design',  label: 'Designer'    },
+  { value: 'pm',      label: 'Product'     },
+  { value: 'growth',  label: 'Growth'      },
+  { value: 'data',    label: 'Data'        },
+  { value: 'ops',     label: 'Operations'  },
+]
+const TAG_OPTIONS   = [
+  { value: 'frontend',  label: 'Frontend'  },
+  { value: 'backend',   label: 'Backend'   },
+  { value: 'infra',     label: 'Infra'     },
+  { value: 'mobile',    label: 'Mobile'    },
+  { value: 'design-sys',label: 'Design System' },
+  { value: 'disabled-opt', label: 'Unavailable', disabled: true },
+]
+const COUNTRY_OPTIONS = [
+  { value: 'us', label: 'United States' },
+  { value: 'uk', label: 'United Kingdom' },
+  { value: 'ca', label: 'Canada' },
+  { value: 'au', label: 'Australia' },
+]
+
+function MultiSelectDemo() {
+  const [roles, setRoles]       = useState(['eng', 'design'])
+  const [tags, setTags]         = useState([])
+  const [errorVal, setErrorVal] = useState([])
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+      {/* Sizes */}
+      <div>
+        <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wide)', textTransform: 'uppercase', color: 'var(--color-content-disabled)', margin: '0 0 12px' }}>sizes — sm · md · lg</p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          {['sm','md','lg'].map(s => (
+            <MultiSelectField
+              key={s}
+              size={s}
+              label={`Size ${s}`}
+              options={ROLE_OPTIONS}
+              defaultValue={s === 'md' ? ['eng'] : []}
+              placeholder={`Select roles (${s})…`}
+              style={{ maxWidth: 320 }}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Controlled with chips */}
+      <div>
+        <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wide)', textTransform: 'uppercase', color: 'var(--color-content-disabled)', margin: '0 0 12px' }}>controlled — chip removal · select all</p>
+        <MultiSelectField
+          label="Roles"
+          hint="Click chips to remove. Keyboard: Backspace removes last."
+          options={ROLE_OPTIONS}
+          value={roles}
+          onChange={setRoles}
+          style={{ maxWidth: 400 }}
+        />
+      </div>
+
+      {/* Variants */}
+      <div>
+        <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wide)', textTransform: 'uppercase', color: 'var(--color-content-disabled)', margin: '0 0 12px' }}>variants — outlined · underlined</p>
+        <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
+          <MultiSelectField label="Outlined" options={ROLE_OPTIONS} defaultValue={['pm']} style={{ flex: 1, minWidth: 200 }} />
+          <MultiSelectField label="Underlined" variant="underlined" options={ROLE_OPTIONS} defaultValue={['pm']} style={{ flex: 1, minWidth: 200 }} />
+        </div>
+      </div>
+
+      {/* States */}
+      <div>
+        <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wide)', textTransform: 'uppercase', color: 'var(--color-content-disabled)', margin: '0 0 12px' }}>states — empty · disabled · error</p>
+        <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
+          <MultiSelectField label="Empty" placeholder="Nothing selected yet" options={ROLE_OPTIONS} style={{ flex: 1, minWidth: 180 }} />
+          <MultiSelectField label="Disabled" options={ROLE_OPTIONS} defaultValue={['eng', 'design']} disabled style={{ flex: 1, minWidth: 180 }} />
+          <MultiSelectField
+            label="Error"
+            error="Please select at least one role"
+            options={ROLE_OPTIONS}
+            value={errorVal}
+            onChange={setErrorVal}
+            style={{ flex: 1, minWidth: 180 }}
+          />
+        </div>
+      </div>
+
+      {/* Disabled option */}
+      <div>
+        <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wide)', textTransform: 'uppercase', color: 'var(--color-content-disabled)', margin: '0 0 12px' }}>disabled options</p>
+        <MultiSelectField
+          label="Tags"
+          hint="'Unavailable' option is non-interactive."
+          options={TAG_OPTIONS}
+          value={tags}
+          onChange={setTags}
+          style={{ maxWidth: 400 }}
+        />
+      </div>
+    </div>
+  )
+}
+
 /* ── Section helper ──────────────────────────────────────────────────────────── */
 function Section({ title, note, children }) {
   return (
@@ -102,6 +208,25 @@ function Section({ title, note, children }) {
       </div>
       {children}
     </section>
+  )
+}
+
+/* ── Multi-file uploader interactive demo ───────────────────────────────────── */
+
+function MultiFileDemo() {
+  const [files, setFiles] = useState([])
+  return (
+    <FileUploader
+      multiple
+      files={files}
+      onFilesSelect={(newFiles) =>
+        setFiles((prev) => [
+          ...prev,
+          ...newFiles.map((f) => ({ name: f.name, type: f.type, size: f.size })),
+        ])
+      }
+      onRemoveFile={(i) => setFiles((prev) => prev.filter((_, idx) => idx !== i))}
+    />
   )
 }
 
@@ -349,7 +474,7 @@ function FieldShell({ variant = 'outlined', size = 'md', error, success, disable
     flex: 1, minWidth: 0, background: 'transparent', border: 'none', outline: 'none',
     fontFamily: 'var(--font-sans)', fontSize: s.fs, fontWeight: 'var(--font-weight-regular)',
     color: disabled ? 'var(--color-content-disabled)' : 'var(--color-content-primary)',
-    caretColor: 'var(--color-border-focus)',
+    caretColor: 'var(--color-content-primary)',
     lineHeight: 'var(--line-height-snug)',
     height: isTextarea ? 'auto' : s.h,
     paddingTop: isTextarea ? (variant === 'outlined' ? 8 : 4) : 0,
@@ -417,20 +542,6 @@ function TextArea({ label, hint, error, success, required, variant, size = 'md',
   )
 }
 
-function SelectField({ label, hint, error, success, required, variant, size = 'md', disabled, children, style }) {
-  const sizeMap = { sm: 14, md: 16, lg: 18 }
-  return (
-    <FieldWrapper label={label} hint={hint} error={error} success={success} required={required} style={style}>
-      <FieldShell variant={variant} size={size} error={!!error} success={!!success} disabled={disabled} trailingIcon={<ChevronDownIcon />}>
-        {({ ctrlStyle }) => (
-          <select disabled={disabled} aria-invalid={!!error || undefined} style={{ ...ctrlStyle, appearance: 'none', cursor: disabled ? 'not-allowed' : 'pointer' }}>
-            {children}
-          </select>
-        )}
-      </FieldShell>
-    </FieldWrapper>
-  )
-}
 
 function PasswordField({ label, hint, error, success, required, variant, size = 'md', placeholder, disabled, style }) {
   const [visible, setVisible] = useState(false)
@@ -514,17 +625,17 @@ export default function InputPreview() {
         .fi-shell input:focus, .fi-shell textarea:focus, .fi-shell select:focus { outline: none; }
 
         .fi-outlined:focus-within:not(.fi-disabled):not(.fi-readonly) {
-          border-color: var(--color-border-focus) !important;
-          box-shadow: 0 0 0 3px var(--color-bg-focus-ring);
+          border-color: var(--color-border-selected) !important;
+          box-shadow: var(--shadow-ring-default) !important;
         }
-        .fi-outlined.fi-error:focus-within   { box-shadow: 0 0 0 3px var(--color-bg-error-ring) !important; }
-        .fi-outlined.fi-success:focus-within { box-shadow: 0 0 0 3px var(--color-bg-success-ring) !important; }
+        .fi-outlined.fi-error:focus-within   { border-color: var(--color-error-border) !important; box-shadow: var(--shadow-ring-error) !important; }
+        .fi-outlined.fi-success:focus-within { border-color: var(--color-success-border) !important; box-shadow: var(--shadow-ring-success) !important; }
 
         .fi-outlined:not(.fi-disabled):not(.fi-readonly):not(.fi-error):not(.fi-success):not(:focus-within):hover {
           border-color: var(--color-content-disabled) !important;
         }
         .fi-underlined:focus-within:not(.fi-disabled):not(.fi-readonly) {
-          border-bottom-color: var(--color-border-focus) !important;
+          border-bottom-color: var(--color-border-selected) !important;
         }
         .fi-underlined:not(.fi-disabled):not(.fi-readonly):not(.fi-error):not(.fi-success):not(:focus-within):hover {
           border-bottom-color: var(--color-content-disabled) !important;
@@ -567,7 +678,9 @@ export default function InputPreview() {
           --color-error-content: var(--Alloy-red-400);
           --color-success-border: var(--Alloy-green-500);
           --color-success-content: var(--Alloy-green-400);
+          --color-border-selected: var(--Alloy-slate-200);
           --color-bg-focus-ring: color-mix(in srgb, var(--Alloy-blue-400) 22%, transparent);
+          --color-bg-slate-ring: color-mix(in srgb, var(--Alloy-slate-200) 15%, transparent);
           --color-bg-error-ring: color-mix(in srgb, var(--Alloy-red-400) 18%, transparent);
           --color-bg-success-ring: color-mix(in srgb, var(--Alloy-green-400) 18%, transparent);
         }
@@ -624,11 +737,7 @@ export default function InputPreview() {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                   <TextField label="Full name" placeholder="Jane Smith" variant="outlined" />
                   <TextField label="Email" placeholder="jane@company.com" type="email" leadingIcon={<MailIcon />} variant="outlined" />
-                  <SelectField label="Country" variant="outlined">
-                    <option>United States</option>
-                    <option>United Kingdom</option>
-                    <option>Canada</option>
-                  </SelectField>
+                  <SelectField label="Country" variant="outlined" options={COUNTRY_OPTIONS} />
                   <TextArea label="Bio" placeholder="Tell us about yourself…" variant="outlined" />
                 </div>
               </div>
@@ -637,11 +746,7 @@ export default function InputPreview() {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                   <TextField label="Full name" placeholder="Jane Smith" variant="underlined" />
                   <TextField label="Email" placeholder="jane@company.com" type="email" leadingIcon={<MailIcon />} variant="underlined" />
-                  <SelectField label="Country" variant="underlined">
-                    <option>United States</option>
-                    <option>United Kingdom</option>
-                    <option>Canada</option>
-                  </SelectField>
+                  <SelectField label="Country" variant="underlined" options={COUNTRY_OPTIONS} />
                   <TextArea label="Bio" placeholder="Tell us about yourself…" variant="underlined" />
                 </div>
               </div>
@@ -656,12 +761,11 @@ export default function InputPreview() {
               <TextField label="Number" type="number" placeholder="0" leadingIcon={<span className="alloy-icon-slot" style={{ width: 16, height: 16, fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--color-content-tertiary)' }}>#</span>} hint="Browser spinners removed" />
               <PasswordField label="Password" placeholder="Enter password" hint="Toggle to reveal" />
               <SearchField label="Search" placeholder="Search anything…" value={searchVal} onChange={e => setSearchVal(e.target.value)} onClear={() => setSearchVal('')} hint="Clear button appears when filled" />
-              <SelectField label="Select">
-                <option value="">Choose option…</option>
-                <option>Option A</option>
-                <option>Option B</option>
-                <option>Option C</option>
-              </SelectField>
+              <SelectField label="Select" options={[
+                { value: 'a', label: 'Option A' },
+                { value: 'b', label: 'Option B' },
+                { value: 'c', label: 'Option C' },
+              ]} />
               <TextArea label="Text Area" placeholder="Multi-line input…" hint="Vertically resizable" style={{ gridColumn: '1 / -1' }} />
             </div>
           </Section>
@@ -674,10 +778,10 @@ export default function InputPreview() {
                   <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', color: 'var(--color-content-disabled)', letterSpacing: 'var(--tracking-wide)', width: 28, flexShrink: 0, paddingBottom: 10 }}>{size}</span>
                   <TextField size={size} placeholder={`${size} text field`} leadingIcon={<UserIcon />} style={{ flex: 1 }} />
                   <PasswordField size={size} placeholder={`${size} password`} style={{ flex: 1 }} />
-                  <SelectField size={size} style={{ flex: 1 }}>
-                    <option>{size} select</option>
-                    <option>Option B</option>
-                  </SelectField>
+                  <SelectField size={size} style={{ flex: 1 }} options={[
+                    { value: 'a', label: `${size} select` },
+                    { value: 'b', label: 'Option B' },
+                  ]} />
                   <SearchField size={size} placeholder={`${size} search`} style={{ flex: 1 }} />
                 </div>
               ))}
@@ -741,13 +845,7 @@ export default function InputPreview() {
                 <TextField label="Email address" placeholder="jane@company.com" type="email" leadingIcon={<MailIcon />} required hint="We'll send a verification link" />
                 <PasswordField label="Password" placeholder="Create a password" required hint="8+ characters, one number, one symbol" />
                 <PasswordField label="Confirm password" placeholder="Repeat your password" required />
-                <SelectField label="Country" required>
-                  <option value="">Select your country…</option>
-                  <option>United States</option>
-                  <option>United Kingdom</option>
-                  <option>Canada</option>
-                  <option>Australia</option>
-                </SelectField>
+                <SelectField label="Country" required options={COUNTRY_OPTIONS} placeholder="Select your country…" />
                 <TextArea label="About you" placeholder="Brief intro (optional)" hint="Up to 280 characters" />
               </div>
             </div>
@@ -775,17 +873,17 @@ export default function InputPreview() {
                     {({ ctrlStyle }) => <input type="password" placeholder="••••••••" style={ctrlStyle} />}
                   </FieldShell>
                 </HRow>
-                <HRow label="Timezone" description="All dates display in this timezone.">
-                  <FieldShell variant="outlined" size="md" trailingIcon={<ChevronDownIcon />}>
-                    {({ ctrlStyle }) => (
-                      <select style={{ ...ctrlStyle, appearance: 'none', cursor: 'pointer' }}>
-                        <option>Pacific Time (UTC–8)</option>
-                        <option>Eastern Time (UTC–5)</option>
-                        <option>UTC</option>
-                      </select>
-                    )}
-                  </FieldShell>
-                </HRow>
+                <SelectField
+                  label="Timezone"
+                  labelDescription="All dates display in this timezone."
+                  layout="horizontal"
+                  defaultValue="pacific"
+                  options={[
+                    { value: 'pacific', label: 'Pacific Time (UTC–8)' },
+                    { value: 'eastern', label: 'Eastern Time (UTC–5)' },
+                    { value: 'utc',     label: 'UTC' },
+                  ]}
+                />
                 <HRow label="Bio" description="Short intro shown on your profile.">
                   <FieldShell variant="outlined" size="md" isTextarea>
                     {({ ctrlStyle }) => <textarea placeholder="Tell us about yourself…" style={{ ...ctrlStyle, lineHeight: 1.5, fontFamily: 'var(--font-sans)' }} />}
@@ -808,17 +906,18 @@ export default function InputPreview() {
                     {({ ctrlStyle }) => <input type="email" defaultValue="jane@taken.com" style={ctrlStyle} />}
                   </FieldShell>
                 </HRow>
-                <HRow label="Role" description="Determines feature access.">
-                  <FieldShell variant="underlined" size="md" trailingIcon={<ChevronDownIcon />}>
-                    {({ ctrlStyle }) => (
-                      <select style={{ ...ctrlStyle, appearance: 'none', cursor: 'pointer' }}>
-                        <option>Member</option>
-                        <option>Admin</option>
-                        <option>Viewer</option>
-                      </select>
-                    )}
-                  </FieldShell>
-                </HRow>
+                <SelectField
+                  label="Role"
+                  labelDescription="Determines feature access."
+                  layout="horizontal"
+                  variant="underlined"
+                  defaultValue="member"
+                  options={[
+                    { value: 'member', label: 'Member' },
+                    { value: 'admin',  label: 'Admin'  },
+                    { value: 'viewer', label: 'Viewer' },
+                  ]}
+                />
                 <HRow label="Notifications disabled">
                   <FieldShell variant="underlined" size="md" disabled>
                     {({ ctrlStyle }) => <input placeholder="Disabled field" disabled style={ctrlStyle} />}
@@ -828,7 +927,12 @@ export default function InputPreview() {
             </div>
           </Section>
 
-          {/* 8 — File Uploader */}
+          {/* 8 — Multi-Select */}
+          <Section title="Multi-Select" note="Chip-based multi-select — controlled selection, removable chips, dropdown with checkboxes · sm · md · lg sizes">
+            <MultiSelectDemo />
+          </Section>
+
+          {/* 9 — File Uploader */}
           <Section title="File Uploader" note="area: standalone drop zone · inline: input-row style — empty, uploading, complete, error states">
             {/* Area variant */}
             <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', color: 'var(--color-content-disabled)', letterSpacing: 'var(--tracking-wide)', marginBottom: 16 }}>area</p>
@@ -888,6 +992,12 @@ export default function InputPreview() {
                 <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', color: 'var(--color-content-tertiary)', marginBottom: 6 }}>error</p>
                 <FileUploaderInline state="error" errorMessage="Unsupported file type." />
               </div>
+            </div>
+
+            {/* Multi-file variant */}
+            <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', color: 'var(--color-content-disabled)', letterSpacing: 'var(--tracking-wide)', marginTop: 24, marginBottom: 16 }}>area · multiple</p>
+            <div style={{ maxWidth: 560 }}>
+              <MultiFileDemo />
             </div>
 
             {/* Inline underlined variant */}

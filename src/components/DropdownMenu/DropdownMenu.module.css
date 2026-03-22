@@ -9,6 +9,11 @@
   display: inline-block;
 }
 
+.fullWidth {
+  display: block;
+  width: 100%;
+}
+
 /* ── Floating panel ──────────────────────────────────────────────────────── */
 
 .panel {

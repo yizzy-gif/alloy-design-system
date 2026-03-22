@@ -97,6 +97,8 @@ export interface DropdownMenuProps extends Omit<ComponentPropsWithoutRef<'div'>,
    * @default true
    */
   closeOnSelect?: boolean;
+  /** Stretches the root and trigger wrapper to fill their container's width. */
+  fullWidth?: boolean;
 }
 
 /* ─── Internal group section ──────────────────────────────────────────────── */
@@ -193,6 +195,7 @@ export const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(
       onOpenChange,
       disabled = false,
       closeOnSelect = true,
+      fullWidth = false,
       className,
       ...props
     },
@@ -243,13 +246,17 @@ export const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(
     }, [isOpen, handleSetOpen]);
 
     return (
-      <div ref={setRef} className={clsx(styles.root, className)} {...props}>
+      <div ref={setRef} className={clsx(styles.root, fullWidth && styles.fullWidth, className)} {...props}>
         {/* Trigger wrapper */}
         <div
-          style={{ display: 'inline-flex' }}
+          style={{ display: fullWidth ? 'flex' : 'inline-flex', width: fullWidth ? '100%' : undefined }}
           aria-haspopup="menu"
           aria-expanded={isOpen}
+          tabIndex={disabled ? -1 : 0}
           onClick={!disabled ? () => handleSetOpen(!isOpen) : undefined}
+          onKeyDown={!disabled ? (e) => {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleSetOpen(!isOpen); }
+          } : undefined}
         >
           {trigger}
         </div>

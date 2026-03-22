@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tailwindcss/oxide-darwin-arm64": "^4.2.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },

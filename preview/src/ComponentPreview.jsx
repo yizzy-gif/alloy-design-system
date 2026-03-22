@@ -1,9 +1,13 @@
 /* ─────────────────────────────────────────────────────────────────────────────
    Alloy · Component Preview
-   Vertical left-sidebar nav shell — one item per component
+   Vertical left-sidebar nav shell — components grouped by category
    ───────────────────────────────────────────────────────────────────────────── */
 
 import { useState } from 'react'
+import ColorTokensPreview      from './ColorTokensPreview.jsx'
+import TypographyPreview       from './TypographyPreview.jsx'
+import ShadowsPreview          from './ShadowsPreview.jsx'
+import SpacingPreview          from './SpacingPreview.jsx'
 import ButtonPreview            from './ButtonPreview.jsx'
 import ToggleButtonPreview      from './ToggleButtonPreview.jsx'
 import TagPreview               from './TagPreview.jsx'
@@ -16,27 +20,80 @@ import PaginationPreview        from './PaginationPreview.jsx'
 import AlertPreview             from './AlertPreview.jsx'
 import BreadcrumbPreview        from './BreadcrumbPreview.jsx'
 import DropdownMenuPreview      from './DropdownMenuPreview.jsx'
+import ScrollAreaPreview        from './ScrollAreaPreview.jsx'
+import FilterPillPreview        from './FilterPillPreview.jsx'
+import ControlsPreview         from './ControlsPreview.jsx'
+import TablePreview            from './TablePreview.jsx'
+import ChartsPreview           from './ChartsPreview.jsx'
+import TooltipPreview          from './TooltipPreview.jsx'
 
-/* ── Tab registry ────────────────────────────────────────────────────────────── */
-const TABS = [
-  { id: 'button',            label: 'Button',            component: ButtonPreview },
-  { id: 'toggle-button',     label: 'Toggle Button',     component: ToggleButtonPreview },
-  { id: 'tag',               label: 'Tag & Status',      component: TagPreview },
-  { id: 'segmented-control', label: 'Segmented Control', component: SegmentedControlPreview },
-  { id: 'tabs',              label: 'Tabs',              component: TabsPreview },
-  { id: 'list-item',         label: 'List Item',         component: ListItemPreview },
-  { id: 'badge',             label: 'Badge',             component: BadgePreview },
-  { id: 'input',             label: 'Input / Field',     component: InputPreview },
-  { id: 'pagination',        label: 'Pagination',        component: PaginationPreview },
-  { id: 'alert',             label: 'Alert / Toast',     component: AlertPreview },
-  { id: 'breadcrumb',        label: 'Breadcrumb',        component: BreadcrumbPreview },
-  { id: 'dropdown-menu',     label: 'Dropdown Menu',     component: DropdownMenuPreview },
+/* ── Component registry (grouped) ───────────────────────────────────────────── */
+const GROUPS = [
+  {
+    label: 'Foundation',
+    items: [
+      { id: 'colors',     label: 'Colors',          component: ColorTokensPreview },
+      { id: 'typography', label: 'Typography',       component: TypographyPreview },
+      { id: 'shadows',    label: 'Shadows',          component: ShadowsPreview },
+      { id: 'spacing',    label: 'Spacing & Radius', component: SpacingPreview },
+    ],
+  },
+  {
+    label: 'Actions',
+    items: [
+      { id: 'button',        label: 'Button',        component: ButtonPreview },
+      { id: 'toggle-button', label: 'Toggle Button', component: ToggleButtonPreview },
+    ],
+  },
+  {
+    label: 'Navigation',
+    items: [
+      { id: 'tabs',              label: 'Tabs',              component: TabsPreview },
+      { id: 'segmented-control', label: 'Segmented Control', component: SegmentedControlPreview },
+      { id: 'breadcrumb',        label: 'Breadcrumb',        component: BreadcrumbPreview },
+      { id: 'pagination',        label: 'Pagination',        component: PaginationPreview },
+      { id: 'filter-pill',       label: 'Filter Pill',       component: FilterPillPreview },
+    ],
+  },
+  {
+    label: 'Form',
+    items: [
+      { id: 'input',    label: 'Input / Field', component: InputPreview },
+      { id: 'controls', label: 'Controls',      component: ControlsPreview },
+    ],
+  },
+  {
+    label: 'Data Display',
+    items: [
+      { id: 'charts',    label: 'Charts',       component: ChartsPreview },
+      { id: 'table',     label: 'Table',        component: TablePreview },
+      { id: 'list-item', label: 'List Item',    component: ListItemPreview },
+      { id: 'badge',     label: 'Badge',        component: BadgePreview },
+      { id: 'tag',       label: 'Tag & Status', component: TagPreview },
+    ],
+  },
+  {
+    label: 'Feedback',
+    items: [
+      { id: 'alert',         label: 'Alert / Toast', component: AlertPreview },
+      { id: 'dropdown-menu', label: 'Dropdown Menu', component: DropdownMenuPreview },
+      { id: 'tooltip',       label: 'Tooltip',       component: TooltipPreview },
+    ],
+  },
+  {
+    label: 'Layout',
+    items: [
+      { id: 'scroll-area', label: 'Scroll Area', component: ScrollAreaPreview },
+    ],
+  },
 ]
+
+const ALL_TABS = GROUPS.flatMap(g => g.items)
 
 /* ── Shell ───────────────────────────────────────────────────────────────────── */
 export default function ComponentPreview() {
   const [activeTab, setActiveTab] = useState('button')
-  const ActiveComponent = TABS.find(t => t.id === activeTab)?.component
+  const ActiveComponent = ALL_TABS.find(t => t.id === activeTab)?.component
 
   return (
     <>
@@ -61,8 +118,19 @@ export default function ComponentPreview() {
           background: var(--color-bg-primary);
           border-right: 1px solid var(--color-border-opaque);
           padding: 24px 12px;
-          gap: 2px;
           overflow-y: auto;
+        }
+
+        /* ─ Group ─ */
+        .preview-nav-group {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+          margin-bottom: 20px;
+        }
+
+        .preview-nav-group:last-child {
+          margin-bottom: 0;
         }
 
         .preview-sidebar-label {
@@ -73,7 +141,8 @@ export default function ComponentPreview() {
           text-transform: uppercase;
           color: var(--color-content-disabled);
           padding: 0 8px;
-          margin-bottom: 8px;
+          margin-bottom: 4px;
+          display: block;
         }
 
         /* ─ Nav item ─ */
@@ -84,6 +153,7 @@ export default function ComponentPreview() {
           padding: 7px 10px;
           border-radius: var(--radius-md);
           border: none;
+          outline: none;
           background: none;
           font-family: var(--font-sans);
           font-size: var(--text-sm);
@@ -100,6 +170,11 @@ export default function ComponentPreview() {
         .preview-nav-item:hover {
           background: var(--color-bg-secondary);
           color: var(--color-content-secondary);
+        }
+
+        .preview-nav-item:focus,
+        .preview-nav-item:focus-visible {
+          outline: none;
         }
 
         .preview-nav-item[aria-selected="true"] {
@@ -119,17 +194,21 @@ export default function ComponentPreview() {
       <div className="preview-shell">
         {/* Sidebar nav */}
         <nav className="preview-sidebar" role="tablist" aria-label="Component previews">
-          <span className="preview-sidebar-label">Components</span>
-          {TABS.map(tab => (
-            <button
-              key={tab.id}
-              role="tab"
-              className="preview-nav-item"
-              aria-selected={activeTab === tab.id}
-              onClick={() => setActiveTab(tab.id)}
-            >
-              {tab.label}
-            </button>
+          {GROUPS.map(group => (
+            <div key={group.label} className="preview-nav-group">
+              <span className="preview-sidebar-label">{group.label}</span>
+              {group.items.map(tab => (
+                <button
+                  key={tab.id}
+                  role="tab"
+                  className="preview-nav-item"
+                  aria-selected={activeTab === tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
           ))}
         </nav>
 

@@ -5,8 +5,25 @@ export interface XIconProps extends SVGProps<SVGSVGElement> {
   color?: string;
 }
 
-export const XIcon = ({ size = 10, color = 'currentColor', ...props }: XIconProps) => (
-  <svg width={size} height={size} viewBox="0 0 10 10" fill="none" {...props}>
-    <path d="M1.5 1.5L8.5 8.5M8.5 1.5L1.5 8.5" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
+/**
+ * XIcon — close / dismiss / clear
+ * Source: x-close.svg  ·  viewBox 0 0 24 24
+ */
+export const XIcon = ({ size = 16, color = 'currentColor', ...props }: XIconProps) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <path
+      d="M18 6L6 18M6 6L18 18"
+      stroke={color}
+      strokeWidth="1.25"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
   </svg>
 );

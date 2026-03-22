@@ -18,6 +18,8 @@ export interface TagProps extends ComponentPropsWithoutRef<'span'> {
   onDismiss?: () => void;
 }
 
+const DISMISS_ICON_SIZE: Record<TagSize, number> = { sm: 10, md: 12, lg: 14 };
+
 export const Tag = forwardRef<HTMLSpanElement, TagProps>(
   ({ variant = 'subtle', color = 'neutral', size = 'md', dot, leadingIcon, dismissible, onDismiss, className, children, ...props }, ref) => {
     return (
@@ -36,7 +38,7 @@ export const Tag = forwardRef<HTMLSpanElement, TagProps>(
             aria-label="Remove"
             onClick={(e) => { e.stopPropagation(); onDismiss?.(); }}
           >
-            <XIcon size={8} />
+            <XIcon size={DISMISS_ICON_SIZE[size]} />
           </button>
         )}
       </span>

@@ -27,6 +27,8 @@ export interface FieldShellProps {
    *  Use the exported `styles.trailingActionBtn` class on the inner button. */
   trailingAction?: ReactNode;
   isTextarea?:    boolean;
+  /** Programmatically apply the focus-active styling (e.g. when a custom trigger owns focus). */
+  focused?:       boolean;
   className?:     string;
   children:       ReactNode;
 }
@@ -42,6 +44,7 @@ export function FieldShell({
   trailingIcon,
   trailingAction,
   isTextarea,
+  focused,
   className,
   children,
 }: FieldShellProps) {
@@ -69,6 +72,7 @@ export function FieldShell({
       data-success={success  || undefined}
       data-disabled={disabled  || undefined}
       data-readonly={readOnly  || undefined}
+      data-focused={focused  || undefined}
       data-has-leading={hasLeading  || undefined}
       data-has-trailing={hasTrailing || undefined}
     >

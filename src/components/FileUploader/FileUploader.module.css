@@ -199,6 +199,69 @@
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
+   Area variant — multi-file mode
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* Outer wrapper — stacks drop zone + file list vertically */
+.areaMulti {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+}
+
+/* Drop zone inside multi mode — same look as the single .area */
+.multiDropZone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-5);
+  padding: var(--space-8);
+  width: 100%;
+  border: 1px dashed var(--color-border-opaque);
+  border-radius: var(--radius-button);
+  background: var(--color-bg-primary);
+  text-align: center;
+  position: relative;
+  transition:
+    background   var(--duration-fast) var(--ease-default),
+    border-color var(--duration-fast) var(--ease-default);
+}
+
+.areaMulti[data-drag-over] .multiDropZone {
+  background: var(--color-bg-secondary);
+  border-color: var(--color-border-focus);
+}
+
+.areaMulti[data-disabled] .multiDropZone {
+  background: var(--color-bg-disabled);
+  border-color: var(--color-border-disabled);
+  pointer-events: none;
+}
+
+/* File list */
+.fileList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  width: 100%;
+}
+
+.fileListItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border-opaque);
+  border-radius: var(--radius-button);
+  background: var(--color-bg-primary);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
    Inline variant — compact input-row style
    ───────────────────────────────────────────────────────────────────────────── */
 .inline {

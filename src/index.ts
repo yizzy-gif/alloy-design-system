@@ -82,6 +82,46 @@ export type { TagProps, TagVariant, TagColor, TagSize } from './components/Tag';
 export { ToggleButton } from './components/ToggleButton';
 export type { ToggleButtonProps } from './components/ToggleButton';
 
+export { Switch } from './components/Switch';
+export type { SwitchProps, SwitchSize } from './components/Switch';
+
+export { Checkbox } from './components/Checkbox';
+export type { CheckboxProps, CheckboxSize } from './components/Checkbox';
+
+export { Radio } from './components/Radio';
+export type { RadioProps, RadioSize } from './components/Radio';
+
+export { RadioGroup } from './components/RadioGroup';
+export type { RadioGroupProps, RadioGroupOption } from './components/RadioGroup';
+
+export { CheckboxGroup } from './components/CheckboxGroup';
+export type { CheckboxGroupProps, CheckboxGroupOption } from './components/CheckboxGroup';
+
+export { MultiSelectField } from './components/Input';
+export type { MultiSelectFieldProps, MultiSelectOption } from './components/Input';
+
+export { FilterPill, FilterPillGroup } from './components/FilterPill';
+export type { FilterPillProps, FilterPillGroupProps, FilterPillSize } from './components/FilterPill';
+
+export { ScrollArea } from './components/ScrollArea';
+export type { ScrollAreaProps, ScrollAreaOrientation } from './components/ScrollArea';
+
+export { Tooltip } from './components/Tooltip';
+export type { TooltipProps, TooltipPlacement } from './components/Tooltip';
+
+// ── Charts ───────────────────────────────────────────────────────────────────
+
+export { ChartCard } from './components/Charts';
+export type { ChartCardProps } from './components/Charts';
+export { BarChart } from './components/Charts';
+export type { BarChartProps, BarChartSeries, BarChartVariant } from './components/Charts';
+export { LineChart } from './components/Charts';
+export type { LineChartProps, LineChartSeries } from './components/Charts';
+export { DonutChart } from './components/Charts';
+export type { DonutChartProps, DonutChartSegment, DonutLegendVariant } from './components/Charts';
+export { HeatMap } from './components/Charts';
+export type { HeatMapProps, HeatMapCell } from './components/Charts';
+
 // ── Icons ─────────────────────────────────────────────────────────────────────
 
 export * from './components/icons';

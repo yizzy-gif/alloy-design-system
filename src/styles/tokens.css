@@ -240,6 +240,9 @@
   --color-border-focus:       var(--Alloy-blue-400);       /* Keyboard focus ring                       */
   --color-border-hover:       var(--color-slate-border-tertiary); /* Interactive stroke on all hovered components */
 
+  /* ── Scrollbar ─────────────────────────────────────────────────────────── */
+  --color-scrollbar-thumb:    rgba(7, 9, 11, 0.25);        /* Scrollbar thumb — semi-transparent dark   */
+
   /* ── Inverse ──────────────────────────────────────────────────────────────
      Opposite-mode tokens. Light mode → dark fills / light text.
      Dark mode → automatically flips to light fills / dark text.
@@ -512,6 +515,12 @@
   --shadow-above-high: 0 -2px 4px 0 rgba(0, 0, 0, 0.03),
                        0 -12px 32px 0 rgba(0, 0, 0, 0.09);
 
+  /* Ring — 3px spread focus rings; color adapts via --color-bg-*-ring tokens */
+  --shadow-ring-default: 0 0 0 3px var(--color-bg-slate-ring);
+  --shadow-ring-focus:   0 0 0 3px var(--color-bg-focus-ring);
+  --shadow-ring-error:   0 0 0 3px var(--color-bg-error-ring);
+  --shadow-ring-success: 0 0 0 3px var(--color-bg-success-ring);
+
   /* ── Z-index ─────────────────────────────────────────────────────────────── */
   --z-base:     0;
   --z-raised:   10;
@@ -526,6 +535,7 @@
 
   /* ── Input focus rings ─────────────────────────────────────────────────────── */
   --color-bg-focus-ring:   color-mix(in srgb, var(--Alloy-blue-400)  15%, transparent);
+  --color-bg-slate-ring:   color-mix(in srgb, var(--Alloy-slate-900) 12%, transparent);
   --color-bg-error-ring:   color-mix(in srgb, var(--Alloy-red-500)   12%, transparent);
   --color-bg-success-ring: color-mix(in srgb, var(--Alloy-green-500) 12%, transparent);
 
@@ -570,6 +580,14 @@
       #446CFF  50%,
       #1EDFDE 100%
     );
+
+  /* AI — purple → blue (button/accent fill, no teal) */
+  --gradient-ai:
+    linear-gradient(
+      to right,
+      #8C4FE2   0%,
+      #446CFF 100%
+    );
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
@@ -603,8 +621,11 @@
     --color-border-focus:       var(--Alloy-blue-400);       /* Keyboard focus ring                       */
     --color-border-hover:       var(--color-slate-border-tertiary);
 
+    --color-scrollbar-thumb:    rgba(255, 255, 255, 0.45);   /* Scrollbar thumb — semi-transparent light  */
+
     /* Input focus rings — slightly more opaque on dark surfaces */
     --color-bg-focus-ring:   color-mix(in srgb, var(--Alloy-blue-400)  22%, transparent);
+    --color-bg-slate-ring:   color-mix(in srgb, var(--Alloy-slate-200) 15%, transparent);
     --color-bg-error-ring:   color-mix(in srgb, var(--Alloy-red-400)   18%, transparent);
     --color-bg-success-ring: color-mix(in srgb, var(--Alloy-green-400) 18%, transparent);
 
@@ -802,6 +823,8 @@
   --color-border-disabled:    var(--Alloy-slate-800);
   --color-border-focus:       var(--Alloy-blue-400);
   --color-border-hover:       var(--color-slate-border-tertiary);
+
+  --color-scrollbar-thumb:    rgba(255, 255, 255, 0.45);   /* Scrollbar thumb — semi-transparent light  */
 
   /* Inverse — flipped for dark mode */
   --color-bg-inverse-primary:   var(--Alloy-white);

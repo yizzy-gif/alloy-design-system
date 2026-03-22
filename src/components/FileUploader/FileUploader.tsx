@@ -3,9 +3,15 @@
    Variants: 'area' (standalone drop zone) | 'inline' (input-row style)
    States:   'empty' | 'uploading' | 'complete' | 'error'
 
-   Fully controlled — the consumer drives state, progress, and file info.
-   onFileSelect fires when the user picks or drops a file.
-   onClear fires when the user clicks the remove button.
+   Single-file mode (default):
+     Fully controlled — the consumer drives state, progress, and file info.
+     onFileSelect fires when the user picks or drops a file.
+     onClear fires when the user clicks the remove button.
+
+   Multi-file mode (multiple=true, area variant only):
+     The drop zone stays visible so more files can be added at any time.
+     files[] holds the accumulated list; onFilesSelect fires with every newly
+     picked batch; onRemoveFile(index) removes a single entry.
    ───────────────────────────────────────────────────────────────────────────── */
 
 import { forwardRef, useCallback, useRef, useState } from 'react';
@@ -38,12 +44,24 @@ export interface FileInfo {
 export interface FileUploaderProps extends Omit<ComponentPropsWithoutRef<'div'>, 'onChange'> {
   /** Visual variant. @default 'area' */
   variant?: FileUploaderVariant;
+  /**
+   * Allow selecting multiple files at once (area variant only).
+   * When true, use `files` / `onFilesSelect` / `onRemoveFile` instead of
+   * the single-file props.
+   * @default false
+   */
+  multiple?: boolean;
   /** Current upload state. @default 'empty' */
   state?: FileUploaderState;
   /** Upload progress 0–100, shown while state='uploading'. @default 0 */
   progress?: number;
-  /** File to display in uploading / complete states. */
+  /** File to display in uploading / complete states (single-file mode). */
   file?: FileInfo | null;
+  /**
+   * Accumulated file list displayed below the drop zone (multi-file mode).
+   * The consumer is responsible for managing this array.
+   */
+  files?: FileInfo[];
   /** Error message shown in error state. */
   errorMessage?: string;
   /** Drop zone title. @default 'Choose a file or drag & drop it here.' */
@@ -52,10 +70,20 @@ export interface FileUploaderProps extends Omit<ComponentPropsWithoutRef<'div'>,
   description?: string;
   /** Native <input accept> string (e.g. ".pdf,image/*"). */
   accept?: string;
-  /** Called when the user picks or drops a file. */
+  /** Called when the user picks or drops a file (single-file mode). */
   onFileSelect?: (file: File) => void;
-  /** Called when the user clicks the remove button. */
+  /**
+   * Called with every newly picked / dropped batch (multi-file mode).
+   * Receives only the new files — the consumer appends them to `files`.
+   */
+  onFilesSelect?: (files: File[]) => void;
+  /** Called when the user clicks the remove button (single-file mode). */
   onClear?: () => void;
+  /**
+   * Called with the list index when a file row's remove button is clicked
+   * (multi-file mode).
+   */
+  onRemoveFile?: (index: number) => void;
   /**
    * Field style for the inline variant.
    * 'outlined' — full border box (default).
@@ -82,15 +110,19 @@ export const FileUploader = forwardRef<HTMLDivElement, FileUploaderProps>(
   (
     {
       variant = 'area',
+      multiple = false,
       state = 'empty',
       progress = 0,
       file,
+      files,
       errorMessage,
       title = 'Choose a file or drag & drop it here.',
       description = 'JPEG, PNG, PDF, and MP4 formats, up to 50 MB.',
       accept,
       onFileSelect,
+      onFilesSelect,
       onClear,
+      onRemoveFile,
       fieldVariant = 'outlined',
       disabled = false,
       className,
@@ -101,27 +133,33 @@ export const FileUploader = forwardRef<HTMLDivElement, FileUploaderProps>(
     const inputRef = useRef<HTMLInputElement>(null);
     const [isDragOver, setIsDragOver] = useState(false);
 
+    // In multi-file mode the drop zone is always interactive.
+    const isAreaInteractive = !disabled && (multiple || state === 'empty');
+
     const openPicker = useCallback(() => {
-      if (!disabled && state === 'empty') inputRef.current?.click();
-    }, [disabled, state]);
+      if (!disabled && (multiple || state === 'empty')) inputRef.current?.click();
+    }, [disabled, multiple, state]);
 
     const handleChange = useCallback(
       (e: React.ChangeEvent<HTMLInputElement>) => {
-        const picked = e.target.files?.[0];
-        if (picked) {
-          onFileSelect?.(picked);
-          e.target.value = ''; // allow re-selecting the same file
+        if (multiple) {
+          const picked = e.target.files ? Array.from(e.target.files) : [];
+          if (picked.length) onFilesSelect?.(picked);
+        } else {
+          const picked = e.target.files?.[0];
+          if (picked) onFileSelect?.(picked);
         }
+        e.target.value = ''; // allow re-selecting the same file(s)
       },
-      [onFileSelect],
+      [multiple, onFileSelect, onFilesSelect],
     );
 
     const handleDragOver = useCallback(
       (e: React.DragEvent) => {
         e.preventDefault();
-        if (!disabled && state === 'empty') setIsDragOver(true);
+        if (isAreaInteractive) setIsDragOver(true);
       },
-      [disabled, state],
+      [isAreaInteractive],
     );
 
     const handleDragLeave = useCallback(() => setIsDragOver(false), []);
@@ -130,11 +168,16 @@ export const FileUploader = forwardRef<HTMLDivElement, FileUploaderProps>(
       (e: React.DragEvent) => {
         e.preventDefault();
         setIsDragOver(false);
-        if (disabled || state !== 'empty') return;
-        const dropped = e.dataTransfer.files?.[0];
-        if (dropped) onFileSelect?.(dropped);
+        if (!isAreaInteractive) return;
+        if (multiple) {
+          const dropped = e.dataTransfer.files ? Array.from(e.dataTransfer.files) : [];
+          if (dropped.length) onFilesSelect?.(dropped);
+        } else {
+          const dropped = e.dataTransfer.files?.[0];
+          if (dropped) onFileSelect?.(dropped);
+        }
       },
-      [disabled, state, onFileSelect],
+      [isAreaInteractive, multiple, onFileSelect, onFilesSelect],
     );
 
     /* ── Hidden input (shared by both variants) ───────────────────────────── */
@@ -144,6 +187,7 @@ export const FileUploader = forwardRef<HTMLDivElement, FileUploaderProps>(
         type="file"
         className={styles.hiddenInput}
         accept={accept}
+        multiple={multiple}
         disabled={disabled}
         aria-hidden="true"
         tabIndex={-1}
@@ -181,6 +225,71 @@ export const FileUploader = forwardRef<HTMLDivElement, FileUploaderProps>(
        Area variant
        ════════════════════════════════════════════════════════════════════════ */
     if (variant === 'area') {
+      /* ── Multi-file mode ────────────────────────────────────────────────── */
+      if (multiple) {
+        const fileList = files ?? [];
+        return (
+          <div
+            ref={ref}
+            className={clsx(styles.areaMulti, className)}
+            data-drag-over={isDragOver || undefined}
+            data-disabled={disabled || undefined}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+            {...props}
+          >
+            {hiddenInput}
+
+            {/* Drop zone — always visible so more files can be added */}
+            <div className={styles.multiDropZone}>
+              <span className={`${styles.uploadIcon} alloy-icon-slot`} aria-hidden="true">
+                <CloudUploadIcon size={24} />
+              </span>
+              <div className={styles.textBlock}>
+                <p className={styles.title}>{title}</p>
+                <p className={styles.description}>{description}</p>
+              </div>
+              <Button
+                variant="tertiary"
+                size="sm"
+                onClick={openPicker}
+                disabled={disabled}
+              >
+                Browse Files
+              </Button>
+            </div>
+
+            {/* File list — rendered once at least one file has been added */}
+            {fileList.length > 0 && (
+              <ul className={styles.fileList} aria-label="Selected files">
+                {fileList.map((f, i) => (
+                  <li key={`${f.name}-${i}`} className={styles.fileListItem}>
+                    <span className={`${styles.fileIcon} alloy-icon-slot`} aria-hidden="true">
+                      <File04Icon size={16} />
+                    </span>
+                    <span className={styles.fileName}>{f.name}</span>
+                    <Tag size="sm" variant="subtle">{getFileExt(f)}</Tag>
+                    <button
+                      type="button"
+                      className={styles.removeBtn}
+                      onClick={() => onRemoveFile?.(i)}
+                      aria-label={`Remove ${f.name}`}
+                      disabled={disabled}
+                    >
+                      <span className="alloy-icon-slot" style={{ width: 14, height: 14 }} aria-hidden="true">
+                        <Trash03Icon size={14} />
+                      </span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        );
+      }
+
+      /* ── Single-file mode ───────────────────────────────────────────────── */
       return (
         <div
           ref={ref}

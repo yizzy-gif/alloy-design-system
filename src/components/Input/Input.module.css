@@ -83,15 +83,18 @@
 .outlined:hover:not([data-disabled]):not([data-readonly]):not([data-error]):not([data-success]):not(:focus-within) {
   border-color: var(--color-content-disabled);
 }
-.outlined:focus-within:not([data-disabled]):not([data-readonly]) {
-  border-color: var(--color-border-focus);
-  box-shadow: 0 0 0 3px var(--color-bg-focus-ring);
+.outlined:focus-within:not([data-disabled]):not([data-readonly]),
+.outlined[data-focused]:not([data-disabled]):not([data-readonly]) {
+  border-color: var(--color-border-selected);
+  box-shadow: var(--shadow-ring-default);
   outline: none;
 }
 .outlined[data-error]                  { border-color: var(--color-error-border);   }
 .outlined[data-success]                { border-color: var(--color-success-border); }
-.outlined[data-error]:focus-within     { box-shadow: 0 0 0 3px var(--color-bg-error-ring);   }
-.outlined[data-success]:focus-within   { box-shadow: 0 0 0 3px var(--color-bg-success-ring); }
+.outlined[data-error]:focus-within,
+.outlined[data-error][data-focused]    { border-color: var(--color-error-border);   }
+.outlined[data-success]:focus-within,
+.outlined[data-success][data-focused]  { border-color: var(--color-success-border); }
 .outlined[data-disabled]               { background: var(--color-bg-disabled); border-color: var(--color-border-disabled); }
 .outlined[data-readonly]               { background: var(--color-bg-secondary); }
 
@@ -117,7 +120,7 @@
   left: 0;
   width: 100%;
   height: 2px;
-  background: var(--color-border-focus);
+  background: var(--color-border-selected);
   border-radius: 1px;
   transform: scaleX(0);
   transform-origin: left;
@@ -220,7 +223,7 @@
   font-size: var(--field-fs);
   font-weight: var(--font-weight-regular);
   color: var(--color-content-primary);
-  caret-color: var(--color-border-focus);
+  caret-color: var(--color-content-primary);
   line-height: var(--line-height-snug);
 }
 
@@ -249,12 +252,23 @@
 .control[type="search"]::-webkit-search-results-button,
 .control[type="search"]::-webkit-search-results-decoration { -webkit-appearance: none; }
 
-/* ── Select — hide default arrow, show ours ────────────────────────────────── */
-.selectControl {
-  appearance: none;
+/* ── Select — custom value display (replaces native <select>) ───────────────── */
+.selectValue {
+  display: flex;
+  align-items: center;
   cursor: pointer;
+  user-select: none;
 }
-.selectControl:disabled { cursor: not-allowed; }
+.selectPlaceholder { color: var(--color-content-tertiary); }
+.shell[data-disabled] .selectValue  { color: var(--color-content-disabled); cursor: not-allowed; }
+
+/* Chevron rotation when panel is open */
+.selectChevron {
+  display: inline-flex;
+  align-items: center;
+  transition: transform var(--duration-fast) var(--ease-default);
+}
+.selectChevronOpen { transform: rotate(180deg); }
 
 /* ── Textarea ───────────────────────────────────────────────────────────────── */
 .textareaShell { align-items: flex-start; }
@@ -346,4 +360,95 @@
   flex-direction: column;
   gap: var(--space-1);
 }
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   MultiSelectField
+   Custom combobox: chip tokens inside the shell + dropdown options panel.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* ── Container ──────────────────────────────────────────────────────────────── */
+.msContainer {
+  position: relative;
+  width: 100%;
+}
+
+/* ── Shell ─────────────────────────────────────────────────────────────────────
+   Combines with .outlined/.underlined + .sm/.md/.lg for border/bg/token styling.
+   Height is fluid (min-height) so chips can wrap to multiple rows.
+   ───────────────────────────────────────────────────────────────────────────── */
+.msShell {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  min-height: var(--field-h);
+  gap: var(--space-1);
+  padding: var(--space-1) var(--field-px);
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+  /* Override the fixed-height .outlined .control rule — we set our own sizing */
+  height: auto !important;
+}
+
+/* Open state — match the outlined focus-within style */
+.msOpen.outlined {
+  border-color: var(--color-border-selected);
+  box-shadow: var(--shadow-ring-default);
+}
+.msOpen.outlined[data-error]   { border-color: var(--color-error-border);   }
+.msOpen.outlined[data-success] { border-color: var(--color-success-border); }
+
+.msDisabled { cursor: not-allowed; pointer-events: none; }
+
+/* ── Chip area ───────────────────────────────────────────────────────────────── */
+.msBody {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.msPlaceholder {
+  font-family: var(--font-sans);
+  font-size:   var(--field-fs);
+  color:       var(--color-content-tertiary);
+  line-height: var(--line-height-snug);
+}
+
+/* ── Chips — rendered by Alloy Tag component, no custom styles needed ── */
+
+/* ── Trailing chevron ─────────────────────────────────────────────────────────── */
+.msChevron {
+  display:      inline-flex;
+  align-items:  center;
+  justify-content: center;
+  flex-shrink:  0;
+  color:        var(--color-content-tertiary);
+  width:        var(--field-icon);
+  height:       var(--field-icon);
+  margin-left:  auto;
+  transition:   transform var(--duration-base) var(--ease-default);
+}
+.msChevronOpen { transform: rotate(180deg); }
+
+/* ── Dropdown panel ────────────────────────────────────────────────────────────── */
+.msPanel {
+  position:   absolute;
+  top:        calc(100% + var(--space-1));
+  left:       0;
+  right:      0;
+  background: var(--color-bg-primary);
+  border:     1px solid var(--color-border-opaque);
+  border-radius: var(--radius-button); /* 6px — matches other panels */
+  box-shadow: var(--shadow-below-md);
+  z-index:    var(--z-dropdown);
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 228px;
+  padding:    var(--space-1);
+}
+
+/* ── Option rows — rendered by Alloy ListItem component, no custom styles needed ── */
 

@@ -72,3 +72,6 @@ export type { GitBranch01IconProps }                 from './GitBranch01Icon';
 
 export { ArrowCircleBrokenRightIcon }      from './ArrowCircleBrokenRightIcon';
 export type { ArrowCircleBrokenRightIconProps }      from './ArrowCircleBrokenRightIcon';
+
+export { CheckIcon }                       from './CheckIcon';
+export type { CheckIconProps }             from './CheckIcon';

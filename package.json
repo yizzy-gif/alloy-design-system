@@ -1,6 +1,6 @@
 {
   "name": "alloy-design-system",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Alloy — React + TypeScript component library and design system",
   "type": "module",
   "main": "./dist/alloy.umd.cjs",

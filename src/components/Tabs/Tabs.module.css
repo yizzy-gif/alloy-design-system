@@ -59,6 +59,7 @@
   letter-spacing: var(--tracking-normal);
   white-space: nowrap;
   cursor: pointer;
+  outline: none;
   position: relative;
   transition: color var(--duration-fast) var(--ease-default);
 }
@@ -76,6 +77,12 @@
 .tabSelected {
   color: var(--color-content-primary);
   font-weight: var(--font-weight-medium);
+}
+
+/* Selected tab already has a clear visual indicator (underline / pill),
+   so suppress the browser focus ring to avoid double-highlighting. */
+.tabSelected:focus-visible {
+  outline: none;
 }
 
 /* ─ Background variant: pill on all tabs (only selected shows fill) ─ */

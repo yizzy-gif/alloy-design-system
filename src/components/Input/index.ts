@@ -10,7 +10,7 @@ export { TextArea }       from './TextArea';
 export type { TextAreaProps }       from './TextArea';
 
 export { SelectField }    from './SelectField';
-export type { SelectFieldProps }    from './SelectField';
+export type { SelectFieldProps, SelectOption } from './SelectField';
 
 export { PasswordField }  from './PasswordField';
 export type { PasswordFieldProps }  from './PasswordField';
@@ -23,6 +23,9 @@ export type { EmailFieldProps }     from './EmailField';
 
 export { NumberField }    from './NumberField';
 export type { NumberFieldProps }    from './NumberField';
+
+export { MultiSelectField } from './MultiSelectField';
+export type { MultiSelectFieldProps, MultiSelectOption } from './MultiSelectField';
 
 // Shared types
 export type { FieldVariant, FieldSize } from './FieldShell';
