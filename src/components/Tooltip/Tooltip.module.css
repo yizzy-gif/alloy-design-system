@@ -1,6 +1,6 @@
 /* ─────────────────────────────────────────────────────────────────────────────
    Tooltip
-   Dark inverse bubble · 4 placements · fade + slide animation · arrow caret
+   Dark inverse bubble · 4 placements · fade + slide animation
    ───────────────────────────────────────────────────────────────────────────── */
 
 /* ── Wrapper ─────────────────────────────────────────────────────────────────
@@ -34,6 +34,7 @@
   /* Layout */
   padding: 5px 8px;
   border-radius: var(--radius-sm);
+  min-width: 80px;
   white-space: normal;
   word-break: break-word;
   pointer-events: none;
@@ -51,23 +52,10 @@
   opacity: 1;
 }
 
-/* ── Arrow caret ─────────────────────────────────────────────────────────────
-   CSS triangle using borders. Color matches the bubble background so it
-   adapts automatically to dark mode via the same inverse token.            */
-
-.tooltip::after {
-  content: '';
-  position: absolute;
-  width: 0;
-  height: 0;
-  border: 5px solid transparent;
-  pointer-events: none;
-}
-
 /* ── Placement: top (default) ────────────────────────────────────────────── */
 
 .top {
-  bottom: calc(100% + 8px);
+  bottom: calc(100% + 6px);
   left: 50%;
   transform: translateX(-50%) translateY(4px);
 }
@@ -76,19 +64,10 @@
   transform: translateX(-50%) translateY(0);
 }
 
-/* Arrow points downward toward the trigger */
-.top::after {
-  top: 100%;
-  left: 50%;
-  margin-left: -5px;
-  border-top-color: var(--color-bg-inverse-primary);
-  border-bottom-width: 0;
-}
-
 /* ── Placement: bottom ───────────────────────────────────────────────────── */
 
 .bottom {
-  top: calc(100% + 8px);
+  top: calc(100% + 6px);
   left: 50%;
   transform: translateX(-50%) translateY(-4px);
 }
@@ -97,19 +76,10 @@
   transform: translateX(-50%) translateY(0);
 }
 
-/* Arrow points upward toward the trigger */
-.bottom::after {
-  bottom: 100%;
-  left: 50%;
-  margin-left: -5px;
-  border-bottom-color: var(--color-bg-inverse-primary);
-  border-top-width: 0;
-}
-
 /* ── Placement: left ─────────────────────────────────────────────────────── */
 
 .left {
-  right: calc(100% + 8px);
+  right: calc(100% + 6px);
   top: 50%;
   transform: translateY(-50%) translateX(4px);
 }
@@ -118,32 +88,14 @@
   transform: translateY(-50%) translateX(0);
 }
 
-/* Arrow points right toward the trigger */
-.left::after {
-  left: 100%;
-  top: 50%;
-  margin-top: -5px;
-  border-left-color: var(--color-bg-inverse-primary);
-  border-right-width: 0;
-}
-
 /* ── Placement: right ────────────────────────────────────────────────────── */
 
 .right {
-  left: calc(100% + 8px);
+  left: calc(100% + 6px);
   top: 50%;
   transform: translateY(-50%) translateX(-4px);
 }
 
 .right[data-visible] {
   transform: translateY(-50%) translateX(0);
-}
-
-/* Arrow points left toward the trigger */
-.right::after {
-  right: 100%;
-  top: 50%;
-  margin-top: -5px;
-  border-right-color: var(--color-bg-inverse-primary);
-  border-left-width: 0;
 }

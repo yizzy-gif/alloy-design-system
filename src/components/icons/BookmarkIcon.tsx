@@ -1,12 +1,12 @@
 import type { SVGProps } from 'react';
 
-export interface PlusIconProps extends SVGProps<SVGSVGElement> {
-  /** Width and height in px. Overridden by .artwork CSS when used inside a Button. */
+interface IconProps extends SVGProps<SVGSVGElement> {
   size?: number | string;
+  color?: string;
   strokeWidth?: number;
 }
 
-export const PlusIcon = ({ size = 24, color = 'currentColor', strokeWidth, ...props }: PlusIconProps) => {
+export function BookmarkIcon({ size = 16, color = 'currentColor', strokeWidth, ...props }: IconProps) {
   const s = typeof size === 'number' ? size : parseFloat(size as string);
   const sw = strokeWidth ?? (s <= 12 ? 2 : s <= 16 ? 1.75 : s <= 20 ? 1.5 : 1.25);
   return (
@@ -20,13 +20,13 @@ export const PlusIcon = ({ size = 24, color = 'currentColor', strokeWidth, ...pr
       {...props}
     >
       <path
-        d="M12 5V19M5 12H19"
+        d="M5 7.8C5 6.11984 5 5.27976 5.32698 4.63803C5.6146 4.07354 6.07354 3.6146 6.63803 3.32698C7.27976 3 8.11984 3 9.8 3H14.2C15.8802 3 16.7202 3 17.362 3.32698C17.9265 3.6146 18.3854 4.07354 18.673 4.63803C19 5.27976 19 6.11984 19 7.8V21L12 17L5 21V7.8Z"
         stroke={color}
         strokeLinecap="round"
         strokeLinejoin="round"
       />
     </svg>
   );
-};
+}
 
-PlusIcon.displayName = 'PlusIcon';
+BookmarkIcon.displayName = 'BookmarkIcon';

@@ -49,6 +49,21 @@ export { LineChartUp01Icon }     from './LineChartUp01Icon';
 export { ChevronRightIcon }      from './ChevronRightIcon';
 export type { ChevronRightIconProps }      from './ChevronRightIcon';
 
+export { File05Icon }            from './File05Icon';
+export type { File05IconProps }            from './File05Icon';
+
+export { FeatherIcon }           from './FeatherIcon';
+export type { FeatherIconProps }           from './FeatherIcon';
+
+export { PlusSquareIcon }        from './PlusSquareIcon';
+export type { PlusSquareIconProps }        from './PlusSquareIcon';
+
+export { ClipboardCheckIcon }    from './ClipboardCheckIcon';
+export type { ClipboardCheckIconProps }    from './ClipboardCheckIcon';
+
+export { SettingsGearIcon }      from './SettingsGearIcon';
+export type { SettingsGearIconProps }      from './SettingsGearIcon';
+
 export { ChevronLeftIcon }       from './ChevronLeftIcon';
 export type { ChevronLeftIconProps }       from './ChevronLeftIcon';
 
@@ -75,3 +90,24 @@ export type { ArrowCircleBrokenRightIconProps }      from './ArrowCircleBrokenRi
 
 export { CheckIcon }                       from './CheckIcon';
 export type { CheckIconProps }             from './CheckIcon';
+
+export { BankIcon }              from './BankIcon';
+export type { BankIconProps }    from './BankIcon';
+
+export { BankNote02Icon }        from './BankNote02Icon';
+export type { BankNote02IconProps } from './BankNote02Icon';
+
+export { Coins04Icon }           from './Coins04Icon';
+export type { Coins04IconProps } from './Coins04Icon';
+
+export { CoinsHandIcon }         from './CoinsHandIcon';
+export type { CoinsHandIconProps } from './CoinsHandIcon';
+
+export { CreditCard01Icon }      from './CreditCard01Icon';
+export type { CreditCard01IconProps } from './CreditCard01Icon';
+
+export { CreditCard02Icon }      from './CreditCard02Icon';
+export type { CreditCard02IconProps } from './CreditCard02Icon';
+
+export { CreditCardCheckIcon }   from './CreditCardCheckIcon';
+export type { CreditCardCheckIconProps } from './CreditCardCheckIcon';

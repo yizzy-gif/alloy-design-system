@@ -6,7 +6,7 @@ interface IconProps extends SVGProps<SVGSVGElement> {
   strokeWidth?: number;
 }
 
-export function ListBulletIcon({ size = 16, color = 'currentColor', strokeWidth, ...props }: IconProps) {
+export function Edit03Icon({ size = 16, color = 'currentColor', strokeWidth, ...props }: IconProps) {
   const s = typeof size === 'number' ? size : parseFloat(size as string);
   const sw = strokeWidth ?? (s <= 12 ? 2 : s <= 16 ? 1.75 : s <= 20 ? 1.5 : 1.25);
   return (
@@ -20,7 +20,7 @@ export function ListBulletIcon({ size = 16, color = 'currentColor', strokeWidth,
       {...props}
     >
       <path
-        d="M21 12L9 12M21 6L9 6M21 18L9 18M5 12C5 12.5523 4.55228 13 4 13C3.44772 13 3 12.5523 3 12C3 11.4477 3.44772 11 4 11C4.55228 11 5 11.4477 5 12ZM5 6C5 6.55228 4.55228 7 4 7C3.44772 7 3 6.55228 3 6C3 5.44772 3.44772 5 4 5C4.55228 5 5 5.44772 5 6ZM5 18C5 18.5523 4.55228 19 4 19C3.44772 19 3 18.5523 3 18C3 17.4477 3.44772 17 4 17C4.55228 17 5 17.4477 5 18Z"
+        d="M12 20H21M3.00003 20H4.67457C5.16376 20 5.40835 20 5.63852 19.9447C5.84259 19.8957 6.03768 19.8149 6.21663 19.7053C6.41846 19.5816 6.59141 19.4086 6.93732 19.0627L19.5001 6.49998C20.3285 5.67156 20.3285 4.32841 19.5001 3.49998C18.6716 2.67156 17.3285 2.67156 16.5001 3.49998L3.93729 16.0627C3.59139 16.4086 3.41843 16.5816 3.29475 16.7834C3.18509 16.9624 3.10428 17.1574 3.05529 17.3615C3.00003 17.5917 3.00003 17.8363 3.00003 18.3255V20Z"
         stroke={color}
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -28,3 +28,5 @@ export function ListBulletIcon({ size = 16, color = 'currentColor', strokeWidth,
     </svg>
   );
 }
+
+Edit03Icon.displayName = 'Edit03Icon';

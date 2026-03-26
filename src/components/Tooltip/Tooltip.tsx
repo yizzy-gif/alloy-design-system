@@ -17,7 +17,7 @@ export interface TooltipProps {
   delay?: number;
   /** When true the tooltip never shows. */
   disabled?: boolean;
-  /** Max width of the bubble; use for long-text tooltips. @default 220 */
+  /** Max width of the bubble; use for long-text tooltips. @default 280 */
   maxWidth?: number | string;
   /** The element that acts as the trigger. Must be a single ReactElement. */
   children: ReactElement;
@@ -30,7 +30,7 @@ export const Tooltip = ({
   placement = 'top',
   delay = 0,
   disabled = false,
-  maxWidth = 220,
+  maxWidth = 280,
   children,
 }: TooltipProps) => {
   const [visible, setVisible] = useState(false);
