@@ -237,7 +237,7 @@
   --color-border-transparent: rgba(21, 21, 21, 0.05);      /* Transparent overlay stroke                */
   --color-border-selected:    var(--Alloy-slate-850);      /* Active / selected component stroke        */
   --color-border-disabled:    var(--Alloy-slate-50);       /* Disabled component stroke                 */
-  --color-border-focus:       var(--Alloy-blue-400);       /* Keyboard focus ring                       */
+  --color-border-focus:       var(--Alloy-slate-850);      /* Keyboard focus ring                       */
   --color-border-hover:       var(--color-slate-border-tertiary); /* Interactive stroke on all hovered components */
 
   /* ── Scrollbar ─────────────────────────────────────────────────────────── */
@@ -534,7 +534,7 @@
   --icon-stroke-width: 1.75;
 
   /* ── Input focus rings ─────────────────────────────────────────────────────── */
-  --color-bg-focus-ring:   color-mix(in srgb, var(--Alloy-blue-400)  15%, transparent);
+  --color-bg-focus-ring:   color-mix(in srgb, var(--Alloy-slate-900) 12%, transparent);
   --color-bg-slate-ring:   color-mix(in srgb, var(--Alloy-slate-900) 12%, transparent);
   --color-bg-error-ring:   color-mix(in srgb, var(--Alloy-red-500)   12%, transparent);
   --color-bg-success-ring: color-mix(in srgb, var(--Alloy-green-500) 12%, transparent);
@@ -618,13 +618,13 @@
     --color-border-transparent: rgba(255, 255, 255, 0.05);   /* Transparent overlay stroke                */
     --color-border-selected:    var(--Alloy-slate-200);      /* Active / selected component stroke        */
     --color-border-disabled:    var(--Alloy-slate-800);      /* Disabled component stroke                 */
-    --color-border-focus:       var(--Alloy-blue-400);       /* Keyboard focus ring                       */
+    --color-border-focus:       var(--Alloy-slate-200);      /* Keyboard focus ring                       */
     --color-border-hover:       var(--color-slate-border-tertiary);
 
     --color-scrollbar-thumb:    rgba(255, 255, 255, 0.45);   /* Scrollbar thumb — semi-transparent light  */
 
     /* Input focus rings — slightly more opaque on dark surfaces */
-    --color-bg-focus-ring:   color-mix(in srgb, var(--Alloy-blue-400)  22%, transparent);
+    --color-bg-focus-ring:   color-mix(in srgb, var(--Alloy-slate-200) 15%, transparent);
     --color-bg-slate-ring:   color-mix(in srgb, var(--Alloy-slate-200) 15%, transparent);
     --color-bg-error-ring:   color-mix(in srgb, var(--Alloy-red-400)   18%, transparent);
     --color-bg-success-ring: color-mix(in srgb, var(--Alloy-green-400) 18%, transparent);
@@ -821,7 +821,7 @@
   --color-border-transparent: rgba(255, 255, 255, 0.05);
   --color-border-selected:    var(--Alloy-slate-200);
   --color-border-disabled:    var(--Alloy-slate-800);
-  --color-border-focus:       var(--Alloy-blue-400);
+  --color-border-focus:       var(--Alloy-slate-200);
   --color-border-hover:       var(--color-slate-border-tertiary);
 
   --color-scrollbar-thumb:    rgba(255, 255, 255, 0.45);   /* Scrollbar thumb — semi-transparent light  */
@@ -1012,7 +1012,7 @@
   --color-border-transparent: rgba(21, 21, 21, 0.05);
   --color-border-selected:    var(--Alloy-slate-850);
   --color-border-disabled:    var(--Alloy-slate-50);
-  --color-border-focus:       var(--Alloy-blue-400);
+  --color-border-focus:       var(--Alloy-slate-850);
   --color-border-hover:       var(--color-slate-border-tertiary);
 
   /* Inverse — same as light mode */

@@ -1,5 +1,18 @@
 // ── Components ────────────────────────────────────────────────────────────────
 
+// ── Teambridge AI ─────────────────────────────────────────────────────────────
+export { AILoader } from './components/ai';
+export type { AILoaderProps, AILoaderSize, AILoaderVariant } from './components/ai';
+
+export { DataCard } from './components/DataCard';
+export type { DataCardProps, DataCardColor } from './components/DataCard';
+
+export { ValueChangeLabel } from './components/ValueChangeLabel';
+export type { ValueChangeLabelProps, ValueChangeTrend, ValueChangeSeverity } from './components/ValueChangeLabel';
+
+export { Divider } from './components/Divider';
+export type { DividerProps, DividerThickness, DividerOrientation, DividerVariant } from './components/Divider';
+
 export { Alert } from './components/Alert';
 export type { AlertProps, AlertStatus, AlertVariant, AlertSize } from './components/Alert';
 

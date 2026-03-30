@@ -26,6 +26,10 @@ import ControlsPreview         from './ControlsPreview.jsx'
 import TablePreview            from './TablePreview.jsx'
 import ChartsPreview           from './ChartsPreview.jsx'
 import TooltipPreview          from './TooltipPreview.jsx'
+import DataCardPreview            from './DataCardPreview.jsx'
+import ValueChangeLabelPreview    from './ValueChangeLabelPreview.jsx'
+import DividerPreview             from './DividerPreview.jsx'
+import AILoaderPreview         from './AILoaderPreview.jsx'
 
 /* ── Component registry (grouped) ───────────────────────────────────────────── */
 const GROUPS = [
@@ -65,6 +69,8 @@ const GROUPS = [
   {
     label: 'Data Display',
     items: [
+      { id: 'data-card',          label: 'Data Card',          component: DataCardPreview },
+      { id: 'value-change-label', label: 'Value Change Label', component: ValueChangeLabelPreview },
       { id: 'charts',    label: 'Charts',       component: ChartsPreview },
       { id: 'table',     label: 'Table',        component: TablePreview },
       { id: 'list-item', label: 'List Item',    component: ListItemPreview },
@@ -83,7 +89,14 @@ const GROUPS = [
   {
     label: 'Layout',
     items: [
+      { id: 'divider',     label: 'Divider',     component: DividerPreview },
       { id: 'scroll-area', label: 'Scroll Area', component: ScrollAreaPreview },
+    ],
+  },
+  {
+    label: 'Teambridge AI',
+    items: [
+      { id: 'ai-loader', label: 'AI Loader', component: AILoaderPreview },
     ],
   },
 ]

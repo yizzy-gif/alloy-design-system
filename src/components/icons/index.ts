@@ -111,3 +111,32 @@ export type { CreditCard02IconProps } from './CreditCard02Icon';
 
 export { CreditCardCheckIcon }   from './CreditCardCheckIcon';
 export type { CreditCardCheckIconProps } from './CreditCardCheckIcon';
+
+export { TeambridgeAIIcon }      from './TeambridgeAIIcon';
+export type { TeambridgeAIIconProps } from './TeambridgeAIIcon';
+
+export { ArrowNarrowUpIcon }             from './ArrowNarrowUpIcon';
+export { ArrowNarrowDownIcon }           from './ArrowNarrowDownIcon';
+export { BookmarkIcon }                  from './BookmarkIcon';
+export { Microphone02Icon }              from './Microphone02Icon';
+
+export { AlertTriangleIcon }             from './AlertTriangleIcon';
+export { BankNote01Icon }                from './BankNote01Icon';
+export { BookOpen01Icon }                from './BookOpen01Icon';
+export { Camera01Icon }                  from './Camera01Icon';
+export { CheckCircleDashedIcon }         from './CheckCircleDashedIcon';
+export { Code02Icon }                    from './Code02Icon';
+export { CoinsStacked03Icon }            from './CoinsStacked03Icon';
+export { CurrencyDollarIcon }            from './CurrencyDollarIcon';
+export { Globe01Icon }                   from './Globe01Icon';
+export { Image01Icon }                   from './Image01Icon';
+export { LineChartUp02Icon }             from './LineChartUp02Icon';
+export { Map01Icon }                     from './Map01Icon';
+export { MessageDotsSquareIcon }         from './MessageDotsSquareIcon';
+export { MessageNotificationCircleIcon } from './MessageNotificationCircleIcon';
+export { MessageNotificationSquareIcon } from './MessageNotificationSquareIcon';
+export { MoneyIcon }                     from './MoneyIcon';
+export { PackageIcon }                   from './PackageIcon';
+export { PuzzlePiece01Icon }             from './PuzzlePiece01Icon';
+export { PuzzlePiece02Icon }             from './PuzzlePiece02Icon';
+export { QrCode01Icon }                  from './QrCode01Icon';
