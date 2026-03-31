@@ -519,23 +519,6 @@ export default function ListItemPreview() {
           white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
 
-        /* ─ Dark panel ─ */
-        .li-dark-panel {
-          background: rgba(16, 16, 20, 1);
-          border-radius: var(--radius-lg);
-          padding: 24px;
-          color: var(--color-content-inverse-primary);
-          --color-red-content-primary: var(--Alloy-red-200);
-        }
-        .li-dark-panel .li-divider { border-bottom-color: rgba(255, 255, 255, 0.08); }
-        .li-dark-panel .li-label { color: rgba(255, 255, 255, 0.88); }
-        .li-dark-panel .li-desc  { color: rgba(255, 255, 255, 0.38); }
-        .li-dark-panel .li-interactive:hover { background: rgba(255, 255, 255, 0.05); }
-        .li-dark-panel .li-selected { background: rgba(255, 255, 255, 0.08); }
-        .li-dark-panel .li-destructive .li-label { color: var(--color-red-content-primary); }
-        .li-dark-panel .li-disabled .li-label,
-        .li-dark-panel .li-disabled .li-desc { color: rgba(255, 255, 255, 0.22); }
-
         /* ─ Trailing action controls ─ */
 
         /* Switch */
@@ -555,12 +538,6 @@ export default function ListItemPreview() {
         }
         .li-ta-switch[data-checked] .li-ta-switch-thumb { transform: translateX(16px); }
 
-        /* Dark panel switch overrides */
-        .li-dark-panel .li-ta-switch { border-color: rgba(255,255,255,0.16); background: rgba(255,255,255,0.08); }
-        .li-dark-panel .li-ta-switch[data-checked] { background: rgba(255,255,255,0.88); border-color: rgba(255,255,255,0.88); }
-        .li-dark-panel .li-ta-switch-thumb { background: rgba(16,16,20,1); }
-        .li-dark-panel .li-ta-switch[data-checked] .li-ta-switch-thumb { background: rgba(16,16,20,1); }
-
         /* Checkbox */
         .li-ta-checkbox {
           display: inline-flex; align-items: center; justify-content: center;
@@ -570,8 +547,6 @@ export default function ListItemPreview() {
           transition: background-color 120ms ease, border-color 120ms ease;
         }
         .li-ta-checkbox[data-checked] { background: var(--color-bg-inverse-primary); border-color: var(--color-bg-inverse-primary); }
-        .li-dark-panel .li-ta-checkbox { border-color: rgba(255,255,255,0.22); }
-        .li-dark-panel .li-ta-checkbox[data-checked] { background: rgba(255,255,255,0.88); border-color: rgba(255,255,255,0.88); color: rgba(16,16,20,1); }
 
         /* Radio */
         .li-ta-radio {
@@ -583,9 +558,6 @@ export default function ListItemPreview() {
         }
         .li-ta-radio[data-checked] { border-color: var(--color-bg-inverse-primary); }
         .li-ta-radio-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-bg-inverse-primary); }
-        .li-dark-panel .li-ta-radio { border-color: rgba(255,255,255,0.22); }
-        .li-dark-panel .li-ta-radio[data-checked] { border-color: rgba(255,255,255,0.88); }
-        .li-dark-panel .li-ta-radio-dot { background: rgba(255,255,255,0.88); }
 
         /* ─ Alloy Badge (mirrors Badge component) ─ */
         .alloy-badge {
@@ -602,7 +574,6 @@ export default function ListItemPreview() {
         .alloy-badge-warning { background: var(--color-warning-bg);          color: var(--color-warning-content);          }
         .alloy-badge-error   { background: var(--color-error-bg);            color: var(--color-error-content);            }
         .alloy-badge-info    { background: var(--color-info-bg);             color: var(--color-info-content);             }
-        .li-dark-panel .alloy-badge-neutral { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.55); }
 
         /* Expand */
         .li-ta-expand {
@@ -611,7 +582,6 @@ export default function ListItemPreview() {
           transition: transform 120ms ease;
         }
         .li-ta-expand[data-expanded] { transform: rotate(90deg); }
-        .li-dark-panel .li-ta-expand { color: rgba(255,255,255,0.38); }
 
         /* Status dot */
         .li-ta-status { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
@@ -853,31 +823,6 @@ export default function ListItemPreview() {
 
           {/* 6 — Trailing Actions */}
           <TrailingActionsSection />
-
-          {/* 7 — Dark Mode (always last) */}
-          <Section title="Dark Mode" note="Same tokens — dark surface overrides for reference">
-            <div className="li-dark-panel">
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-                <div>
-                  <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', color: 'rgba(255,255,255,0.28)', letterSpacing: 'var(--tracking-wide)', marginBottom: 8 }}>settings list</p>
-                  <div style={{ border: '1px solid rgba(255,255,255,0.08)', borderRadius: 10, overflow: 'hidden' }}>
-                    <ListItem interactive size="md" label="Profile" description="Photo, name, username" leadingSlot={<Icon size={16}><UserIcon /></Icon>} trailingSlot={<Icon size={16} color="var(--color-content-inverse-primary)"><ChevronRightIcon /></Icon>} />
-                    <ListItem interactive size="md" label="Notifications" description="Push, email, Slack" leadingSlot={<Icon size={16}><BellIcon /></Icon>} trailingSlot={<Icon size={16} color="var(--color-content-inverse-primary)"><ChevronRightIcon /></Icon>} />
-                    <ListItem interactive size="md" label="Privacy" description="Two-factor, sessions" leadingSlot={<Icon size={16}><LockIcon /></Icon>} trailingSlot={<Icon size={16} color="var(--color-content-inverse-primary)"><ChevronRightIcon /></Icon>} />
-                    <ListItem interactive size="md" destructive label="Delete account" leadingSlot={<Icon size={16} color="var(--color-red-content-primary)"><Trash2Icon /></Icon>} trailingSlot={<Icon size={16} color="var(--color-content-inverse-primary)"><ChevronRightIcon /></Icon>} divider={false} />
-                  </div>
-                </div>
-                <div>
-                  <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', color: 'rgba(255,255,255,0.28)', letterSpacing: 'var(--tracking-wide)', marginBottom: 8 }}>states</p>
-                  <div style={{ border: '1px solid rgba(255,255,255,0.08)', borderRadius: 10, overflow: 'hidden' }}>
-                    <ListItem size="md" label="Default item" description="Standard appearance" leadingSlot={<Icon size={16}><FileIcon /></Icon>} />
-                    <ListItem interactive selected size="md" label="Selected item" description="Highlighted background" leadingSlot={<Icon size={16}><FileIcon /></Icon>} trailingSlot={<Icon size={16} color="var(--color-content-inverse-primary)"><CheckIcon /></Icon>} />
-                    <ListItem disabled size="md" label="Disabled item" description="Cannot be interacted with" leadingSlot={<Icon size={16}><FileIcon /></Icon>} divider={false} />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Section>
 
         </div>
 

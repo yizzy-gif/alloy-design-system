@@ -166,40 +166,6 @@ export default function DataCardPreview() {
             </div>
           </Section>
 
-          {/* 5 — Dark mode */}
-          <Section title="Dark Mode" note="ValueChangeLabel colors adapt automatically via Alloy semantic tokens" dark>
-            <div className="dark" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
-              <DataCard
-                color="green"
-                icon={<CurrencyDollarIcon size={24} />}
-                label="Revenue"
-                value="$1.4M"
-                change={<ValueChangeLabel mode="trend" value="12%" trend="up" />}
-              />
-              <DataCard
-                color="red"
-                icon={<AlertTriangleIcon size={24} />}
-                label="Churn Rate"
-                value="3.2%"
-                change={<ValueChangeLabel mode="trend" value="0.4%" trend="up" severity="negative" />}
-              />
-              <DataCard
-                color="yellow"
-                icon={<CheckCircleDashedIcon size={24} />}
-                label="Pending Reviews"
-                value="12"
-                change={<ValueChangeLabel mode="text" value="Review needed" severity="warning" />}
-              />
-              <DataCard
-                color="purple"
-                icon={<LineChartUp02Icon size={24} />}
-                label="Instant Pay Usage"
-                value="$18,200"
-                change={<ValueChangeLabel mode="text" value="6% of payroll" severity="positive" />}
-              />
-            </div>
-          </Section>
-
         </div>
 
         {/* Footer */}

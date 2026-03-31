@@ -250,50 +250,6 @@ export default function TabsPreview() {
         .alloy-badge-error   { background: var(--color-error-bg);            color: var(--color-error-content);            }
         .alloy-badge-info    { background: var(--color-info-bg);             color: var(--color-info-content);             }
 
-        /* ─ Dark panel ─ */
-        .tab-dark-panel {
-          background: rgba(16, 16, 20, 1);
-          border-radius: var(--radius-lg);
-          padding: 28px 24px;
-        }
-        .tab-dark-panel .tab-root {
-          background: transparent;
-        }
-        .tab-dark-panel .tab-underline {
-          border-bottom-color: rgba(255, 255, 255, 0.10);
-        }
-        .tab-dark-panel .tab-underline-indicator {
-          background: rgba(255, 255, 255, 0.80);
-        }
-        .tab-dark-panel .tab-trigger {
-          color: rgba(255, 255, 255, 0.38);
-        }
-        .tab-dark-panel .tab-trigger:hover:not(:disabled) {
-          color: rgba(255, 255, 255, 0.65);
-        }
-        .tab-dark-panel .tab-selected {
-          color: rgba(255, 255, 255, 0.92);
-        }
-        .tab-dark-panel .tab-background .tab-selected {
-          background: rgba(255, 255, 255, 0.10);
-        }
-        .tab-dark-panel .alloy-badge-neutral {
-          background: rgba(255, 255, 255, 0.10);
-          color: rgba(255, 255, 255, 0.50);
-        }
-        .tab-dark-row {
-          display: flex;
-          flex-direction: column;
-          gap: 4px;
-          margin-bottom: 24px;
-        }
-        .tab-dark-row:last-child { margin-bottom: 0; }
-        .tab-dark-sublabel {
-          font-family: var(--font-sans);
-          font-size: var(--text-xs);
-          letter-spacing: var(--tracking-wide);
-          color: rgba(255, 255, 255, 0.25);
-        }
       `}</style>
 
       <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: '48px 40px' }}>
@@ -364,32 +320,6 @@ export default function TabsPreview() {
             <Row label="background · individual disabled">
               <ControlledTabs variant="background" size="md" defaultValue="overview" items={ITEMS_DISABLED} />
             </Row>
-          </Section>
-
-          {/* 5 — Dark Mode */}
-          <Section title="Dark Mode" note="Same tokens — dark surface overrides for reference">
-            <div className="tab-dark-panel">
-              <div className="tab-dark-row">
-                <span className="tab-dark-sublabel">underline · md</span>
-                <ControlledTabs variant="underline" size="md" defaultValue="overview" items={ITEMS_BASIC} />
-              </div>
-              <div className="tab-dark-row">
-                <span className="tab-dark-sublabel">background · md</span>
-                <ControlledTabs variant="background" size="md" defaultValue="overview" items={ITEMS_BASIC} />
-              </div>
-              <div className="tab-dark-row">
-                <span className="tab-dark-sublabel">underline · lg</span>
-                <ControlledTabs variant="underline" size="lg" defaultValue="home" items={ITEMS_ICONS} />
-              </div>
-              <div className="tab-dark-row">
-                <span className="tab-dark-sublabel">background · lg</span>
-                <ControlledTabs variant="background" size="lg" defaultValue="home" items={ITEMS_ICONS} />
-              </div>
-              <div className="tab-dark-row">
-                <span className="tab-dark-sublabel">underline · badge</span>
-                <ControlledTabs variant="underline" size="md" defaultValue="inbox" items={ITEMS_BADGE} />
-              </div>
-            </div>
           </Section>
 
         </div>

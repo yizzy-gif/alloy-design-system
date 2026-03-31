@@ -5,6 +5,38 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.1.0] — 2026-03-31
+
+### Added
+
+**Components**
+- `DataCard` — compact metric tile; 10 semantic badge color variants (green / yellow / matcha / purple / blue / azure / red / orange / pink / slate); label, heading value, and optional `change` slot
+- `ValueChangeLabel` — inline change indicator, two modes:
+  - `trend` — value text + directional arrow icon (up/down); color defaults to green (up) or red (down); override with `severity`
+  - `text` — text-only, colored by `severity` (positive / warning / negative)
+- `Divider` — horizontal or vertical separator using `--color-border-opaque`; `thickness` prop (1 | 2 px); `variant` prop (solid | dashed — 2 px dash / 2 px gap)
+- `AILoader` — animated Teambridge AI star mark with star ↔ circle morph; 6 color variants (gradient, gradient-fill, inverse, inverse-light, stroke, stroke-light); 5 sizes (xs 16 px → xl 64 px); fixed 2.2 s ambient duration
+
+**Icons**
+- `ArrowNarrowDownIcon`, `ArrowNarrowUpIcon`
+- `AlertTriangleIcon`, `BankNote01Icon`, `BookmarkIcon`, `BookOpen01Icon`, `Camera01Icon`
+- `CheckCircleDashedIcon`, `Code02Icon`, `CoinsStacked03Icon`, `CurrencyDollarIcon`
+- `Globe01Icon`, `Image01Icon`, `LineChartUp02Icon`, `Map01Icon`, `Microphone02Icon`
+- `MessageDotsSquareIcon`, `MessageNotificationCircleIcon`, `MessageNotificationSquareIcon`
+- `MoneyIcon`, `PackageIcon`, `PuzzlePiece01Icon`, `PuzzlePiece02Icon`, `QrCode01Icon`, `TeambridgeAIIcon`
+
+**Preview**
+- `ValueChangeLabelPreview` — all variants; in-table, in-chart-card, and in-data-card usage examples
+- `DividerPreview` — solid/dashed variants, horizontal/vertical in-context examples
+- Preview server migrated to `Alloy/preview/` as single source of truth (port 5180)
+
+### Changed
+- `DataCard` — removed `tag` / `tagColor` props; replaced with `change?: ReactNode` (breaking)
+- `DataCard` value row — `align-items: center` → `align-items: baseline`
+- `AILoader` — `speed` prop replaced by `variant` prop (breaking); gradient hex values moved to CSS custom properties (`--ai-grad-start`, `--ai-grad-mid`, `--ai-grad-end`)
+
+---
+
 ## [1.0.0] — 2026-03-22
 
 ### Added

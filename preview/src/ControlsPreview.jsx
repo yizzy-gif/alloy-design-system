@@ -14,43 +14,15 @@ import { MultiSelectField } from '../../src/components/Input/MultiSelectField'
 import { ListItem }      from '../../src/components/ListItem/ListItem'
 import { Tabs }          from '../../src/components/Tabs/Tabs'
 
-/* ──────────────────────────────────────────────────────────────────────────────
-   Dark-mode CSS custom property overrides.
-   Setting these on any element causes all Alloy components inside to render
-   in dark-mode colors — no class toggling needed.
-   ────────────────────────────────────────────────────────────────────────────── */
-const DARK_VARS = {
-  '--color-bg-primary':             'rgba(255,255,255,0.04)',
-  '--color-bg-secondary':           'rgba(255,255,255,0.07)',
-  '--color-bg-tertiary':            'rgba(255,255,255,0.11)',
-  '--color-bg-disabled':            'rgba(255,255,255,0.05)',
-  '--color-border-opaque':          'rgba(255,255,255,0.10)',
-  '--color-border-selected':        'var(--Alloy-slate-200)',
-  '--color-border-disabled':        'rgba(255,255,255,0.06)',
-  '--color-border-focus':           'var(--Alloy-slate-300)',
-  '--color-content-primary':        'rgba(255,255,255,0.88)',
-  '--color-content-secondary':      'rgba(255,255,255,0.55)',
-  '--color-content-tertiary':       'rgba(255,255,255,0.35)',
-  '--color-content-disabled':       'rgba(255,255,255,0.22)',
-  '--color-content-inverse-primary':'rgba(0,0,0,0.88)',
-  '--color-bg-inverse-primary':     '#FFFFFF',
-  '--color-error-border':           'var(--Alloy-red-500)',
-  '--color-error-content':          'var(--Alloy-red-400)',
-  '--color-error-bg':               'rgba(255,60,60,0.10)',
-}
-
 /* ── Layout helpers ──────────────────────────────────────────────────────────── */
 
-function Section({ title, note, dark, children }) {
+function Section({ title, note, children }) {
   return (
     <section style={{
-      background: dark ? 'rgba(14,17,21,1)' : 'var(--color-bg-primary)',
-      border: `1px solid ${dark ? 'rgba(255,255,255,0.07)' : 'var(--color-border-opaque)'}`,
+      background: 'var(--color-bg-primary)',
+      border: '1px solid var(--color-border-opaque)',
       borderRadius: 'var(--radius-xl)',
       padding: 32,
-      /* Spread dark vars directly onto the section so ALL descendant Alloy
-         components automatically inherit dark-mode token values. */
-      ...(dark ? DARK_VARS : {}),
     }}>
       <div style={{ marginBottom: 24 }}>
         <p style={{
@@ -127,15 +99,6 @@ function SwitchSection() {
         </Row>
       </Section>
 
-      <Section title="Switch — Dark Mode" note="Token overrides cascade to all child components automatically" dark>
-        <Row gap={40} wrap>
-          <Col><Label>Off</Label><Switch label="Dark mode" description="Applies across the app" /></Col>
-          <Col><Label>On</Label><Switch defaultChecked label="Dark mode" description="Applies across the app" /></Col>
-          <Col><Label>Disabled (off)</Label><Switch disabled label="High contrast" /></Col>
-          <Col><Label>Disabled (on)</Label><Switch disabled defaultChecked label="Reduce motion" /></Col>
-          <Col><Label>No label</Label><Switch defaultChecked /></Col>
-        </Row>
-      </Section>
     </>
   )
 }
@@ -171,16 +134,6 @@ function CheckboxSection() {
         </Row>
       </Section>
 
-      <Section title="Checkbox — Dark Mode" note="Token overrides cascade to all child components automatically" dark>
-        <Row gap={40} wrap>
-          <Col><Label>Unchecked</Label><Checkbox label="Unchecked" /></Col>
-          <Col><Label>Checked</Label><Checkbox defaultChecked label="Checked" /></Col>
-          <Col><Label>Indeterminate</Label><Checkbox indeterminate label="Partial selection" /></Col>
-          <Col><Label>Disabled</Label><Checkbox disabled label="Unavailable" /></Col>
-          <Col><Label>Disabled checked</Label><Checkbox disabled defaultChecked label="Always on" /></Col>
-          <Col><Label>With description</Label><Checkbox defaultChecked label="Email notifications" description="Receive updates and receipts." /></Col>
-        </Row>
-      </Section>
     </>
   )
 }
@@ -212,14 +165,6 @@ function RadioSection() {
         </Row>
       </Section>
 
-      <Section title="Radio — Dark Mode" note="Token overrides cascade to all child components automatically" dark>
-        <Row gap={40} wrap>
-          <Col><Label>Unselected</Label><Radio value="x" label="Option A" name="dark-radio-a" /></Col>
-          <Col><Label>Selected</Label><Radio value="y" checked label="Option B" name="dark-radio-b" onChange={() => {}} /></Col>
-          <Col><Label>Disabled</Label><Radio value="z" disabled label="Unavailable" name="dark-radio-c" /></Col>
-          <Col><Label>Disabled selected</Label><Radio value="w" checked disabled label="Fixed option" name="dark-radio-d" onChange={() => {}} /></Col>
-        </Row>
-      </Section>
     </>
   )
 }
@@ -298,31 +243,6 @@ function RadioGroupSection() {
         </Row>
       </Section>
 
-      <Section title="RadioGroup — Dark Mode" note="Token overrides cascade to all child components automatically" dark>
-        <Row gap={48} wrap>
-          <Col>
-            <Label>With descriptions</Label>
-            <RadioGroup label="Billing cycle" options={planOptions} defaultValue="annual" />
-          </Col>
-          <Col>
-            <Label>Horizontal</Label>
-            <RadioGroup
-              label="Theme"
-              options={[
-                { value: 'system', label: 'System' },
-                { value: 'light',  label: 'Light'  },
-                { value: 'dark',   label: 'Dark'   },
-              ]}
-              defaultValue="dark"
-              orientation="horizontal"
-            />
-          </Col>
-          <Col>
-            <Label>Error state</Label>
-            <RadioGroup label="Select a size" error="Please select a size to continue." options={sizeOptions} />
-          </Col>
-        </Row>
-      </Section>
     </>
   )
 }
@@ -400,35 +320,6 @@ function CheckboxGroupSection() {
         </Row>
       </Section>
 
-      <Section title="CheckboxGroup — Dark Mode" note="Token overrides cascade to all child components automatically" dark>
-        <Row gap={48} wrap>
-          <Col>
-            <Label>With descriptions + select all</Label>
-            <CheckboxGroup label="Active features" options={featureOptions} defaultValue={['analytics', 'reports']} selectAll />
-          </Col>
-          <Col>
-            <Label>Horizontal</Label>
-            <CheckboxGroup
-              label="Notify me about"
-              options={[
-                { value: 'comments',   label: 'Comments'   },
-                { value: 'mentions',   label: 'Mentions'   },
-                { value: 'updates',    label: 'Updates'    },
-              ]}
-              defaultValue={['comments']}
-              orientation="horizontal"
-            />
-          </Col>
-          <Col>
-            <Label>Error state</Label>
-            <CheckboxGroup
-              label="Required selection"
-              error="You must select at least one option."
-              options={[{ value: 'a', label: 'Option A' }, { value: 'b', label: 'Option B' }, { value: 'c', label: 'Option C' }]}
-            />
-          </Col>
-        </Row>
-      </Section>
     </>
   )
 }
@@ -504,30 +395,6 @@ function IntegrationSection() {
         </div>
       </Section>
 
-      {/* Dark mode — DARK_VARS applied to Section, so all Alloy components
-          inside automatically use dark-mode token values.                   */}
-      <Section title="Integration — Dark mode settings panel" note="All components consume CSS custom properties — no per-component theming needed" dark>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 0, border: '1px solid rgba(255,255,255,0.10)', borderRadius: 'var(--radius-lg)', overflow: 'hidden' }}>
-          {[
-            { label: 'Dark mode',     desc: 'Switch the entire app to dark theme.',   init: true  },
-            { label: 'Reduce motion', desc: 'Minimize animations and transitions.',    init: false },
-            { label: 'High contrast', desc: 'Increase text and border contrast.',      init: false },
-          ].map(item => {
-            const [on, setOn] = useState(item.init)
-            return (
-              <ListItem
-                key={item.label}
-                label={item.label}
-                description={item.desc}
-                size="md"
-                trailingAction="switch"
-                checked={on}
-                onCheckedChange={setOn}
-              />
-            )
-          })}
-        </div>
-      </Section>
     </>
   )
 }

@@ -227,44 +227,6 @@ export default function SegmentedControlPreview() {
         .alloy-icon-slot > svg { display: block; width: 100%; height: 100%; }
         .sc-label { line-height: 1; }
 
-        /* ─ Dark panel ─ */
-        .sc-dark-panel {
-          background: rgba(16, 16, 20, 1);
-          border-radius: var(--radius-lg);
-          padding: 24px;
-        }
-        .sc-dark-panel .sc-root {
-          background: rgba(255, 255, 255, 0.07);
-          border-color: rgba(255, 255, 255, 0.09);
-        }
-        .sc-dark-panel .sc-indicator {
-          background: rgba(255, 255, 255, 0.13);
-          box-shadow: 0 1px 4px rgba(0, 0, 0, 0.55), 0 1px 2px rgba(0, 0, 0, 0.40);
-        }
-        .sc-dark-panel .sc-item {
-          color: rgba(255, 255, 255, 0.38);
-        }
-        .sc-dark-panel .sc-selected {
-          color: rgba(255, 255, 255, 0.92);
-        }
-        .sc-dark-panel .sc-item:hover:not(:disabled):not([aria-checked="true"]) {
-          color: rgba(255, 255, 255, 0.60);
-        }
-        .sc-dark-row {
-          display: flex;
-          align-items: center;
-          gap: 16px;
-          margin-bottom: 12px;
-        }
-        .sc-dark-row:last-child { margin-bottom: 0; }
-        .sc-dark-label {
-          font-family: var(--font-sans);
-          font-size: var(--text-xs);
-          letter-spacing: var(--tracking-wide);
-          color: rgba(255, 255, 255, 0.28);
-          width: 56px;
-          flex-shrink: 0;
-        }
       `}</style>
 
       <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: '48px 40px' }}>
@@ -386,52 +348,6 @@ export default function SegmentedControlPreview() {
                 { value: 'month', label: 'Month', disabled: true },
               ]} />
             </Row>
-          </Section>
-
-          {/* 6 — Dark Mode */}
-          <Section title="Dark Mode" note="Same tokens — dark surface overrides for reference">
-            <div className="sc-dark-panel">
-              <div className="sc-dark-row">
-                <span className="sc-dark-label">sm</span>
-                <ControlledSC size="sm" defaultValue="week" items={[
-                  { value: 'day',   label: 'Day'   },
-                  { value: 'week',  label: 'Week'  },
-                  { value: 'month', label: 'Month' },
-                ]} />
-              </div>
-              <div className="sc-dark-row">
-                <span className="sc-dark-label">md</span>
-                <ControlledSC size="md" defaultValue="week" items={[
-                  { value: 'day',   label: 'Day'   },
-                  { value: 'week',  label: 'Week'  },
-                  { value: 'month', label: 'Month' },
-                ]} />
-              </div>
-              <div className="sc-dark-row">
-                <span className="sc-dark-label">lg</span>
-                <ControlledSC size="lg" defaultValue="week" items={[
-                  { value: 'day',   label: 'Day'   },
-                  { value: 'week',  label: 'Week'  },
-                  { value: 'month', label: 'Month' },
-                ]} />
-              </div>
-              <div className="sc-dark-row">
-                <span className="sc-dark-label">icon</span>
-                <ControlledSC size="md" defaultValue="grid" items={[
-                  { value: 'grid',    icon: <GridIcon />,    label: 'Grid'    },
-                  { value: 'list',    icon: <ListIcon />,    label: 'List'    },
-                  { value: 'columns', icon: <ColumnsIcon />, label: 'Columns' },
-                ]} />
-              </div>
-              <div className="sc-dark-row">
-                <span className="sc-dark-label">icon only</span>
-                <ControlledSC size="md" defaultValue="bar" items={[
-                  { value: 'bar',  icon: <ChartBarIcon />,  label: undefined },
-                  { value: 'line', icon: <ChartLineIcon />, label: undefined },
-                  { value: 'area', icon: <ChartAreaIcon />, label: undefined },
-                ]} />
-              </div>
-            </div>
           </Section>
 
         </div>

@@ -164,24 +164,6 @@ export default function ToggleButtonPreview() {
         .sel-fill:hover:not(:disabled)  { background-color: var(--color-bg-inverse-secondary) !important; }
         .sel-fill:active:not(:disabled) { background-color: var(--color-bg-inverse-tertiary) !important; }
 
-        /* ─ Dark panel — simulated dark surface overrides ─ */
-        .dark-panel .v-secondary { background-color:rgba(255,255,255,0.07); color:rgba(255,255,255,0.88); }
-        .dark-panel .v-secondary:hover:not(:disabled) { background-color:rgba(255,255,255,0.12); border-color:rgba(255,255,255,0.2); }
-        .dark-panel .v-tertiary  { background-color:rgba(255,255,255,0.04); color:rgba(255,255,255,0.88); border-color:rgba(255,255,255,0.1); }
-        .dark-panel .v-tertiary:hover:not(:disabled)  { background-color:rgba(255,255,255,0.09); border-color:rgba(255,255,255,0.2); }
-        .dark-panel .v-ghost     { background-color:transparent; color:rgba(255,255,255,0.88); }
-        .dark-panel .v-ghost:hover:not(:disabled) { background-color:rgba(255,255,255,0.07); border-color:rgba(255,255,255,0.15); }
-
-        /* ─ Dark panel — selected states ─ */
-        .dark-panel .sel-border { border-color: rgba(255,255,255,0.65) !important; }
-        .dark-panel .sel-border:hover:not(:disabled) { border-color: rgba(255,255,255,0.65) !important; }
-        .dark-panel .sel-fill {
-          background-color: rgba(255,255,255,0.92) !important;
-          color:            rgba(0,0,0,0.88) !important;
-          border-color:     transparent !important;
-        }
-        .dark-panel .sel-fill:hover:not(:disabled) { background-color: rgba(255,255,255,0.80) !important; }
-        .dark-panel .sel-fill:active:not(:disabled) { background-color: rgba(255,255,255,0.70) !important; }
       `}</style>
 
       <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: '48px 40px' }}>
@@ -322,75 +304,7 @@ export default function ToggleButtonPreview() {
             </div>
           </Section>
 
-          {/* 4 — Dark mode */}
-          <Section title="Dark Mode" dark note="Both selection styles on dark surfaces">
-            <div className="dark-panel">
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-
-                <div>
-                  <SubLabel dark>selectionStyle = "border"</SubLabel>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                    {['secondary', 'tertiary', 'ghost'].map(v => (
-                      <div key={v} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                        <ColLabel dark>{v}</ColLabel>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
-                          {SIZES.map(s => (
-                            <ToggleButton key={s} size={s} defaultVariant={v} selectionStyle="border">Toggle</ToggleButton>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }} />
-
-                <div>
-                  <SubLabel dark>selectionStyle = "fill"</SubLabel>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                    {['secondary', 'tertiary', 'ghost'].map(v => (
-                      <div key={v} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                        <ColLabel dark>{v}</ColLabel>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
-                          {SIZES.map(s => (
-                            <ToggleButton key={s} size={s} defaultVariant={v} selectionStyle="fill">Toggle</ToggleButton>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }} />
-
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: 32, flexWrap: 'wrap' }}>
-                  <div>
-                    <SubLabel dark>Icon-only · border</SubLabel>
-                    <div style={{ display: 'flex', gap: 6 }}>
-                      {SIZES.map(s => (
-                        <ToggleButton key={s} size={s} iconOnly defaultVariant="secondary" selectionStyle="border" label="Toggle sun">
-                          <SunIcon />
-                        </ToggleButton>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    <SubLabel dark>Icon-only · fill</SubLabel>
-                    <div style={{ display: 'flex', gap: 6 }}>
-                      {SIZES.map(s => (
-                        <ToggleButton key={s} size={s} iconOnly defaultVariant="secondary" selectionStyle="fill" label="Toggle sun">
-                          <SunIcon />
-                        </ToggleButton>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          </Section>
-
-          {/* 5 — Disabled */}
+          {/* 4 — Disabled */}
           <Section title="Disabled">
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <ToggleButton size="md" defaultVariant="secondary" selectionStyle="border" disabled>Disabled</ToggleButton>

@@ -5,39 +5,16 @@
 import { Tooltip } from '../../src/components/Tooltip/Tooltip'
 import { Button }  from '../../src/components/Button/Button'
 
-/* ── Dark mode token overrides ───────────────────────────────────────────────── */
-
-const DARK_VARS = {
-  '--color-bg-primary':              'rgba(255,255,255,0.04)',
-  '--color-bg-secondary':            'rgba(255,255,255,0.07)',
-  '--color-bg-tertiary':             'rgba(255,255,255,0.11)',
-  '--color-bg-disabled':             'rgba(255,255,255,0.05)',
-  '--color-border-opaque':           'rgba(255,255,255,0.10)',
-  '--color-border-selected':         'var(--Alloy-slate-200)',
-  '--color-border-disabled':         'rgba(255,255,255,0.06)',
-  '--color-content-primary':         'rgba(255,255,255,0.88)',
-  '--color-content-secondary':       'rgba(255,255,255,0.55)',
-  '--color-content-tertiary':        'rgba(255,255,255,0.35)',
-  '--color-content-disabled':        'rgba(255,255,255,0.22)',
-  '--color-content-inverse-primary': 'rgba(0,0,0,0.88)',
-  '--color-bg-inverse-primary':      '#FFFFFF',
-  '--color-bg-inverse-secondary':    'var(--Alloy-slate-50)',
-  '--color-error-border':            'var(--Alloy-red-500)',
-  '--color-error-content':           'var(--Alloy-red-400)',
-  '--color-error-bg':                'rgba(255,60,60,0.10)',
-}
-
 /* ── Layout helpers ─────────────────────────────────────────────────────────── */
 
-function Section({ title, note, dark, children }) {
+function Section({ title, note, children }) {
   return (
     <section style={{
-      background:    dark ? 'rgba(14,17,21,1)' : 'var(--color-bg-primary)',
-      border:        `1px solid ${dark ? 'rgba(255,255,255,0.07)' : 'var(--color-border-opaque)'}`,
+      background:    'var(--color-bg-primary)',
+      border:        '1px solid var(--color-border-opaque)',
       borderRadius:  'var(--radius-xl)',
       padding:       32,
       overflow:      'visible',
-      ...(dark ? DARK_VARS : {}),
     }}>
       <div style={{ marginBottom: 28 }}>
         <p style={{
@@ -314,57 +291,6 @@ export default function TooltipPreview() {
               <Button variant="secondary">No tooltip</Button>
             </Tooltip>
           </div>
-        </div>
-      </Section>
-
-      {/* ── 6. Dark mode ────────────────────────────────────────────────────── */}
-      <Section
-        title="Dark Mode"
-        note="Token overrides cascade to all child components · --color-bg-inverse-primary flips to white on dark surfaces"
-        dark
-      >
-        <p style={{
-          fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)',
-          color: 'var(--color-content-tertiary)', marginBottom: 32, lineHeight: 1.6,
-        }}>
-          On dark surfaces, <code style={{ fontFamily: 'var(--font-mono)', background: 'rgba(255,255,255,0.06)', padding: '1px 5px', borderRadius: 3 }}>--color-bg-inverse-primary</code> resolves to white and <code style={{ fontFamily: 'var(--font-mono)', background: 'rgba(255,255,255,0.06)', padding: '1px 5px', borderRadius: 3 }}>--color-content-inverse-primary</code> resolves to near-black — so the tooltip automatically contrasts with the surface. No extra props needed.
-        </p>
-
-        {/* Placements on dark */}
-        <Label text="All placements on dark surface" />
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 20, padding: '48px 0' }}>
-          <Tooltip content="Above — light bubble" placement="top">
-            <Button variant="secondary" size="sm">Top</Button>
-          </Tooltip>
-          <Tooltip content="Below — light bubble" placement="bottom">
-            <Button variant="secondary" size="sm">Bottom</Button>
-          </Tooltip>
-          <Tooltip content="To the left" placement="left">
-            <Button variant="secondary" size="sm">Left</Button>
-          </Tooltip>
-          <Tooltip content="To the right" placement="right">
-            <Button variant="secondary" size="sm">Right</Button>
-          </Tooltip>
-        </div>
-
-        {/* Icon-only on dark */}
-        <Label text="Icon-only actions on dark surface" />
-        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-          <Tooltip content="Copy" placement="top">
-            <Button variant="ghost" size="sm" iconOnly aria-label="Copy">
-              <CopyIcon />
-            </Button>
-          </Tooltip>
-          <Tooltip content="Settings" placement="top">
-            <Button variant="ghost" size="sm" iconOnly aria-label="Settings">
-              <SettingsIcon />
-            </Button>
-          </Tooltip>
-          <Tooltip content="Delete" placement="top">
-            <Button variant="ghost" size="sm" iconOnly aria-label="Delete">
-              <TrashIcon />
-            </Button>
-          </Tooltip>
         </div>
       </Section>
 

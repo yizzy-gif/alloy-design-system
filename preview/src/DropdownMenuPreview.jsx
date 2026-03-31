@@ -976,42 +976,6 @@ export default function DropdownMenuPreview() {
           box-sizing: border-box; flex-shrink: 0;
         }
 
-        /* ─ Dark panel ─ */
-        .dm-dark-panel {
-          background: rgba(16, 16, 20, 1);
-          border-radius: var(--radius-lg);
-          padding: 24px;
-          display: flex; gap: 24px; flex-wrap: wrap; align-items: flex-start;
-        }
-        .dm-dark-panel .dm-trigger-btn {
-          background: rgba(255,255,255,0.06);
-          border-color: rgba(255,255,255,0.12);
-          color: rgba(255,255,255,0.88);
-        }
-        .dm-dark-panel .dm-trigger-btn:hover { background: rgba(255,255,255,0.1); }
-        .dm-dark-panel .dm-panel {
-          background: rgba(28, 28, 34, 1);
-          border-color: rgba(255,255,255,0.1);
-        }
-        .dm-dark-panel .dm-group-heading-label { color: rgba(255,255,255,0.3); }
-        .dm-dark-panel .dm-group-divider { background: rgba(255,255,255,0.08); }
-        .dm-dark-panel .li-label  { color: rgba(255,255,255,0.88); }
-        .dm-dark-panel .li-desc   { color: rgba(255,255,255,0.38); }
-        .dm-dark-panel .li-divider { border-bottom-color: rgba(255,255,255,0.08); }
-        .dm-dark-panel .li-interactive:hover:not(.li-disabled) { background: rgba(255,255,255,0.06); }
-        .dm-dark-panel .li-selected { background: rgba(255,255,255,0.08); }
-        .dm-dark-panel .li-destructive .li-label { color: var(--Alloy-red-300); }
-        .dm-dark-panel .li-disabled .li-label,
-        .dm-dark-panel .li-disabled .li-desc { color: rgba(255,255,255,0.22); }
-        .dm-dark-panel .dm-ta-switch { border-color: rgba(255,255,255,0.16); background: rgba(255,255,255,0.08); }
-        .dm-dark-panel .dm-ta-switch[data-checked] { background: rgba(255,255,255,0.88); border-color: rgba(255,255,255,0.88); }
-        .dm-dark-panel .dm-ta-switch-thumb { background: rgba(16,16,20,1); }
-        .dm-dark-panel .dm-ta-checkbox { border-color: rgba(255,255,255,0.22); }
-        .dm-dark-panel .dm-ta-checkbox[data-checked] { background: rgba(255,255,255,0.88); border-color: rgba(255,255,255,0.88); color: rgba(16,16,20,1); }
-        .dm-dark-panel .dm-ta-radio { border-color: rgba(255,255,255,0.22); }
-        .dm-dark-panel .dm-ta-radio[data-checked] { border-color: rgba(255,255,255,0.88); }
-        .dm-dark-panel .dm-ta-radio-dot { background: rgba(255,255,255,0.88); }
-        .dm-dark-panel .dm-badge { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.12); color: rgba(255,255,255,0.55); }
       `}</style>
 
       <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: '48px 40px' }}>
@@ -1142,62 +1106,6 @@ export default function DropdownMenuPreview() {
           {/* Placement */}
           <Section title="Placement" note="bottom-start · bottom-end · top-start · top-end — panel anchors relative to the trigger">
             <PlacementsDemo />
-          </Section>
-
-          {/* Dark mode */}
-          <Section title="Dark mode" note="Same tokens — dark surface overrides for reference">
-            <div className="dm-dark-panel dark">
-              <DropdownMenu
-                trigger={<TriggerBtn icon={<UserIcon />}>Account</TriggerBtn>}
-                width={240}
-                groups={[
-                  {
-                    id: 'account',
-                    options: [
-                      { id: 'profile', label: 'View profile', leadingSlot: <Icon><UserIcon /></Icon>, trailingAction: 'chevron' },
-                      { id: 'settings', label: 'Settings', leadingSlot: <Icon><SettingsIcon /></Icon>, trailingAction: 'chevron' },
-                    ]
-                  },
-                  {
-                    id: 'session',
-                    options: [
-                      { id: 'logout', label: 'Sign out', leadingSlot: <Icon><LogOutIcon /></Icon> },
-                      { id: 'delete', label: 'Delete account', leadingSlot: <Icon><Trash2Icon /></Icon>, destructive: true },
-                    ]
-                  }
-                ]}
-              />
-
-              <DropdownMenu
-                trigger={<TriggerBtn>Preferences</TriggerBtn>}
-                width={248}
-                closeOnSelect={false}
-                groups={[{
-                  id: 'prefs',
-                  heading: 'Display',
-                  collapsible: true,
-                  options: [
-                    { id: 'dark', label: 'Dark mode', leadingSlot: <Icon><MoonIcon /></Icon>, trailingAction: 'switch', defaultChecked: true },
-                    { id: 'notif', label: 'Notifications', leadingSlot: <Icon><BellIcon /></Icon>, trailingAction: 'switch' },
-                    { id: 'wifi', label: 'Wi-Fi sync', leadingSlot: <Icon><WifiIcon /></Icon>, trailingAction: 'switch', defaultChecked: true },
-                  ]
-                }]}
-              />
-
-              <DropdownMenu
-                trigger={<TriggerBtn>System status</TriggerBtn>}
-                width={240}
-                groups={[{
-                  id: 'status',
-                  heading: 'Services',
-                  options: [
-                    { id: 'prod', label: 'Production', leadingSlot: <Icon><ShieldIcon /></Icon>, trailingAction: 'status', statusVariant: 'success' },
-                    { id: 'staging', label: 'Staging', leadingSlot: <Icon><WifiIcon /></Icon>, trailingAction: 'status', statusVariant: 'warning' },
-                    { id: 'db', label: 'Database', leadingSlot: <Icon><LockIcon /></Icon>, trailingAction: 'status', statusVariant: 'error' },
-                  ]
-                }]}
-              />
-            </div>
           </Section>
 
         </div>

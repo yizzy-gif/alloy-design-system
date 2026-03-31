@@ -661,30 +661,6 @@ export default function InputPreview() {
         .fi-shell input[type=search]::-webkit-search-decoration,
         .fi-shell input[type=search]::-webkit-search-cancel-button { -webkit-appearance: none; }
 
-        /* ─ Dark panel ─ */
-        .input-dark-panel {
-          background: rgba(16,16,20,1); border-radius: var(--radius-lg); padding: 24px;
-          --color-bg-primary:   rgba(255,255,255,0.04);
-          --color-bg-secondary: rgba(255,255,255,0.07);
-          --color-bg-disabled:  rgba(255,255,255,0.05);
-          --color-border-opaque: rgba(255,255,255,0.12);
-          --color-border-focus:  var(--Alloy-blue-400);
-          --color-border-disabled: rgba(255,255,255,0.07);
-          --color-content-primary:   rgba(255,255,255,0.88);
-          --color-content-secondary: rgba(255,255,255,0.55);
-          --color-content-tertiary:  rgba(255,255,255,0.35);
-          --color-content-disabled:  rgba(255,255,255,0.22);
-          --color-error-border: var(--Alloy-red-500);
-          --color-error-content: var(--Alloy-red-400);
-          --color-success-border: var(--Alloy-green-500);
-          --color-success-content: var(--Alloy-green-400);
-          --color-border-selected: var(--Alloy-slate-200);
-          --color-bg-focus-ring: color-mix(in srgb, var(--Alloy-blue-400) 22%, transparent);
-          --color-bg-slate-ring: color-mix(in srgb, var(--Alloy-slate-200) 15%, transparent);
-          --color-bg-error-ring: color-mix(in srgb, var(--Alloy-red-400) 18%, transparent);
-          --color-bg-success-ring: color-mix(in srgb, var(--Alloy-green-400) 18%, transparent);
-        }
-
         /* ─ Grid helpers ─ */
         .fi-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .fi-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
@@ -1018,30 +994,6 @@ export default function InputPreview() {
               <div>
                 <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', color: 'var(--color-content-tertiary)', marginBottom: 6 }}>error</p>
                 <FileUploaderInline state="error" errorMessage="Unsupported file type." fieldVariant="underlined" />
-              </div>
-            </div>
-          </Section>
-
-          {/* 9 — Dark mode (always last) */}
-          <Section title="Dark Mode" note="Same tokens — dark surface overrides for reference">
-            <div className="input-dark-panel">
-              <div className="fi-grid-2">
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                  <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', color: 'rgba(255,255,255,0.28)', letterSpacing: 'var(--tracking-wide)', marginBottom: 4 }}>outlined</p>
-                  <TextField label="Email" placeholder="jane@company.com" leadingIcon={<MailIcon />} variant="outlined" />
-                  <PasswordField label="Password" placeholder="Enter password" variant="outlined" />
-                  <TextField label="Error state" defaultValue="bad-value" error="This field has an error" variant="outlined" />
-                  <TextField label="Success state" defaultValue="valid@email.com" success="Looking good!" variant="outlined" />
-                  <TextField label="Disabled" placeholder="Cannot edit" disabled variant="outlined" />
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                  <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', color: 'rgba(255,255,255,0.28)', letterSpacing: 'var(--tracking-wide)', marginBottom: 4 }}>underlined</p>
-                  <TextField label="Email" placeholder="jane@company.com" leadingIcon={<MailIcon />} variant="underlined" />
-                  <PasswordField label="Password" placeholder="Enter password" variant="underlined" />
-                  <TextField label="Error state" defaultValue="bad-value" error="This field has an error" variant="underlined" />
-                  <TextField label="Success state" defaultValue="valid@email.com" success="Looking good!" variant="underlined" />
-                  <SearchField label="Search" placeholder="Search…" value="" variant="underlined" />
-                </div>
               </div>
             </div>
           </Section>

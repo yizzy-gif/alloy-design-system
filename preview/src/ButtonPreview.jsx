@@ -166,16 +166,6 @@ export default function ButtonPreview() {
         }
         @keyframes alloy-spin { to { transform:rotate(360deg); } }
 
-        /* ─ Dark overrides ─ */
-        .dark-panel .v-primary   { background-color:var(--color-bg-primary); color:var(--color-content-primary); }
-        .dark-panel .v-primary:hover:not(:disabled) { background-color:var(--color-bg-secondary); }
-        .dark-panel .v-primary:active:not(:disabled) { background-color:var(--color-bg-tertiary); }
-        .dark-panel .v-secondary { background-color:rgba(255,255,255,0.07); color:rgba(255,255,255,0.88); }
-        .dark-panel .v-secondary:hover:not(:disabled) { background-color:rgba(255,255,255,0.12); border-color:rgba(255,255,255,0.2); }
-        .dark-panel .v-tertiary  { background-color:rgba(255,255,255,0.04); color:rgba(255,255,255,0.88); border-color:rgba(255,255,255,0.1); }
-        .dark-panel .v-tertiary:hover:not(:disabled) { background-color:rgba(255,255,255,0.09); border-color:rgba(255,255,255,0.2); }
-        .dark-panel .v-ghost     { color:rgba(255,255,255,0.88); }
-        .dark-panel .v-ghost:hover:not(:disabled) { background-color:rgba(255,255,255,0.07); border-color:rgba(255,255,255,0.15); }
       `}</style>
 
       <div style={{ minHeight:'100vh', background:'var(--color-bg-secondary)', fontFamily:'var(--font-sans)', padding:'48px 40px' }}>
@@ -269,28 +259,6 @@ export default function ButtonPreview() {
                   )}
                 </div>
               </div>
-            </div>
-          </Section>
-
-          {/* 4 — Dark mode */}
-          <Section title="Dark Mode" dark>
-            <div className="dark-panel">
-              <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:16 }}>
-                <span style={{ width:128 }} />
-                {SIZES.map(s => (
-                  <span key={s} style={{ width:88, textAlign:'center', fontFamily:'var(--font-sans)', fontSize:'var(--text-xs)', letterSpacing:'var(--tracking-wide)', color:'rgba(255,255,255,0.3)' }}>{s.toUpperCase()}</span>
-                ))}
-              </div>
-              {VARIANTS.map(v => (
-                <div key={v} style={{ display:'flex', alignItems:'center', gap:12, marginBottom:10 }}>
-                  <span style={{ fontFamily:'var(--font-sans)', fontSize:'var(--text-xs)', color:'rgba(255,255,255,0.3)', letterSpacing:'var(--tracking-wide)', width:128, flexShrink:0 }}>{VARIANT_LABEL[v]}</span>
-                  {SIZES.map(s => (
-                    <div key={s} style={{ width:88, display:'flex', justifyContent:'center' }}>
-                      <Button variant={v} size={s}>{VARIANT_LABEL_TEXT[v]}</Button>
-                    </div>
-                  ))}
-                </div>
-              ))}
             </div>
           </Section>
 

@@ -40,8 +40,10 @@
   outline: none;
 }
 
-/* Focus ring — intentionally suppressed; consumers should provide their own focus indicator */
+/* Focus ring suppressed — no outline on click or keyboard focus */
+.root:focus,
 .root:focus-visible {
+  outline: none;
   box-shadow: none;
 }
 

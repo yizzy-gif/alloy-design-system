@@ -285,12 +285,6 @@ export default function PaginationPreview() {
         input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
         input[type=number] { -moz-appearance: textfield; }
 
-        /* ─ Dark panel ─ */
-        .pagination-dark-panel {
-          background: rgba(16,16,20,1);
-          border-radius: var(--radius-lg);
-          padding: 24px;
-        }
       `}</style>
 
       <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: '48px 40px' }}>
@@ -376,21 +370,6 @@ export default function PaginationPreview() {
             <Row>
               <PaginationDemo totalPages={10} initialPage={5} disabled />
             </Row>
-          </Section>
-
-          {/* Dark mode */}
-          <Section title="Dark Mode" note="Same tokens — dark surface overrides for reference">
-            <div className="dark pagination-dark-panel">
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-                <PaginationDemo totalPages={10} initialPage={5} />
-                <PaginationDemo
-                  totalPages={25} initialPage={4}
-                  showRowsPerPage totalCount={247} rowsPerPage={10}
-                  rowsPerPageOptions={[10, 25, 50, 100]}
-                  showGoToPage
-                />
-              </div>
-            </div>
           </Section>
 
         </div>

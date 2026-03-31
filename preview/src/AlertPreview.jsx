@@ -273,11 +273,6 @@ export default function AlertPreview() {
       <style>{`
         *, *::before, *::after { box-sizing: border-box; margin: 0; }
         button { font-family: var(--font-sans); }
-        .alert-dark-panel {
-          background: rgba(16,16,20,1);
-          border-radius: var(--radius-lg);
-          padding: 24px;
-        }
       `}</style>
 
       <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: '48px 40px' }}>
@@ -371,25 +366,6 @@ export default function AlertPreview() {
                 <Alert key={s} status={s} size="lg" description="Supporting description text goes here." />
               ))}
             </Row>
-          </Section>
-
-          {/* Dark mode */}
-          <Section title="Dark Mode" note="Same tokens — dark surface overrides for reference">
-            <div className="dark alert-dark-panel">
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 16 }}>
-                {STATUSES.map(s => (
-                  <Alert key={s} status={s} size="sm" variant="lighter" action="Action" onDismiss={() => {}} />
-                ))}
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                {STATUSES.map(s => (
-                  <Alert key={s} status={s} size="lg" variant="lighter"
-                    description="Insert the alert description here."
-                    action="Action" learnMore="Learn more" onDismiss={() => {}}
-                  />
-                ))}
-              </div>
-            </div>
           </Section>
 
         </div>

@@ -79,8 +79,9 @@
   font-weight: var(--font-weight-medium);
 }
 
-/* Selected tab already has a clear visual indicator (underline / pill),
-   so suppress the browser focus ring to avoid double-highlighting. */
+.tab:focus,
+.tab:focus-visible,
+.tabSelected:focus,
 .tabSelected:focus-visible {
   outline: none;
 }

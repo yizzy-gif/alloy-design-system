@@ -180,29 +180,6 @@ export default function BadgePreview() {
           height: 2px; background: var(--color-border-selected); border-radius: 1px;
         }
 
-        /* ─ Dark panel ─ */
-        .badge-dark-panel {
-          background: rgba(16,16,20,1);
-          border-radius: var(--radius-lg);
-          padding: 24px;
-          --color-bg-tertiary: rgba(255,255,255,0.08);
-          --color-content-secondary: rgba(255,255,255,0.55);
-          --color-bg-inverse-primary: rgba(255,255,255,0.88);
-          --color-content-inverse-primary: rgba(16,16,20,1);
-          --color-success-bg:  rgba(34,197,94,0.15);
-          --color-success-content: rgba(134,239,172,1);
-          --color-warning-bg:  rgba(234,179,8,0.15);
-          --color-warning-content: rgba(253,224,71,1);
-          --color-error-bg:    rgba(239,68,68,0.15);
-          --color-error-content:   rgba(252,165,165,1);
-          --color-info-bg:     rgba(59,130,246,0.15);
-          --color-info-content:    rgba(147,197,253,1);
-          --color-border-opaque: rgba(255,255,255,0.08);
-          --color-content-primary: rgba(255,255,255,0.88);
-          --color-content-tertiary: rgba(255,255,255,0.38);
-          --color-content-disabled: rgba(255,255,255,0.22);
-          --color-border-selected: rgba(255,255,255,0.88);
-        }
       `}</style>
 
       <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: '48px 40px' }}>
@@ -329,46 +306,6 @@ export default function BadgePreview() {
                   <ListItem label="Priority support" description="Faster response times" leadingSlot={<Icon size={16}><BellIcon /></Icon>} trailingSlot={<Badge variant="success">Active</Badge>} />
                   <ListItem label="Legacy API" description="v1 endpoints" leadingSlot={<Icon size={16}><AlertIcon /></Icon>} trailingSlot={<Badge variant="error">Deprecated</Badge>} divider={false} />
                 </div>
-              </div>
-            </div>
-          </Section>
-
-          {/* 5 — Dark mode */}
-          <Section title="Dark Mode" note="Same tokens — dark surface overrides for reference">
-            <div className="badge-dark-panel">
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
-
-                {/* Left: variants */}
-                <div>
-                  <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', color: 'rgba(255,255,255,0.28)', letterSpacing: 'var(--tracking-wide)', marginBottom: 12 }}>variants</p>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                    {[
-                      { variant: 'neutral', label: 'neutral',  examples: ['12', 'New', 'Beta'] },
-                      { variant: 'primary', label: 'primary',  examples: ['99+'] },
-                      { variant: 'success', label: 'success',  examples: ['Active', 'Deployed'] },
-                      { variant: 'warning', label: 'warning',  examples: ['Review', 'Expiring'] },
-                      { variant: 'error',   label: 'error',    examples: ['Failed', '3 errors'] },
-                      { variant: 'info',    label: 'info',     examples: ['Beta', 'Preview'] },
-                    ].map(({ variant, label, examples }) => (
-                      <div key={variant} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                        <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', color: 'rgba(255,255,255,0.28)', width: 60, flexShrink: 0 }}>{label}</span>
-                        {examples.map(e => <Badge key={e} variant={variant}>{e}</Badge>)}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Right: list context */}
-                <div>
-                  <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', color: 'rgba(255,255,255,0.28)', letterSpacing: 'var(--tracking-wide)', marginBottom: 12 }}>in list items</p>
-                  <div style={{ border: '1px solid rgba(255,255,255,0.08)', borderRadius: 10, overflow: 'hidden' }}>
-                    <ListItem label="Inbox" description="Unread messages" leadingSlot={<Icon size={16} color="rgba(255,255,255,0.55)"><InboxIcon /></Icon>} trailingSlot={<Badge variant="primary">12</Badge>} />
-                    <ListItem label="AI Compose" description="Write with AI" leadingSlot={<Icon size={16} color="rgba(255,255,255,0.55)"><FileIcon /></Icon>} trailingSlot={<Badge variant="info">Beta</Badge>} />
-                    <ListItem label="Issues" description="Build warnings" leadingSlot={<Icon size={16} color="rgba(255,255,255,0.55)"><AlertIcon /></Icon>} trailingSlot={<Badge variant="warning">4</Badge>} />
-                    <ListItem label="Priority support" description="Faster response" leadingSlot={<Icon size={16} color="rgba(255,255,255,0.55)"><BellIcon /></Icon>} trailingSlot={<Badge variant="success">Active</Badge>} divider={false} />
-                  </div>
-                </div>
-
               </div>
             </div>
           </Section>

@@ -137,14 +137,6 @@ export default function BreadcrumbPreview() {
 
         a { color: inherit; }
 
-        .bc-dark-panel {
-          background: rgba(16,16,20,1);
-          border-radius: var(--radius-lg);
-          padding: 24px;
-          display: flex;
-          flex-direction: column;
-          gap: 20px;
-        }
       `}</style>
 
       <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: '48px 40px' }}>
@@ -233,18 +225,6 @@ export default function BreadcrumbPreview() {
                 { label: 'Q4 2025 Summary' },
               ]} />
             </Row>
-          </Section>
-
-          {/* Dark mode */}
-          <Section title="Dark mode" note="Same tokens — dark surface overrides for reference">
-            <div className="dark bc-dark-panel">
-              <Breadcrumb separator="slash" items={[home, settings, account]} />
-              <Breadcrumb separator="chevron" items={[
-                { label: 'Home', href: '/', icon: <HomeLineIcon size={16} /> },
-                { label: 'Projects', href: '/projects' },
-                { label: 'Alloy Design Kit' },
-              ]} />
-            </div>
           </Section>
 
         </div>

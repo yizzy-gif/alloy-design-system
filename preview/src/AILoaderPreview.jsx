@@ -4,18 +4,6 @@
 
 import { AILoader } from '../../src/components/ai/AILoader/AILoader'
 
-/* ── Dark mode token cascade ─────────────────────────────────────────────── */
-const DARK_VARS = {
-  '--color-bg-primary':        'var(--Alloy-slate-950)',
-  '--color-bg-secondary':      'var(--Alloy-slate-900)',
-  '--color-bg-tertiary':       'var(--Alloy-slate-850)',
-  '--color-content-primary':   'var(--Alloy-white)',    // tokens.css dark: Alloy-white
-  '--color-content-secondary': 'var(--Alloy-slate-200)',// tokens.css dark: Alloy-slate-200
-  '--color-content-inverse':   'var(--Alloy-black)',    // tokens.css dark: Alloy-black
-  '--color-border-opaque':     'var(--Alloy-slate-800)',
-  '--color-bg-inverse-primary':'var(--Alloy-white)',    // tokens.css dark: Alloy-white
-}
-
 /* ── Shared layout primitives ────────────────────────────────────────────── */
 const wrap = {
   minHeight: '100vh',
@@ -106,15 +94,14 @@ const footer = {
 }
 
 /* ── Variant metadata ────────────────────────────────────────────────────── */
-// swatchBg / swatchBgDark override swatch cell background so every variant
-// is always legible regardless of which section it appears in.
+// swatchBg overrides swatch cell background so every variant is always legible.
 const VARIANTS = [
-  { variant: 'gradient',      label: 'gradient',      note: 'Default — gradient stroke',                swatchBg: null,                    swatchBgDark: null },
-  { variant: 'gradient-fill', label: 'gradient-fill', note: 'Gradient stroke + fill',                   swatchBg: null,                    swatchBgDark: null },
-  { variant: 'inverse',       label: 'inverse',       note: 'Solid dark — always black',                swatchBg: 'var(--Alloy-slate-100)', swatchBgDark: 'var(--Alloy-slate-100)' },
-  { variant: 'inverse-light', label: 'inverse-light', note: 'Solid white — gradient & dark surfaces',   swatchBg: 'var(--Alloy-slate-900)', swatchBgDark: 'var(--Alloy-slate-900)' },
-  { variant: 'stroke',        label: 'stroke',        note: 'Outline dark — always black',              swatchBg: 'var(--Alloy-slate-100)', swatchBgDark: 'var(--Alloy-slate-100)' },
-  { variant: 'stroke-light',  label: 'stroke-light',  note: 'Outline white — gradient & dark surfaces', swatchBg: 'var(--Alloy-slate-900)', swatchBgDark: 'var(--Alloy-slate-900)' },
+  { variant: 'gradient',      label: 'gradient',      note: 'Default — gradient stroke',                swatchBg: null },
+  { variant: 'gradient-fill', label: 'gradient-fill', note: 'Gradient stroke + fill',                   swatchBg: null },
+  { variant: 'inverse',       label: 'inverse',       note: 'Solid dark — always black',                swatchBg: 'var(--Alloy-slate-100)' },
+  { variant: 'inverse-light', label: 'inverse-light', note: 'Solid white — gradient & dark surfaces',   swatchBg: 'var(--Alloy-slate-900)' },
+  { variant: 'stroke',        label: 'stroke',        note: 'Outline dark — always black',              swatchBg: 'var(--Alloy-slate-100)' },
+  { variant: 'stroke-light',  label: 'stroke-light',  note: 'Outline white — gradient & dark surfaces', swatchBg: 'var(--Alloy-slate-900)' },
 ]
 
 export default function AILoaderPreview() {
@@ -149,9 +136,9 @@ export default function AILoaderPreview() {
         </div>
       </div>
 
-      {/* ── Section 2: Variants (light) ── */}
+      {/* ── Section 2: Variants ── */}
       <div style={section()}>
-        <p style={sectionTitle}>Variants — Light</p>
+        <p style={sectionTitle}>Variants</p>
         <div style={row({ alignItems: 'flex-start', flexWrap: 'wrap' })}>
           {VARIANTS.map(({ variant, label: l, note, swatchBg }) => (
             <div key={variant} style={cell({ alignItems: 'flex-start', gap: '8px' })}>
@@ -174,32 +161,7 @@ export default function AILoaderPreview() {
         </div>
       </div>
 
-      {/* ── Section 3: Variants (dark) ── */}
-      <div className="dark" style={section({ backgroundColor: 'var(--Alloy-slate-950)', border: '1px solid var(--Alloy-slate-800)', ...DARK_VARS })}>
-        <p style={{ ...sectionTitle, color: 'var(--Alloy-slate-500)' }}>Variants — Dark</p>
-        <div style={row({ alignItems: 'flex-start', flexWrap: 'wrap' })}>
-          {VARIANTS.map(({ variant, label: l, note, swatchBgDark }) => (
-            <div key={variant} style={cell({ alignItems: 'flex-start', gap: '8px' })}>
-              <div style={{
-                width: 88,
-                height: 88,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius: 'var(--radius-lg)',
-                backgroundColor: swatchBgDark ?? 'var(--Alloy-slate-900)',
-                border: '1px solid var(--Alloy-slate-800)',
-              }}>
-                <AILoader size="lg" variant={variant} />
-              </div>
-              <span style={{ ...cellLabel, color: 'var(--Alloy-slate-200)', fontWeight: 'var(--font-weight-semibold)' }}>{l}</span>
-              <span style={{ ...cellLabel, color: 'var(--Alloy-slate-500)', maxWidth: 108 }}>{note}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* ── Section 4: Usage in Context ── */}
+      {/* ── Section 3: Usage in Context ── */}
       <div style={section()}>
         <p style={sectionTitle}>Usage in Context</p>
 
@@ -370,7 +332,7 @@ export default function AILoaderPreview() {
 
       </div>
 
-      {/* ── Section 5: Custom Sizes ── */}
+      {/* ── Section 4: Custom Sizes ── */}
       <div style={section()}>
         <p style={sectionTitle}>Custom numeric sizes</p>
         <div style={row({ alignItems: 'flex-end' })}>
@@ -380,48 +342,6 @@ export default function AILoaderPreview() {
               <span style={cellLabel}>{px}px</span>
             </div>
           ))}
-        </div>
-      </div>
-
-      {/* ── Section 6: Dark mode sizes ── */}
-      <div className="dark" style={section({ backgroundColor: 'var(--Alloy-slate-950)', border: '1px solid var(--Alloy-slate-800)', ...DARK_VARS })}>
-        <p style={{ ...sectionTitle, color: 'var(--Alloy-slate-500)' }}>Dark mode — All sizes</p>
-
-        <div style={row({ alignItems: 'flex-end', marginBottom: '32px' })}>
-          {[
-            { size: 'xs', label: 'xs' },
-            { size: 'sm', label: 'sm' },
-            { size: 'md', label: 'md' },
-            { size: 'lg', label: 'lg' },
-            { size: 'xl', label: 'xl' },
-          ].map(({ size, label: l }) => (
-            <div key={size} style={cell()}>
-              <AILoader size={size} />
-              <span style={{ ...cellLabel, color: 'var(--Alloy-slate-500)' }}>{l}</span>
-            </div>
-          ))}
-        </div>
-
-        <div style={{ height: '1px', backgroundColor: 'var(--Alloy-slate-800)', margin: '0 0 28px' }} />
-
-        {/* Card on dark */}
-        <div style={{
-          display: 'flex', flexDirection: 'column', alignItems: 'center',
-          justifyContent: 'center', gap: '16px',
-          padding: '48px 32px',
-          borderRadius: 'var(--radius-lg)',
-          border: '1px dashed var(--Alloy-slate-800)',
-          backgroundColor: 'var(--Alloy-slate-900)',
-        }}>
-          <AILoader size="xl" variant="inverse-light" />
-          <div style={{ textAlign: 'center' }}>
-            <p style={{ margin: '0 0 4px', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-semibold)', color: 'var(--Alloy-slate-100)' }}>
-              AI is analyzing your data
-            </p>
-            <p style={{ margin: 0, fontSize: 'var(--text-xs)', color: 'var(--Alloy-slate-500)' }}>
-              This usually takes a few seconds
-            </p>
-          </div>
         </div>
       </div>
 

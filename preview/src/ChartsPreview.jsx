@@ -92,23 +92,6 @@ function Section({ title, children }) {
   )
 }
 
-/* ── Dark panel wrapper ───────────────────────────────────────────────────────── */
-function DarkPanel({ children }) {
-  return (
-    <div
-      className="dark"
-      style={{
-        background: '#151515',
-        borderRadius: 'var(--radius-lg)',
-        padding: 'var(--space-5)',
-        marginTop: 'var(--space-4)',
-      }}
-    >
-      {children}
-    </div>
-  )
-}
-
 /* ── Grid layout ─────────────────────────────────────────────────────────────── */
 function Grid({ children, cols = 2 }) {
   return (
@@ -201,11 +184,6 @@ export default function ChartsPreview() {
                   showLegend
                 />
               </ChartCard>
-              <DarkPanel>
-                <ChartCard title="Shift Hours" subtitle="Daily Regular hours vs Overtime hours — Dark">
-                  <BarChart series={SHIFT_SERIES} labels={SHIFT_LABELS} variant="stacked" height={240} showLegend />
-                </ChartCard>
-              </DarkPanel>
             </Section>
 
             <Section title="Grouped Bar Chart">
@@ -244,11 +222,6 @@ export default function ChartsPreview() {
                   showGrid
                 />
               </ChartCard>
-              <DarkPanel>
-                <ChartCard title="Staffing Volume" subtitle="Dark mode">
-                  <LineChart series={LINE_SERIES} labels={LINE_LABELS} height={240} smooth showLegend showGrid />
-                </ChartCard>
-              </DarkPanel>
             </Section>
 
             <Section title="Single Line">
@@ -293,11 +266,6 @@ export default function ChartsPreview() {
                     legendVariant="stat"
                     showLegend
                   />
-                </ChartCard>
-                <ChartCard title="Risk Distribution" subtitle="Dark mode">
-                  <div className="dark" style={{ background: '#151515', borderRadius: 'var(--radius-md)', padding: 'var(--space-3)' }}>
-                    <DonutChart segments={RISK_SEGMENTS} innerRadius={60} size={188} legendVariant="stat" showLegend />
-                  </div>
                 </ChartCard>
               </Grid>
             </Section>
@@ -354,11 +322,6 @@ export default function ChartsPreview() {
                   showTooltip
                 />
               </ChartCard>
-              <DarkPanel>
-                <ChartCard title="Coverage Heatmap" subtitle="Dark mode">
-                  <HeatMap cells={HEATMAP_CELLS} rows={HEATMAP_ROWS} cols={HEATMAP_COLS} cellRadius={4} cellGap={6} showTooltip />
-                </ChartCard>
-              </DarkPanel>
             </Section>
 
             <Section title="Custom color scale">
@@ -395,11 +358,6 @@ export default function ChartsPreview() {
                   yUnit="%"
                 />
               </ChartCard>
-              <DarkPanel>
-                <ChartCard title="Overtime %" subtitle="By Location — Dark">
-                  <BarChart series={OVERTIME_SERIES} labels={OVERTIME_LABELS} variant="horizontal" yUnit="%" />
-                </ChartCard>
-              </DarkPanel>
             </Section>
 
             <Section title="Horizontal with multiple colors">

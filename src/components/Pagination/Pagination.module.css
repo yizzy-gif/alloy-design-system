@@ -21,6 +21,12 @@
 .pageBtn {
   padding-left:  var(--space-1) !important;
   padding-right: var(--space-1) !important;
+  outline: none;
+}
+
+.pageBtn:focus,
+.pageBtn:focus-visible {
+  outline: none;
 }
 
 .root[data-size='sm'] .pageBtn { min-width: 32px; }
