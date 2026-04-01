@@ -118,6 +118,7 @@ import 'alloy-design-system/styles/typography.css';
 |---|---|
 | `Button` | Primary, secondary, tertiary, ghost, destructive, and destructive-secondary variants. Five sizes (xs – xl). Loading state with integrated AI spinner. Leading/trailing artwork and icon-only modes. |
 | `ToggleButton` | Pressed/unpressed toggle built on `Button`. Fill or border selection styles. |
+| `AreaButton` | Ghost "add zone" placeholder button. Dashed border, transparent fill. Vertical (stacked) or horizontal (row) layout. Configurable `height`, `borderRadius`, and `align` (`center` \| `start`). Three sizes: sm (80 px) / md (120 px) / lg (160 px) for vertical; defaults to 36 px for horizontal. |
 
 ### Navigation
 
@@ -169,6 +170,7 @@ import 'alloy-design-system/styles/typography.css';
 | Component | Description |
 |---|---|
 | `Alert` | Notification banner for error, warning, success, info, and feature states. Dismissible. |
+| `Dialog` | Modal overlay with `DialogHeader`, `DialogContent`, and `DialogFooter` sub-components. Three sizes: sm / md / lg. |
 | `DropdownMenu` | Floating panel with grouped options, toggle actions, and custom trailing slots. |
 | `Tooltip` | Hover/focus hint overlay. top / bottom / left / right placement. Configurable delay. |
 
@@ -291,15 +293,16 @@ All spacing uses a **4 px base scale** via `--space-{n}` tokens.
 
 ### Border Radius
 
-| Token | Value |
-|---|---|
-| `--radius-xs` | 2 px |
-| `--radius-sm` | 4 px |
-| `--radius-md` | 6 px |
-| `--radius-lg` | 8 px |
-| `--radius-xl` | 12 px |
-| `--radius-2xl` | 16 px |
-| `--radius-full` | 9999 px |
+| Token | Value | Notes |
+|---|---|---|
+| `--radius-xs` | 2 px | |
+| `--radius-sm` | 4 px | |
+| `--radius-button` | 6 px | Standard interactive elements — buttons, inputs, selects |
+| `--radius-md` | 8 px | |
+| `--radius-lg` | 12 px | |
+| `--radius-xl` | 16 px | |
+| `--radius-2xl` | 24 px | |
+| `--radius-full` | 9999 px | Pill / circle shapes |
 
 ### Elevation / Shadow
 
@@ -319,8 +322,8 @@ Two directions × three levels:
 | Token | Value |
 |---|---|
 | `--duration-fast` | 100 ms |
-| `--duration-base` | 200 ms |
-| `--duration-slow` | 300 ms |
+| `--duration-base` | 150 ms |
+| `--duration-slow` | 250 ms |
 | `--ease-default` | cubic-bezier(0.16, 1, 0.3, 1) |
 | `--ease-in` | cubic-bezier(0.4, 0, 1, 1) |
 | `--ease-out` | cubic-bezier(0, 0, 0.2, 1) |
