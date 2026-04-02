@@ -87,6 +87,80 @@ function ColLabel({ w = 80, dark, children }) {
   return <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wide)', color: dark ? 'rgba(255,255,255,0.3)' : 'var(--color-content-disabled)', width: w, flexShrink: 0 }}>{children}</span>
 }
 
+/* ── Specimen helpers (same pattern as ButtonPreview) ───────────────────────── */
+function SpecimenGroup({ label }) {
+  return (
+    <div style={{
+      display: 'flex', alignItems: 'center', gap: 12, margin: '8px 0 4px',
+    }}>
+      <span style={{
+        fontFamily: 'var(--font-sans)', fontSize: 10, fontWeight: 'var(--font-weight-semibold)',
+        letterSpacing: 'var(--tracking-wider)', textTransform: 'uppercase',
+        color: 'var(--color-content-disabled)', whiteSpace: 'nowrap',
+      }}>{label}</span>
+      <div style={{ flex: 1, height: 1, background: 'var(--color-border-opaque)' }} />
+    </div>
+  )
+}
+
+function SpecimenRow({ label, tags = [], note, wide, children }) {
+  return (
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: wide ? '1fr 260px' : '1fr 200px',
+      gap: 16, alignItems: 'center',
+      padding: '10px 0',
+      borderBottom: '1px solid var(--color-border-opaque)',
+    }}>
+      {/* Left: label + prop tags */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+        <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-medium)', color: 'var(--color-content-primary)' }}>{label}</span>
+        {tags.length > 0 && (
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+            {tags.map((t, i) => (
+              <span key={i} style={{
+                fontFamily: 'var(--font-mono)', fontSize: 11,
+                background: 'var(--color-bg-tertiary)',
+                color: 'var(--color-content-secondary)',
+                border: '1px solid var(--color-border-opaque)',
+                borderRadius: 'var(--radius-sm)',
+                padding: '1px 6px', lineHeight: '18px',
+              }}>{t}</span>
+            ))}
+          </div>
+        )}
+        {note && <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', color: 'var(--color-content-tertiary)', lineHeight: 1.5 }}>{note}</span>}
+      </div>
+      {/* Right: live render */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+        {children}
+      </div>
+    </div>
+  )
+}
+
+function ImportRow() {
+  return (
+    <div style={{
+      fontFamily: 'var(--font-mono)', fontSize: 12,
+      background: 'var(--color-bg-tertiary)',
+      border: '1px solid var(--color-border-opaque)',
+      borderRadius: 'var(--radius-md)',
+      padding: '10px 14px', lineHeight: '20px',
+      color: 'var(--color-content-secondary)',
+      overflowX: 'auto', whiteSpace: 'nowrap',
+    }}>
+      <span style={{ color: 'var(--color-content-tertiary)' }}>import</span>
+      {' { '}
+      <span style={{ color: 'var(--color-content-primary)', fontWeight: 'var(--font-weight-medium)' }}>ToggleButton</span>
+      {' } '}
+      <span style={{ color: 'var(--color-content-tertiary)' }}>from</span>
+      {' '}
+      <span style={{ color: 'var(--color-content-primary)' }}>'alloy-design-system'</span>
+    </div>
+  )
+}
+
 /* ── Preview ─────────────────────────────────────────────────────────────────── */
 export default function ToggleButtonPreview() {
   return (
@@ -313,6 +387,130 @@ export default function ToggleButtonPreview() {
               <ToggleButton size="md" defaultVariant="ghost"     selectionStyle="fill"   disabled>Disabled</ToggleButton>
             </div>
           </Section>
+
+          {/* 5 — Specimen */}
+          <section style={{
+            background: 'var(--color-bg-primary)',
+            border: '1px solid var(--color-border-opaque)',
+            borderRadius: 'var(--radius-xl)', padding: 32,
+          }}>
+            <div style={{ marginBottom: 24 }}>
+              <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wider)', textTransform: 'uppercase', color: 'var(--color-content-disabled)', margin: '0 0 4px' }}>Specimen</p>
+              <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-sm)', color: 'var(--color-content-tertiary)', margin: 0, lineHeight: 1.5 }}>Component anatomy — props, variants, sizes and states at a glance</p>
+            </div>
+
+            {/* Package */}
+            <SpecimenGroup label="Package" />
+            <div style={{ margin: '8px 0 16px' }}>
+              <ImportRow />
+            </div>
+
+            {/* Selection Style */}
+            <SpecimenGroup label="Selection Style" />
+            <SpecimenRow
+              label="Border"
+              tags={['selectionStyle="border"']}
+              note="Keeps the base background, adds --color-border-selected outline when selected"
+            >
+              <ToggleButton defaultVariant="secondary" selectionStyle="border">Toggle</ToggleButton>
+            </SpecimenRow>
+            <SpecimenRow
+              label="Fill"
+              tags={['selectionStyle="fill"']}
+              note="Switches to inverse background (--color-bg-inverse-primary) when selected"
+            >
+              <ToggleButton defaultVariant="secondary" selectionStyle="fill">Toggle</ToggleButton>
+            </SpecimenRow>
+
+            {/* Base Variant */}
+            <SpecimenGroup label="Base Variant" />
+            <SpecimenRow label="Secondary" tags={['defaultVariant="secondary"']} note="Filled secondary background — default">
+              <ToggleButton defaultVariant="secondary" selectionStyle="border">Toggle</ToggleButton>
+              <ToggleButton defaultVariant="secondary" selectionStyle="fill">Toggle</ToggleButton>
+            </SpecimenRow>
+            <SpecimenRow label="Tertiary" tags={['defaultVariant="tertiary"']} note="White background with opaque border">
+              <ToggleButton defaultVariant="tertiary" selectionStyle="border">Toggle</ToggleButton>
+              <ToggleButton defaultVariant="tertiary" selectionStyle="fill">Toggle</ToggleButton>
+            </SpecimenRow>
+            <SpecimenRow label="Ghost" tags={['defaultVariant="ghost"']} note="Transparent — no background or border at rest">
+              <ToggleButton defaultVariant="ghost" selectionStyle="border">Toggle</ToggleButton>
+              <ToggleButton defaultVariant="ghost" selectionStyle="fill">Toggle</ToggleButton>
+            </SpecimenRow>
+
+            {/* Size */}
+            <SpecimenGroup label="Size" />
+            <SpecimenRow label="XS" tags={['size="xs"', '24px height']}>
+              <ToggleButton size="xs" defaultVariant="secondary" selectionStyle="border">Toggle</ToggleButton>
+            </SpecimenRow>
+            <SpecimenRow label="SM" tags={['size="sm"', '32px height']}>
+              <ToggleButton size="sm" defaultVariant="secondary" selectionStyle="border">Toggle</ToggleButton>
+            </SpecimenRow>
+            <SpecimenRow label="MD" tags={['size="md"', '36px height', 'default']}>
+              <ToggleButton size="md" defaultVariant="secondary" selectionStyle="border">Toggle</ToggleButton>
+            </SpecimenRow>
+            <SpecimenRow label="LG" tags={['size="lg"', '48px height']}>
+              <ToggleButton size="lg" defaultVariant="secondary" selectionStyle="border">Toggle</ToggleButton>
+            </SpecimenRow>
+            <SpecimenRow label="XL" tags={['size="xl"', '56px height']}>
+              <ToggleButton size="xl" defaultVariant="secondary" selectionStyle="border">Toggle</ToggleButton>
+            </SpecimenRow>
+
+            {/* Layout */}
+            <SpecimenGroup label="Layout" />
+            <SpecimenRow label="Text label" tags={['children="Label"']}>
+              <ToggleButton defaultVariant="secondary" selectionStyle="border">Toggle</ToggleButton>
+            </SpecimenRow>
+            <SpecimenRow label="Leading artwork" tags={['leadingArtwork={<Icon />}']}>
+              <ToggleButton defaultVariant="secondary" selectionStyle="border" leadingArtwork={<SunIcon />}>Toggle</ToggleButton>
+            </SpecimenRow>
+            <SpecimenRow label="Icon only" tags={['iconOnly', 'aria-label="..."']} note="Pass aria-label via label prop for accessibility">
+              <ToggleButton defaultVariant="secondary" selectionStyle="border" iconOnly label="Toggle sun"><SunIcon /></ToggleButton>
+              <ToggleButton defaultVariant="secondary" selectionStyle="fill"   iconOnly label="Toggle sun"><SunIcon /></ToggleButton>
+            </SpecimenRow>
+
+            {/* Group Mode */}
+            <SpecimenGroup label="Group Mode" />
+            <SpecimenRow label="ToggleGroup · Border" tags={['selectionStyle="border"']} note="Single-select; one active at a time" wide>
+              <ToggleGroup size="md" defaultVariant="tertiary" selectionStyle="border" options={[
+                { id: 'sp-left',   icon: <AlignLeftIcon />,   iconOnly: true, label: 'Left' },
+                { id: 'sp-center', icon: <AlignCenterIcon />, iconOnly: true, label: 'Center' },
+                { id: 'sp-right',  icon: <AlignRightIcon />,  iconOnly: true, label: 'Right' },
+              ]} />
+            </SpecimenRow>
+            <SpecimenRow label="ToggleGroup · Fill" tags={['selectionStyle="fill"']} note="Inverse fill on the active item" wide>
+              <ToggleGroup size="md" defaultVariant="tertiary" selectionStyle="fill" options={[
+                { id: 'sp2-left',   icon: <AlignLeftIcon />,   iconOnly: true, label: 'Left' },
+                { id: 'sp2-center', icon: <AlignCenterIcon />, iconOnly: true, label: 'Center' },
+                { id: 'sp2-right',  icon: <AlignRightIcon />,  iconOnly: true, label: 'Right' },
+              ]} />
+            </SpecimenRow>
+            <SpecimenRow label="Label group" tags={['options=[{ id, label }]']} note="Text labels instead of icons" wide>
+              <ToggleGroup size="sm" defaultVariant="secondary" selectionStyle="border" options={[
+                { id: 'sp3-day',   label: 'Day' },
+                { id: 'sp3-week',  label: 'Week' },
+                { id: 'sp3-month', label: 'Month' },
+              ]} />
+            </SpecimenRow>
+
+            {/* State */}
+            <SpecimenGroup label="State" />
+            <SpecimenRow label="Default (unselected)" tags={['aria-pressed="false"']}>
+              <ToggleButton defaultVariant="secondary" selectionStyle="border">Toggle</ToggleButton>
+            </SpecimenRow>
+            <SpecimenRow label="Selected · Border" tags={['aria-pressed="true"', 'selectionStyle="border"']}
+              note="Click the button to see selected state">
+              <ToggleButton defaultVariant="secondary" selectionStyle="border">Toggle</ToggleButton>
+            </SpecimenRow>
+            <SpecimenRow label="Selected · Fill" tags={['aria-pressed="true"', 'selectionStyle="fill"']}
+              note="Click the button to see selected state">
+              <ToggleButton defaultVariant="secondary" selectionStyle="fill">Toggle</ToggleButton>
+            </SpecimenRow>
+            <SpecimenRow label="Disabled" tags={['disabled']}>
+              <ToggleButton defaultVariant="secondary" selectionStyle="border" disabled>Toggle</ToggleButton>
+              <ToggleButton defaultVariant="secondary" selectionStyle="fill"   disabled>Toggle</ToggleButton>
+            </SpecimenRow>
+
+          </section>
 
         </div>
 

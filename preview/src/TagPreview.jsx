@@ -66,6 +66,106 @@ function ColLabel({ w = 80, children }) {
   )
 }
 
+/* ── Specimen sub-components ─────────────────────────────────────────────────── */
+
+function SpecimenGroup({ label }) {
+  return (
+    <div style={{
+      padding:       '9px 20px 8px',
+      borderTop:     '1px solid var(--color-border-opaque)',
+      borderBottom:  '1px solid var(--color-border-opaque)',
+      background:    'var(--color-bg-secondary)',
+    }}>
+      <span style={{
+        fontFamily:    'var(--font-sans)',
+        fontSize:      '10px',
+        fontWeight:    700,
+        letterSpacing: '0.1em',
+        textTransform: 'uppercase',
+        color:         'var(--color-content-disabled)',
+      }}>{label}</span>
+    </div>
+  )
+}
+
+function SpecimenRow({ label, tags = [], note, wide, children }) {
+  return (
+    <div style={{
+      display:             'grid',
+      gridTemplateColumns: wide ? '1fr 360px' : '1fr 200px',
+      alignItems:          'center',
+      borderBottom:        '1px solid var(--color-border-opaque)',
+      minHeight:           '48px',
+    }}>
+      <div style={{
+        padding:     '10px 20px',
+        borderRight: '1px solid var(--color-border-opaque)',
+        display:     'flex',
+        alignItems:  'center',
+        gap:         '8px',
+        flexWrap:    'wrap',
+      }}>
+        <span style={{
+          fontFamily: 'var(--font-sans)',
+          fontSize:   'var(--text-sm)',
+          fontWeight: 'var(--font-weight-medium)',
+          color:      'var(--color-content-primary)',
+          lineHeight: 1,
+        }}>{label}</span>
+        {tags.map(t => (
+          <span key={t} style={{
+            fontFamily:    'var(--font-mono)',
+            fontSize:      '10.5px',
+            fontWeight:    500,
+            color:         'var(--color-content-tertiary)',
+            background:    'var(--color-bg-secondary)',
+            border:        '1px solid var(--color-border-opaque)',
+            borderRadius:  'var(--radius-sm)',
+            padding:       '1px 6px',
+            lineHeight:    1.6,
+          }}>{t}</span>
+        ))}
+        {note && (
+          <span style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize:   'var(--text-xs)',
+            color:      'var(--color-content-disabled)',
+            width:      '100%',
+            marginTop:  '2px',
+          }}>{note}</span>
+        )}
+      </div>
+      <div style={{
+        display:        'flex',
+        alignItems:     'center',
+        justifyContent: 'center',
+        padding:        '10px 20px',
+        gap:            '6px',
+        flexWrap:       'wrap',
+      }}>
+        {children}
+      </div>
+    </div>
+  )
+}
+
+function ImportRow() {
+  return (
+    <div style={{
+      padding:      '14px 20px',
+      borderBottom: '1px solid var(--color-border-opaque)',
+      fontFamily:   'var(--font-mono)',
+      fontSize:     '12.5px',
+      color:        'var(--color-content-secondary)',
+    }}>
+      <span style={{ color: 'var(--color-content-disabled)' }}>import </span>
+      <span style={{ color: 'var(--color-content-primary)', fontWeight: 500 }}>{'{ Tag, StatusTag }'}</span>
+      <span style={{ color: 'var(--color-content-disabled)' }}> from </span>
+      <span style={{ color: 'var(--color-content-secondary)' }}>'alloy-design-system'</span>
+    </div>
+  )
+}
+
 /* ── Preview ─────────────────────────────────────────────────────────────────── */
 export default function TagPreview() {
   const [dismissibleTags, setDismissibleTags] = useState(['Design', 'Engineering', 'Product', 'Marketing', 'Operations'])
@@ -494,7 +594,105 @@ export default function TagPreview() {
             ))}
           </Section>
 
-        </div>
+          {/* 7 — Specimen */}
+          <Section title="Specimen" note="Quick-reference table — scan to identify the exact variant, color, size, and layout to name when prompting.">
+            <div style={{
+              background:   'var(--color-bg-primary)',
+              borderRadius: 'var(--radius-lg)',
+              border:       '1px solid var(--color-border-opaque)',
+              overflow:     'hidden',
+            }}>
+
+              {/* Import */}
+              <SpecimenGroup label="Package" />
+              <ImportRow />
+
+              {/* Tag — Variant */}
+              <SpecimenGroup label="Tag · Variant" />
+              <SpecimenRow label="Subtle" tags={['variant="subtle"']} note="Default — tinted background, muted border" wide>
+                <Tag variant="subtle"  color="blue" size="md">Blue</Tag>
+                <Tag variant="subtle"  color="purple" size="md">Purple</Tag>
+                <Tag variant="subtle"  color="neutral" size="md">Neutral</Tag>
+              </SpecimenRow>
+              <SpecimenRow label="Outline" tags={['variant="outline"']} note="Transparent fill, colored border" wide>
+                <Tag variant="outline" color="blue" size="md">Blue</Tag>
+                <Tag variant="outline" color="purple" size="md">Purple</Tag>
+                <Tag variant="outline" color="neutral" size="md">Neutral</Tag>
+              </SpecimenRow>
+              <SpecimenRow label="Solid" tags={['variant="solid"']} note="Filled background, inverse label text" wide>
+                <Tag variant="solid"   color="blue" size="md">Blue</Tag>
+                <Tag variant="solid"   color="purple" size="md">Purple</Tag>
+                <Tag variant="solid"   color="neutral" size="md">Neutral</Tag>
+              </SpecimenRow>
+
+              {/* Tag — Color */}
+              <SpecimenGroup label="Tag · Color" />
+              {COLORS.map(c => (
+                <SpecimenRow key={c} label={c.charAt(0).toUpperCase() + c.slice(1)} tags={[`color="${c}"`]} wide>
+                  <Tag variant="subtle"  color={c} size="md">{c.charAt(0).toUpperCase() + c.slice(1)}</Tag>
+                  <Tag variant="outline" color={c} size="md">{c.charAt(0).toUpperCase() + c.slice(1)}</Tag>
+                  <Tag variant="solid"   color={c} size="md">{c.charAt(0).toUpperCase() + c.slice(1)}</Tag>
+                </SpecimenRow>
+              ))}
+
+              {/* Tag — Size */}
+              <SpecimenGroup label="Tag · Size" />
+              <SpecimenRow label="SM" tags={['size="sm"', '20px height']}>
+                <Tag variant="subtle" color="blue" size="sm">Label</Tag>
+              </SpecimenRow>
+              <SpecimenRow label="MD" tags={['size="md"', '24px height', 'default']}>
+                <Tag variant="subtle" color="blue" size="md">Label</Tag>
+              </SpecimenRow>
+              <SpecimenRow label="LG" tags={['size="lg"', '32px height']}>
+                <Tag variant="subtle" color="blue" size="lg">Label</Tag>
+              </SpecimenRow>
+
+              {/* Tag — Layout / Artwork */}
+              <SpecimenGroup label="Tag · Layout & Artwork" />
+              <SpecimenRow label="Default" tags={[]} note="Text only">
+                <Tag variant="subtle" color="blue" size="md">Design</Tag>
+              </SpecimenRow>
+              <SpecimenRow label="With Dot" tags={['dot']} note="Colored indicator before label">
+                <Tag variant="subtle" color="blue"   size="md" dot>Blue</Tag>
+                <Tag variant="subtle" color="purple" size="md" dot>Purple</Tag>
+                <Tag variant="subtle" color="green"  size="md" dot>Green</Tag>
+              </SpecimenRow>
+              <SpecimenRow label="Leading Icon" tags={['leadingIcon']} note="Any React node — scales with size" wide>
+                <Tag variant="subtle"  color="blue"   size="md" leadingIcon={<SunIcon />}>Subtle</Tag>
+                <Tag variant="outline" color="purple" size="md" leadingIcon={<SunIcon />}>Outline</Tag>
+                <Tag variant="solid"   color="neutral" size="md" leadingIcon={<SunIcon />}>Solid</Tag>
+              </SpecimenRow>
+              <SpecimenRow label="Dismissible" tags={['dismissible', 'onDismiss']} note="Renders a × button — wire onDismiss to remove from state" wide>
+                <Tag variant="subtle" color="blue"   size="md" dismissible>Design</Tag>
+                <Tag variant="subtle" color="purple" size="md" dismissible>Engineering</Tag>
+              </SpecimenRow>
+
+              {/* StatusTag — Status */}
+              <SpecimenGroup label="StatusTag · Status" />
+              {STATUSES.map(s => (
+                <SpecimenRow key={s} label={s.charAt(0).toUpperCase() + s.slice(1)} tags={[`status="${s}"`]} wide>
+                  <StatusTag status={s} size="sm">{s.charAt(0).toUpperCase() + s.slice(1)}</StatusTag>
+                  <StatusTag status={s} size="md">{s.charAt(0).toUpperCase() + s.slice(1)}</StatusTag>
+                  <StatusTag status={s} size="lg">{s.charAt(0).toUpperCase() + s.slice(1)}</StatusTag>
+                </SpecimenRow>
+              ))}
+
+              {/* StatusTag — Size */}
+              <SpecimenGroup label="StatusTag · Size" />
+              <SpecimenRow label="SM" tags={['size="sm"', '20px height']}>
+                <StatusTag status="success" size="sm">Success</StatusTag>
+              </SpecimenRow>
+              <SpecimenRow label="MD" tags={['size="md"', '24px height', 'default']}>
+                <StatusTag status="success" size="md">Success</StatusTag>
+              </SpecimenRow>
+              <SpecimenRow label="LG" tags={['size="lg"', '32px height']}>
+                <StatusTag status="success" size="lg">Success</StatusTag>
+              </SpecimenRow>
+
+            </div>
+          </Section>
+
+        </div>{/* end flex column */}
 
         {/* Footer */}
         <div style={{ marginTop: 40, paddingTop: 20, borderTop: '1px solid var(--color-border-opaque)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
