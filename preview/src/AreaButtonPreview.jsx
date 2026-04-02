@@ -106,6 +106,104 @@ function FormCard({ title, fields }) {
   )
 }
 
+/* ── Specimen sub-components ─────────────────────────────────────────────────── */
+
+function SpecimenGroup({ label }) {
+  return (
+    <div style={{
+      padding:      '9px 20px 8px',
+      borderTop:    '1px solid var(--color-border-opaque)',
+      borderBottom: '1px solid var(--color-border-opaque)',
+      background:   'var(--color-bg-secondary)',
+    }}>
+      <span style={{
+        fontFamily:    'var(--font-sans)',
+        fontSize:      '10px',
+        fontWeight:    700,
+        letterSpacing: '0.1em',
+        textTransform: 'uppercase',
+        color:         'var(--color-content-disabled)',
+      }}>{label}</span>
+    </div>
+  )
+}
+
+function SpecimenRow({ label, tags = [], note, wide, isMobile, children }) {
+  return (
+    <div style={{
+      display:             'grid',
+      gridTemplateColumns: isMobile ? '1fr' : wide ? '1fr 260px' : '1fr 200px',
+      alignItems:          'center',
+      borderBottom:        '1px solid var(--color-border-opaque)',
+      minHeight:           '52px',
+    }}>
+      <div style={{
+        padding:     '12px 20px',
+        borderRight: '1px solid var(--color-border-opaque)',
+        display:     'flex',
+        alignItems:  'center',
+        gap:         '8px',
+        flexWrap:    'wrap',
+      }}>
+        <span style={{
+          fontFamily: 'var(--font-sans)',
+          fontSize:   'var(--text-sm)',
+          fontWeight: 'var(--font-weight-medium)',
+          color:      'var(--color-content-primary)',
+          lineHeight: 1,
+        }}>{label}</span>
+        {tags.map(t => (
+          <span key={t} style={{
+            fontFamily:   'var(--font-mono)',
+            fontSize:     '10.5px',
+            fontWeight:   500,
+            color:        'var(--color-content-tertiary)',
+            background:   'var(--color-bg-secondary)',
+            border:       '1px solid var(--color-border-opaque)',
+            borderRadius: 'var(--radius-sm)',
+            padding:      '1px 6px',
+            lineHeight:   1.6,
+          }}>{t}</span>
+        ))}
+        {note && (
+          <span style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize:   'var(--text-xs)',
+            color:      'var(--color-content-disabled)',
+            width:      '100%',
+            marginTop:  '2px',
+          }}>{note}</span>
+        )}
+      </div>
+      <div style={{
+        display:        'flex',
+        alignItems:     'center',
+        justifyContent: 'center',
+        padding:        '12px 20px',
+      }}>
+        {children}
+      </div>
+    </div>
+  )
+}
+
+function ImportRow() {
+  return (
+    <div style={{
+      padding:      '14px 20px',
+      borderBottom: '1px solid var(--color-border-opaque)',
+      fontFamily:   'var(--font-mono)',
+      fontSize:     '12.5px',
+      color:        'var(--color-content-secondary)',
+    }}>
+      <span className="specimen-import-kw">import </span>
+      <span className="specimen-import-exp">{'{ AreaButton }'}</span>
+      <span className="specimen-import-kw"> from </span>
+      <span className="specimen-import-src">'alloy-design-system'</span>
+    </div>
+  )
+}
+
 /* ── Layout helpers ─────────────────────────────────────────────────────────── */
 function Section({ title, note, isMobile, children }) {
   return (
@@ -215,6 +313,11 @@ export default function AreaButtonPreview() {
           letter-spacing: var(--tracking-wide);
           color: inherit;
         }
+
+        /* ─ Specimen ─ */
+        .specimen-import-kw  { color: var(--color-content-disabled); }
+        .specimen-import-exp { color: var(--color-content-primary); font-weight: 500; }
+        .specimen-import-src { color: var(--color-content-secondary); }
       `}</style>
 
       <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: isMobile ? '24px 16px' : '48px 40px' }}>
@@ -360,6 +463,124 @@ export default function AreaButtonPreview() {
                 label="Add section"
                 borderRadius="var(--radius-lg)"
               />
+            </div>
+          </Section>
+
+          {/* 8 — Specimen */}
+          <Section
+            title="Specimen"
+            note="Quick-reference table — scan to identify the exact prop combination to name when prompting."
+            isMobile={isMobile}
+          >
+            <div style={{
+              background:   'var(--color-bg-primary)',
+              borderRadius: 'var(--radius-lg)',
+              border:       '1px solid var(--color-border-opaque)',
+              overflow:     'hidden',
+            }}>
+
+              {/* ── Package ── */}
+              <SpecimenGroup label="Package" />
+              <ImportRow />
+
+              {/* ── Layout ── */}
+              <SpecimenGroup label="Layout" />
+              <SpecimenRow label="Horizontal" tags={['layout="horizontal"', 'default']} wide isMobile={isMobile}>
+                <div style={{ width: '100%' }}>
+                  <AreaButton align="start" label="Add item" />
+                </div>
+              </SpecimenRow>
+              <SpecimenRow label="Vertical" tags={['layout="vertical"']} wide isMobile={isMobile}>
+                <div style={{ width: 160 }}>
+                  <AreaButton layout="vertical" size="md" />
+                </div>
+              </SpecimenRow>
+
+              {/* ── Size ── */}
+              <SpecimenGroup label="Size" />
+              <SpecimenRow label="SM" tags={['size="sm"', '80px height']} wide isMobile={isMobile}>
+                <div style={{ width: '100%' }}>
+                  <AreaButton layout="vertical" size="sm" />
+                </div>
+              </SpecimenRow>
+              <SpecimenRow label="MD" tags={['size="md"', '120px height', 'default']} wide isMobile={isMobile}>
+                <div style={{ width: '100%' }}>
+                  <AreaButton layout="vertical" size="md" />
+                </div>
+              </SpecimenRow>
+              <SpecimenRow label="LG" tags={['size="lg"', '160px height']} wide isMobile={isMobile}>
+                <div style={{ width: '100%' }}>
+                  <AreaButton layout="vertical" size="lg" />
+                </div>
+              </SpecimenRow>
+
+              {/* ── Alignment ── */}
+              <SpecimenGroup label="Alignment" />
+              <SpecimenRow label="Center" tags={['align="center"', 'default']} wide isMobile={isMobile}>
+                <div style={{ width: '100%' }}>
+                  <AreaButton label="Add item" />
+                </div>
+              </SpecimenRow>
+              <SpecimenRow label="Start" tags={['align="start"']} wide isMobile={isMobile}>
+                <div style={{ width: '100%' }}>
+                  <AreaButton align="start" label="Add item" />
+                </div>
+              </SpecimenRow>
+
+              {/* ── Customization ── */}
+              <SpecimenGroup label="Customization" />
+              <SpecimenRow label="Custom label" tags={['label="…"']} wide isMobile={isMobile}>
+                <div style={{ width: '100%' }}>
+                  <AreaButton align="start" label="Add metric" />
+                </div>
+              </SpecimenRow>
+              <SpecimenRow label="Icon only" tags={['hideLabel']} note="Hides the label, shows icon only" wide isMobile={isMobile}>
+                <div style={{ width: '100%' }}>
+                  <AreaButton hideLabel />
+                </div>
+              </SpecimenRow>
+              <SpecimenRow label="Custom icon" tags={['icon={…}']} note="Accepts any React node" wide isMobile={isMobile}>
+                <div style={{ width: '100%' }}>
+                  <AreaButton align="start" icon={<PlusSquareIcon size="100%" />} label="Add card" />
+                </div>
+              </SpecimenRow>
+
+              {/* ── State ── */}
+              <SpecimenGroup label="State" />
+              <SpecimenRow label="Default" tags={[]} wide isMobile={isMobile}>
+                <div style={{ width: '100%' }}>
+                  <AreaButton align="start" />
+                </div>
+              </SpecimenRow>
+              <SpecimenRow label="Disabled" tags={['disabled']} note="Cursor not-allowed, muted border and text" wide isMobile={isMobile}>
+                <div style={{ width: '100%' }}>
+                  <AreaButton align="start" disabled />
+                </div>
+              </SpecimenRow>
+
+              {/* ── Override ── */}
+              <SpecimenGroup label="Override" />
+              <SpecimenRow label="Custom height" tags={['height={80}']} note="Overrides --area-min-height" wide isMobile={isMobile}>
+                <div style={{ width: '100%' }}>
+                  <AreaButton layout="vertical" height={80} label="Add" />
+                </div>
+              </SpecimenRow>
+              <SpecimenRow label="Custom radius" tags={["borderRadius=\"var(--radius-sm)\""]} note="Overrides --area-radius" wide isMobile={isMobile}>
+                <div style={{ width: '100%' }}>
+                  <AreaButton layout="vertical" height={100} borderRadius="var(--radius-sm)" label="Add" />
+                </div>
+              </SpecimenRow>
+              <SpecimenRow label="className forwarded" tags={['className']} note="Spreads onto the root <button> element" wide isMobile={isMobile}>
+                <div style={{ width: '100%' }}>
+                  <AreaButton align="start" label="Custom class" />
+                </div>
+              </SpecimenRow>
+              <SpecimenRow label="Native attributes" tags={['type', '...props']} note="All native attributes forwarded via rest props" wide isMobile={isMobile}>
+                <div style={{ width: '100%' }}>
+                  <AreaButton type="button" align="start" label="Place order" />
+                </div>
+              </SpecimenRow>
+
             </div>
           </Section>
 
