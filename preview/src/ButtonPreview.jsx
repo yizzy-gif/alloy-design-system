@@ -1,6 +1,6 @@
 /* ─────────────────────────────────────────────────────────────────────────────
    Alloy · Button Preview
-   6 variants × 5 sizes × states × artwork — light + dark
+   6 variants × 5 sizes × states × artwork × code specimen — light + dark
    ───────────────────────────────────────────────────────────────────────────── */
 
 /* ── Icons — SVG paths mirror the Alloy icon components exactly ──────────────── */
@@ -12,16 +12,17 @@ const ChevronDownIcon      = () => <svg viewBox="0 0 24 24" fill="none" xmlns="h
 const ArrowNarrowRightIcon = () => <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 12H20M20 12L14 6M20 12L14 18" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"/></svg>
 
 /* ── Button — mirrors Alloy Button using token vars ─────────────────────────── */
-function Button({ variant = 'primary', size = 'md', loading, disabled, leadingArtwork, trailingArtwork, iconOnly, children }) {
+function Button({ variant = 'primary', size = 'md', loading, disabled, leadingArtwork, trailingArtwork, iconOnly, style, className, children }) {
   const cls = [
     'alloy-btn',
-    `v-${variant}`,   /* e.g. v-destructive-secondary */
+    `v-${variant}`,
     `s-${size}`,
     iconOnly ? 'icon-only' : '',
+    className || '',
   ].filter(Boolean).join(' ')
 
   return (
-    <button disabled={disabled || loading} data-loading={loading || undefined} className={cls}>
+    <button disabled={disabled || loading} data-loading={loading || undefined} className={cls} style={style}>
       {loading && <span className="spinner" aria-hidden="true" />}
       {!loading && iconOnly && <span className="artwork alloy-icon-slot" aria-hidden="true">{children}</span>}
       {!loading && !iconOnly && <>
@@ -53,6 +54,118 @@ const VARIANT_LABEL_TEXT = {
   'ghost':                 'Dismiss',
   'destructive':           'Delete',
   'destructive-secondary': 'Remove',
+}
+
+/* ── Specimen sub-components ─────────────────────────────────────────────────── */
+
+/** Section divider row inside the specimen table */
+function SpecimenGroup({ label }) {
+  return (
+    <div style={{
+      padding:       '9px 20px 8px',
+      borderTop:     '1px solid var(--color-border-opaque)',
+      borderBottom:  '1px solid var(--color-border-opaque)',
+      background:    'var(--color-bg-secondary)',
+    }}>
+      <span style={{
+        fontFamily:    'var(--font-sans)',
+        fontSize:      '10px',
+        fontWeight:    700,
+        letterSpacing: '0.1em',
+        textTransform: 'uppercase',
+        color:         'var(--color-content-disabled)',
+      }}>{label}</span>
+    </div>
+  )
+}
+
+/**
+ * A single specimen row.
+ * label   — primary name, e.g. "Primary", "SM", "Leading"
+ * tags    — array of small badge strings, e.g. ["variant", "32px", "default"]
+ * note    — faint explanatory text on a second line
+ * wide    — expands the render column to 260px (for full-width override demos)
+ */
+function SpecimenRow({ label, tags = [], note, wide, children }) {
+  return (
+    <div style={{
+      display:             'grid',
+      gridTemplateColumns: wide ? '1fr 260px' : '1fr 200px',
+      alignItems:          'center',
+      borderBottom:        '1px solid var(--color-border-opaque)',
+      minHeight:           '52px',
+    }}>
+      {/* Label side */}
+      <div style={{
+        padding:     '12px 20px',
+        borderRight: '1px solid var(--color-border-opaque)',
+        display:     'flex',
+        alignItems:  'center',
+        gap:         '8px',
+        flexWrap:    'wrap',
+      }}>
+        <span style={{
+          fontFamily:  'var(--font-sans)',
+          fontSize:    'var(--text-sm)',
+          fontWeight:  'var(--font-weight-medium)',
+          color:       'var(--color-content-primary)',
+          lineHeight:  1,
+        }}>{label}</span>
+
+        {tags.map(t => (
+          <span key={t} style={{
+            fontFamily:    'var(--font-mono)',
+            fontSize:      '10.5px',
+            fontWeight:    500,
+            color:         'var(--color-content-tertiary)',
+            background:    'var(--color-bg-secondary)',
+            border:        '1px solid var(--color-border-opaque)',
+            borderRadius:  'var(--radius-sm)',
+            padding:       '1px 6px',
+            lineHeight:    1.6,
+          }}>{t}</span>
+        ))}
+
+        {note && (
+          <span style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize:   'var(--text-xs)',
+            color:      'var(--color-content-disabled)',
+            width:      '100%',
+            marginTop:  '2px',
+          }}>{note}</span>
+        )}
+      </div>
+
+      {/* Live render side */}
+      <div style={{
+        display:        'flex',
+        alignItems:     'center',
+        justifyContent: 'center',
+        padding:        '12px 20px',
+      }}>
+        {children}
+      </div>
+    </div>
+  )
+}
+
+/** Import row — full width, monospace, no live render */
+function ImportRow() {
+  return (
+    <div style={{
+      padding:       '14px 20px',
+      borderBottom:  '1px solid var(--color-border-opaque)',
+      fontFamily:    'var(--font-mono)',
+      fontSize:      '12.5px',
+      color:         'var(--color-content-secondary)',
+    }}>
+      <span style={{ color: 'var(--color-content-disabled)' }}>import </span>
+      <span style={{ color: 'var(--color-content-primary)', fontWeight: 500 }}>{'{ Button }'}</span>
+      <span style={{ color: 'var(--color-content-disabled)' }}> from </span>
+      <span style={{ color: 'var(--color-content-secondary)' }}>'alloy-design-system'</span>
+    </div>
+  )
 }
 
 /* ── Layout helpers ─────────────────────────────────────────────────────────── */
@@ -93,9 +206,7 @@ export default function ButtonPreview() {
             filter           var(--duration-fast) var(--ease-default),
             box-shadow       var(--duration-fast) var(--ease-default);
         }
-        .alloy-btn:focus-visible {
-          box-shadow: none;
-        }
+        .alloy-btn:focus-visible { box-shadow: none; }
         .alloy-btn:disabled {
           cursor: not-allowed !important;
           background-color: var(--color-bg-disabled) !important;
@@ -118,15 +229,13 @@ export default function ButtonPreview() {
         .icon-only.s-md { width:36px; } .icon-only.s-lg { width:48px; }
         .icon-only.s-xl { width:56px; }
 
-        /* ─ Artwork slot — size driven by --btn-artwork-size ─ */
+        /* ─ Artwork slot ─ */
         .artwork {
           display:inline-flex; align-items:center; justify-content:center;
           flex-shrink:0;
           width: var(--btn-artwork-size, 1em);
           height: var(--btn-artwork-size, 1em);
         }
-
-        /* ─ Shared icon slot (mirrors Alloy artwork.css) ─ */
         .alloy-icon-slot > svg,
         .alloy-icon-slot > svg * { stroke-width: var(--icon-stroke-width, 1.75); }
         .alloy-icon-slot > svg { display: block; width: 100%; height: 100%; }
@@ -166,6 +275,10 @@ export default function ButtonPreview() {
         }
         @keyframes alloy-spin { to { transform:rotate(360deg); } }
 
+        /* ─ Specimen ─ */
+        .specimen-import-kw  { color: var(--color-content-disabled); }
+        .specimen-import-exp { color: var(--color-content-primary); font-weight: 500; }
+        .specimen-import-src { color: var(--color-content-secondary); }
       `}</style>
 
       <div style={{ minHeight:'100vh', background:'var(--color-bg-secondary)', fontFamily:'var(--font-sans)', padding:'48px 40px' }}>
@@ -259,6 +372,111 @@ export default function ButtonPreview() {
                   )}
                 </div>
               </div>
+            </div>
+          </Section>
+
+          {/* ── 4 — Specimen ─────────────────────────────────────────────────── */}
+          <Section
+            title="Specimen"
+            note="Quick-reference table — scan to identify the exact variant, size, and layout to name when prompting."
+          >
+            <div style={{
+              background:   'var(--color-bg-primary)',
+              borderRadius: 'var(--radius-lg)',
+              border:       '1px solid var(--color-border-opaque)',
+              overflow:     'hidden',
+            }}>
+
+              {/* ── Import ── */}
+              <SpecimenGroup label="Package" />
+              <ImportRow />
+
+              {/* ── Variants ── */}
+              <SpecimenGroup label="Variant" />
+              <SpecimenRow label="Primary" tags={['variant="primary"']}>
+                <Button variant="primary">Save</Button>
+              </SpecimenRow>
+              <SpecimenRow label="Secondary" tags={['variant="secondary"']}>
+                <Button variant="secondary">Save</Button>
+              </SpecimenRow>
+              <SpecimenRow label="Tertiary" tags={['variant="tertiary"']}>
+                <Button variant="tertiary">Save</Button>
+              </SpecimenRow>
+              <SpecimenRow label="Ghost" tags={['variant="ghost"']}>
+                <Button variant="ghost">Dismiss</Button>
+              </SpecimenRow>
+              <SpecimenRow label="Destructive" tags={['variant="destructive"']}>
+                <Button variant="destructive">Delete</Button>
+              </SpecimenRow>
+              <SpecimenRow label="Destructive Secondary" tags={['variant="destructive-secondary"']}>
+                <Button variant="destructive-secondary">Remove</Button>
+              </SpecimenRow>
+
+              {/* ── Sizes ── */}
+              <SpecimenGroup label="Size" />
+              <SpecimenRow label="XS" tags={['size="xs"', '24px height']}>
+                <Button size="xs">Confirm</Button>
+              </SpecimenRow>
+              <SpecimenRow label="SM" tags={['size="sm"', '32px height']}>
+                <Button size="sm">Confirm</Button>
+              </SpecimenRow>
+              <SpecimenRow label="MD" tags={['size="md"', '36px height', 'default']}>
+                <Button size="md">Confirm</Button>
+              </SpecimenRow>
+              <SpecimenRow label="LG" tags={['size="lg"', '48px height']}>
+                <Button size="lg">Confirm</Button>
+              </SpecimenRow>
+              <SpecimenRow label="XL" tags={['size="xl"', '56px height']}>
+                <Button size="xl">Confirm</Button>
+              </SpecimenRow>
+
+              {/* ── Artwork & Layout ── */}
+              <SpecimenGroup label="Artwork & Layout" />
+              <SpecimenRow label="Leading artwork" tags={['leadingArtwork']} wide>
+                <Button leadingArtwork={<PlusIcon />}>Add member</Button>
+              </SpecimenRow>
+              <SpecimenRow label="Trailing artwork" tags={['trailingArtwork']} wide>
+                <Button trailingArtwork={<ArrowNarrowRightIcon />}>View all</Button>
+              </SpecimenRow>
+              <SpecimenRow label="Leading + Trailing" tags={['leadingArtwork', 'trailingArtwork']} wide>
+                <Button leadingArtwork={<SearchSmIcon />} trailingArtwork={<ChevronDownIcon />}>Browse</Button>
+              </SpecimenRow>
+              <SpecimenRow label="Icon Only" tags={['iconOnly', 'aria-label']} wide>
+                <Button iconOnly aria-label="Add"><PlusIcon /></Button>
+              </SpecimenRow>
+
+              {/* ── States ── */}
+              <SpecimenGroup label="State" />
+              <SpecimenRow label="Default" tags={[]}>
+                <Button>Save</Button>
+              </SpecimenRow>
+              <SpecimenRow label="Loading" tags={['loading']} note="Shows spinner, blocks interaction">
+                <Button loading>Saving…</Button>
+              </SpecimenRow>
+              <SpecimenRow label="Disabled" tags={['disabled']} note="Cursor not-allowed, all variants collapse to same muted style">
+                <Button disabled>Save</Button>
+              </SpecimenRow>
+
+              {/* ── Overrides ── */}
+              <SpecimenGroup label="Override" />
+              <SpecimenRow label="Full width" tags={["style={{ width: '100%' }}"]} note="Stretches to fill its container" wide>
+                <div style={{ width: '100%' }}>
+                  <Button style={{ width: '100%' }}>Full width</Button>
+                </div>
+              </SpecimenRow>
+              <SpecimenRow label="Custom height" tags={['style={{ height: 44 }}']} wide>
+                <Button style={{ height: 44 }}>Custom height</Button>
+              </SpecimenRow>
+              <SpecimenRow label="Pill shape" tags={["style={{ borderRadius: 'var(--radius-full)' }}"]} wide>
+                <Button style={{ borderRadius: 'var(--radius-full)' }}>Pill shape</Button>
+              </SpecimenRow>
+              <SpecimenRow label="className forwarded" tags={['className']} note="Spreads onto the root <button> element" wide>
+                <Button>Custom class</Button>
+              </SpecimenRow>
+              <SpecimenRow label="Native button attributes" tags={['type', 'form', '...props']} note="All native attributes forwarded via rest props" wide>
+                <Button type="submit">Place order</Button>
+              </SpecimenRow>
+
             </div>
           </Section>
 

@@ -174,23 +174,3 @@
   flex-shrink: 0;
 }
 
-/* ── Dismiss button ─────────────────────────────────────────────────────────── */
-
-.dismissBtn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  width: 24px;
-  height: 24px;
-  padding: 5px;
-  background: none;
-  border: none;
-  border-radius: var(--radius-full);
-  color: var(--color-content-tertiary);
-  cursor: pointer;
-  transition: background var(--duration-fast) var(--ease-default);
-}
-
-.dismissBtn:hover { background: var(--color-bg-transparent); }
-.dismissBtn:focus-visible { outline: 2px solid var(--color-border-focus); outline-offset: 1px; }

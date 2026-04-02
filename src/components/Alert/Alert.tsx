@@ -2,6 +2,7 @@ import { forwardRef } from 'react';
 import type { ComponentPropsWithoutRef } from 'react';
 import { clsx } from 'clsx';
 import { XIcon } from '../icons/XIcon';
+import { Button } from '../Button/Button';
 import styles from './Alert.module.css';
 
 /* ─── Types ─────────────────────────────────────────────────────────────────── */
@@ -100,14 +101,15 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(
     const isLg = size === 'lg';
 
     const dismissBtn = onDismiss ? (
-      <button
-        type="button"
-        className={styles.dismissBtn}
+      <Button
+        variant="ghost"
+        size="xs"
+        iconOnly
         onClick={onDismiss}
         aria-label="Dismiss"
       >
-        <XIcon size={10} />
-      </button>
+        <XIcon size={12} />
+      </Button>
     ) : null;
 
     return (

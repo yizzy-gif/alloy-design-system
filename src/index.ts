@@ -1,5 +1,11 @@
 // ── Components ────────────────────────────────────────────────────────────────
 
+export { AreaButton } from './components/AreaButton';
+export type { AreaButtonProps, AreaButtonSize, AreaButtonLayout, AreaButtonAlign } from './components/AreaButton';
+
+export { Eyebrow } from './components/Eyebrow';
+export type { EyebrowProps } from './components/Eyebrow';
+
 // ── Teambridge AI ─────────────────────────────────────────────────────────────
 export { AILoader } from './components/ai';
 export type { AILoaderProps, AILoaderSize, AILoaderVariant } from './components/ai';
@@ -13,7 +19,19 @@ export type { ValueChangeLabelProps, ValueChangeTrend, ValueChangeSeverity } fro
 export { Divider } from './components/Divider';
 export type { DividerProps, DividerThickness, DividerOrientation, DividerVariant } from './components/Divider';
 
+export { Dialog, DialogHeader, DialogContent, DialogFooter } from './components/Dialog';
+export type {
+  DialogProps,
+  DialogSize,
+  DialogHeaderProps,
+  DialogContentProps,
+  DialogFooterProps,
+} from './components/Dialog';
+
 export { Alert } from './components/Alert';
+
+export { ToastProvider, useToast } from './components/Toast';
+export type { ToastOptions, ToastFn } from './components/Toast';
 export type { AlertProps, AlertStatus, AlertVariant, AlertSize } from './components/Alert';
 
 export { Badge } from './components/Badge';

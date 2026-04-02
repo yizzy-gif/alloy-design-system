@@ -97,7 +97,32 @@
       "Bash(cp -R /Users/unassignedlaptop9/Documents/MyClaudeFolder/Alloy/src/components/ScrollArea /Users/unassignedlaptop9/Documents/AlloyDesignSystem/src/components/)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(npm --version)"
+      "Bash(npm --version)",
+      "Bash(__NEW_LINE_afa3356909cbabe6__ grep:*)",
+      "Bash(__NEW_LINE_afa3356909cbabe6__ done:*)",
+      "Bash(cp /Users/unassignedlaptop9/Documents/MyClaudeFolder/Alloy/src/components/icons/Edit03Icon.tsx /Users/unassignedlaptop9/Documents/AlloyDesignSystem/src/components/icons/Edit03Icon.tsx)",
+      "Bash(cp /Users/unassignedlaptop9/Documents/MyClaudeFolder/Alloy/src/components/icons/Mail01Icon.tsx /Users/unassignedlaptop9/Documents/AlloyDesignSystem/src/components/icons/Mail01Icon.tsx)",
+      "Bash(pkill -f \"vite.*5180\")",
+      "Bash(rm -rf /Users/unassignedlaptop9/Documents/AlloyDesignSystem/preview/node_modules/.vite)",
+      "Bash(git push:*)",
+      "Bash(mkdir -p /Users/unassignedlaptop9/Documents/AlloyDesignSystem/src/components/ai/AILoader)",
+      "Bash(cp -r /Users/unassignedlaptop9/Documents/MyClaudeFolder/Alloy/src/components/ai/AILoader/ /Users/unassignedlaptop9/Documents/AlloyDesignSystem/src/components/ai/AILoader/)",
+      "Bash(cp /Users/unassignedlaptop9/Documents/MyClaudeFolder/Alloy/src/components/ai/index.ts /Users/unassignedlaptop9/Documents/AlloyDesignSystem/src/components/ai/index.ts)",
+      "Bash(cp /Users/unassignedlaptop9/Documents/MyClaudeFolder/Alloy/src/index.ts /Users/unassignedlaptop9/Documents/AlloyDesignSystem/src/index.ts)",
+      "Bash(curl -s http://localhost:5180/src/main.jsx)",
+      "Bash(curl -s \"http://localhost:5180/src/AILoaderPreview.jsx\")",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(json.dumps\\({**d.get\\(''''dependencies'''',{}\\), **d.get\\(''''devDependencies'''',{}\\)}, indent=2\\)\\)\")",
+      "Bash(curl -s \"http://localhost:5180/src/ComponentPreview.jsx\")",
+      "Bash(grep -l \"from ''../../src/index.ts''\" /Users/unassignedlaptop9/Documents/AlloyDesignSystem/preview/src/*.jsx)",
+      "Bash(curl -s \"http://localhost:5180/\")",
+      "Bash(git -C /Users/unassignedlaptop9/Documents/MyClaudeFolder/Alloy add package.json CHANGELOG.md README.md src/components/Button/Button.module.css src/components/DataCard/DataCard.module.css src/components/Pagination/Pagination.module.css src/components/SegmentedControl/SegmentedControl.module.css src/components/Tabs/Tabs.module.css preview/src/ .claude/launch.json)",
+      "Bash(git -C /Users/unassignedlaptop9/Documents/MyClaudeFolder/Alloy status)",
+      "Bash(git -C:*)",
+      "Bash(node node_modules/vite/bin/vite.js build --mode development)",
+      "Bash(git fetch:*)",
+      "Bash(git log:*)",
+      "Bash(git merge:*)",
+      "Bash(git stash:*)"
     ]
   }
 }

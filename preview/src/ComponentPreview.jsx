@@ -30,6 +30,10 @@ import DataCardPreview            from './DataCardPreview.jsx'
 import ValueChangeLabelPreview    from './ValueChangeLabelPreview.jsx'
 import DividerPreview             from './DividerPreview.jsx'
 import AILoaderPreview         from './AILoaderPreview.jsx'
+import TagSpecimen             from '../../specimens/TagSpecimen'
+import DialogPreview           from './DialogPreview.jsx'
+import AreaButtonPreview       from './AreaButtonPreview.jsx'
+import EyebrowPreview          from './EyebrowPreview.jsx'
 
 /* ── Component registry (grouped) ───────────────────────────────────────────── */
 const GROUPS = [
@@ -43,10 +47,17 @@ const GROUPS = [
     ],
   },
   {
+    label: 'Typography',
+    items: [
+      { id: 'eyebrow', label: 'Eyebrow', component: EyebrowPreview },
+    ],
+  },
+  {
     label: 'Actions',
     items: [
       { id: 'button',        label: 'Button',        component: ButtonPreview },
       { id: 'toggle-button', label: 'Toggle Button', component: ToggleButtonPreview },
+      { id: 'area-button',   label: 'Area Button',   component: AreaButtonPreview },
     ],
   },
   {
@@ -82,6 +93,7 @@ const GROUPS = [
     label: 'Feedback',
     items: [
       { id: 'alert',         label: 'Alert / Toast', component: AlertPreview },
+      { id: 'dialog',        label: 'Dialog',        component: DialogPreview },
       { id: 'dropdown-menu', label: 'Dropdown Menu', component: DropdownMenuPreview },
       { id: 'tooltip',       label: 'Tooltip',       component: TooltipPreview },
     ],
@@ -97,6 +109,12 @@ const GROUPS = [
     label: 'Teambridge AI',
     items: [
       { id: 'ai-loader', label: 'AI Loader', component: AILoaderPreview },
+    ],
+  },
+  {
+    label: 'Specimens',
+    items: [
+      { id: 'specimen-tag', label: 'Tag', component: TagSpecimen },
     ],
   },
 ]
