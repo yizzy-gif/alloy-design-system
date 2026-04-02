@@ -5,6 +5,7 @@
    ───────────────────────────────────────────────────────────────────────────── */
 
 import { useState } from 'react'
+import { useIsMobile } from './useIsMobile.js'
 import { MultiSelectField } from '../../src/components/Input/MultiSelectField'
 import { SelectField } from '../../src/components/Input/SelectField'
 import { FileUploader } from '../../src/components/FileUploader/FileUploader'
@@ -119,6 +120,7 @@ const COUNTRY_OPTIONS = [
 ]
 
 function MultiSelectDemo() {
+  const isMobile = useIsMobile()
   const [roles, setRoles]       = useState(['eng', 'design'])
   const [tags, setTags]         = useState([])
   const [errorVal, setErrorVal] = useState([])
@@ -160,8 +162,8 @@ function MultiSelectDemo() {
       <div>
         <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wide)', textTransform: 'uppercase', color: 'var(--color-content-disabled)', margin: '0 0 12px' }}>variants — outlined · underlined</p>
         <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
-          <MultiSelectField label="Outlined" options={ROLE_OPTIONS} defaultValue={['pm']} style={{ flex: 1, minWidth: 200 }} />
-          <MultiSelectField label="Underlined" variant="underlined" options={ROLE_OPTIONS} defaultValue={['pm']} style={{ flex: 1, minWidth: 200 }} />
+          <MultiSelectField label="Outlined" options={ROLE_OPTIONS} defaultValue={['pm']} style={{ flex: 1, minWidth: isMobile ? 120 : 200 }} />
+          <MultiSelectField label="Underlined" variant="underlined" options={ROLE_OPTIONS} defaultValue={['pm']} style={{ flex: 1, minWidth: isMobile ? 120 : 200 }} />
         </div>
       </div>
 
@@ -169,15 +171,15 @@ function MultiSelectDemo() {
       <div>
         <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wide)', textTransform: 'uppercase', color: 'var(--color-content-disabled)', margin: '0 0 12px' }}>states — empty · disabled · error</p>
         <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
-          <MultiSelectField label="Empty" placeholder="Nothing selected yet" options={ROLE_OPTIONS} style={{ flex: 1, minWidth: 180 }} />
-          <MultiSelectField label="Disabled" options={ROLE_OPTIONS} defaultValue={['eng', 'design']} disabled style={{ flex: 1, minWidth: 180 }} />
+          <MultiSelectField label="Empty" placeholder="Nothing selected yet" options={ROLE_OPTIONS} style={{ flex: 1, minWidth: isMobile ? 120 : 180 }} />
+          <MultiSelectField label="Disabled" options={ROLE_OPTIONS} defaultValue={['eng', 'design']} disabled style={{ flex: 1, minWidth: isMobile ? 120 : 180 }} />
           <MultiSelectField
             label="Error"
             error="Please select at least one role"
             options={ROLE_OPTIONS}
             value={errorVal}
             onChange={setErrorVal}
-            style={{ flex: 1, minWidth: 180 }}
+            style={{ flex: 1, minWidth: isMobile ? 120 : 180 }}
           />
         </div>
       </div>
@@ -200,8 +202,9 @@ function MultiSelectDemo() {
 
 /* ── Section helper ──────────────────────────────────────────────────────────── */
 function Section({ title, note, children }) {
+  const isMobile = useIsMobile()
   return (
-    <section style={{ background: 'var(--color-bg-primary)', border: '1px solid var(--color-border-opaque)', borderRadius: 'var(--radius-xl)', padding: 32 }}>
+    <section style={{ background: 'var(--color-bg-primary)', border: '1px solid var(--color-border-opaque)', borderRadius: 'var(--radius-xl)', padding: isMobile ? 20 : 32 }}>
       <div style={{ marginBottom: 24 }}>
         <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wider)', textTransform: 'uppercase', color: 'var(--color-content-disabled)', margin: '0 0 4px' }}>{title}</p>
         {note && <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-sm)', color: 'var(--color-content-tertiary)', margin: 0, lineHeight: 1.5 }}>{note}</p>}
@@ -608,6 +611,7 @@ function HRow({ label, description, hint, error, children }) {
 
 /* ── Preview component ───────────────────────────────────────────────────────── */
 export default function InputPreview() {
+  const isMobile = useIsMobile()
   const [searchVal, setSearchVal] = useState('')
   const [textVal, setTextVal] = useState('')
 
@@ -664,6 +668,9 @@ export default function InputPreview() {
         /* ─ Grid helpers ─ */
         .fi-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .fi-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+        @media (max-width: 767px) {
+          .fi-grid-2, .fi-grid-3 { grid-template-columns: 1fr; }
+        }
 
         /* ─ Horizontal layout ─ */
         .fi-h-row {
@@ -677,6 +684,10 @@ export default function InputPreview() {
           flex-shrink: 0;
           width: 200px;
           padding-top: 11px; /* ~vertically centers with md (40px) input */
+        }
+        @media (max-width: 767px) {
+          .fi-h-row { flex-direction: column; gap: 6px; }
+          .fi-h-label-col { width: 100%; padding-top: 0; }
         }
         .fi-h-label {
           font-family: var(--font-sans);
@@ -694,7 +705,7 @@ export default function InputPreview() {
         }
       `}</style>
 
-      <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: '48px 40px' }}>
+      <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: isMobile ? '24px 16px' : '48px 40px' }}>
 
         {/* Header */}
         <div style={{ marginBottom: 40 }}>
@@ -750,15 +761,15 @@ export default function InputPreview() {
           <Section title="Sizes" note="sm: 32px · md: 40px (default) · lg: 48px — font size, icon size, and padding all scale">
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               {['sm', 'md', 'lg'].map(size => (
-                <div key={size} style={{ display: 'flex', alignItems: 'flex-end', gap: 12 }}>
-                  <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', color: 'var(--color-content-disabled)', letterSpacing: 'var(--tracking-wide)', width: 28, flexShrink: 0, paddingBottom: 10 }}>{size}</span>
-                  <TextField size={size} placeholder={`${size} text field`} leadingIcon={<UserIcon />} style={{ flex: 1 }} />
-                  <PasswordField size={size} placeholder={`${size} password`} style={{ flex: 1 }} />
-                  <SelectField size={size} style={{ flex: 1 }} options={[
+                <div key={size} style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: isMobile ? 'stretch' : 'flex-end', gap: 12 }}>
+                  <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', color: 'var(--color-content-disabled)', letterSpacing: 'var(--tracking-wide)', width: 28, flexShrink: 0, paddingBottom: isMobile ? 0 : 10 }}>{size}</span>
+                  <TextField size={size} placeholder={`${size} text field`} leadingIcon={<UserIcon />} style={{ flex: 1, minWidth: isMobile ? 120 : 200 }} />
+                  <PasswordField size={size} placeholder={`${size} password`} style={{ flex: 1, minWidth: isMobile ? 120 : 200 }} />
+                  <SelectField size={size} style={{ flex: 1, minWidth: isMobile ? 120 : 200 }} options={[
                     { value: 'a', label: `${size} select` },
                     { value: 'b', label: 'Option B' },
                   ]} />
-                  <SearchField size={size} placeholder={`${size} search`} style={{ flex: 1 }} />
+                  <SearchField size={size} placeholder={`${size} search`} style={{ flex: 1, minWidth: isMobile ? 120 : 200 }} />
                 </div>
               ))}
             </div>
@@ -814,7 +825,7 @@ export default function InputPreview() {
           <Section title="Realistic Form" note="Sign-up flow — all field types, states, and icons working together">
             <div style={{ maxWidth: 480 }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 12 }}>
                   <TextField label="First name" placeholder="Jane" required />
                   <TextField label="Last name" placeholder="Smith" required />
                 </div>

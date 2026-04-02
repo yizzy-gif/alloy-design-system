@@ -3,6 +3,7 @@
    ───────────────────────────────────────────────────────────────────────────── */
 
 import { AILoader } from '../../src/components/ai/AILoader/AILoader'
+import { useIsMobile } from './useIsMobile.js'
 
 /* ── Shared layout primitives ────────────────────────────────────────────── */
 const wrap = {
@@ -105,10 +106,22 @@ const VARIANTS = [
 ]
 
 export default function AILoaderPreview() {
+  const isMobile = useIsMobile()
+
+  const dynWrap = { ...wrap }
+  const dynHeader = { ...header, padding: isMobile ? '24px 16px 0' : '48px 48px 0' }
+  const dynSection = (extra = {}) => ({
+    ...section(extra),
+    margin: isMobile ? '0 0 32px' : '0 48px 32px',
+    padding: isMobile ? '20px' : '32px',
+  })
+  const dynFooter = { ...footer, padding: isMobile ? '40px 16px 0' : '40px 48px 0', margin: isMobile ? '0 0' : '0 48px' }
+  const dynRow = (extra = {}) => ({ ...row(extra), gap: isMobile ? '16px' : '32px' })
+
   return (
-    <div style={wrap}>
+    <div style={dynWrap}>
       {/* ── Header ── */}
-      <div style={header}>
+      <div style={dynHeader}>
         <p style={label}>Teambridge AI</p>
         <h1 style={title}>AI Loader</h1>
         <p style={subtitle}>
@@ -118,9 +131,9 @@ export default function AILoaderPreview() {
       </div>
 
       {/* ── Section 1: Sizes ── */}
-      <div style={section()}>
+      <div style={dynSection()}>
         <p style={sectionTitle}>Sizes</p>
-        <div style={row({ alignItems: 'flex-end' })}>
+        <div style={dynRow({ alignItems: 'flex-end' })}>
           {[
             { size: 'xs', label: 'xs · 16px' },
             { size: 'sm', label: 'sm · 24px' },
@@ -137,9 +150,9 @@ export default function AILoaderPreview() {
       </div>
 
       {/* ── Section 2: Variants ── */}
-      <div style={section()}>
+      <div style={dynSection()}>
         <p style={sectionTitle}>Variants</p>
-        <div style={row({ alignItems: 'flex-start', flexWrap: 'wrap' })}>
+        <div style={dynRow({ alignItems: 'flex-start', flexWrap: 'wrap' })}>
           {VARIANTS.map(({ variant, label: l, note, swatchBg }) => (
             <div key={variant} style={cell({ alignItems: 'flex-start', gap: '8px' })}>
               <div style={{
@@ -162,7 +175,7 @@ export default function AILoaderPreview() {
       </div>
 
       {/* ── Section 3: Usage in Context ── */}
-      <div style={section()}>
+      <div style={dynSection()}>
         <p style={sectionTitle}>Usage in Context</p>
 
         {/* Inline with text */}
@@ -189,7 +202,7 @@ export default function AILoaderPreview() {
         {/* Button-style trigger */}
         <div style={{ marginBottom: '24px' }}>
           <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-content-tertiary)', marginBottom: '12px', fontWeight: 'var(--font-weight-semibold)', letterSpacing: 'var(--tracking-wide)', textTransform: 'uppercase' }}>Loading button</p>
-          <div style={row({ gap: '12px' })}>
+          <div style={dynRow({ gap: '12px' })}>
             {/* Primary AI button loading state */}
             <button
               disabled
@@ -333,9 +346,9 @@ export default function AILoaderPreview() {
       </div>
 
       {/* ── Section 4: Custom Sizes ── */}
-      <div style={section()}>
+      <div style={dynSection()}>
         <p style={sectionTitle}>Custom numeric sizes</p>
-        <div style={row({ alignItems: 'flex-end' })}>
+        <div style={dynRow({ alignItems: 'flex-end' })}>
           {[20, 28, 40, 56, 80, 96].map(px => (
             <div key={px} style={cell()}>
               <AILoader size={px} />
@@ -346,7 +359,7 @@ export default function AILoaderPreview() {
       </div>
 
       {/* ── Footer ── */}
-      <div style={footer}>
+      <div style={dynFooter}>
         <strong style={{ color: 'var(--color-content-secondary)' }}>AILoader</strong>
         {' — '}Teambridge AI · Alloy Design System
       </div>

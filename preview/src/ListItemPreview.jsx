@@ -4,6 +4,7 @@
    ───────────────────────────────────────────────────────────────────────────── */
 
 import { useState } from 'react'
+import { useIsMobile } from './useIsMobile.js'
 
 /* ── Icons ───────────────────────────────────────────────────────────────────── */
 const ChevronRightIcon = () => (
@@ -280,9 +281,9 @@ function ListItem({
 }
 
 /* ── Section / layout helpers ────────────────────────────────────────────────── */
-function Section({ title, note, children }) {
+function Section({ title, note, children, isMobile }) {
   return (
-    <section style={{ background: 'var(--color-bg-primary)', border: '1px solid var(--color-border-opaque)', borderRadius: 'var(--radius-xl)', padding: 32 }}>
+    <section style={{ background: 'var(--color-bg-primary)', border: '1px solid var(--color-border-opaque)', borderRadius: 'var(--radius-xl)', padding: isMobile ? 20 : 32 }}>
       <div style={{ marginBottom: 24 }}>
         <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wider)', textTransform: 'uppercase', color: 'var(--color-content-disabled)', margin: '0 0 4px' }}>{title}</p>
         {note && <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-sm)', color: 'var(--color-content-tertiary)', margin: 0, lineHeight: 1.5 }}>{note}</p>}
@@ -312,7 +313,7 @@ function SelectableItem(props) {
 }
 
 /* ── Trailing Actions section (stateful demo) ────────────────────────────────── */
-function TrailingActionsSection() {
+function TrailingActionsSection({ isMobile }) {
   // Switch states (independent per row)
   const [sw1, setSw1] = useState(true)
   const [sw2, setSw2] = useState(false)
@@ -334,8 +335,9 @@ function TrailingActionsSection() {
     <Section
       title="Trailing Actions"
       note="Built-in trailingAction prop — chevron · external-link · switch · checkbox · radio · badge · expand · status"
+      isMobile={isMobile}
     >
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 16, marginBottom: 24 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr 1fr' : '1fr 1fr 1fr 1fr', gap: 16, marginBottom: 24 }}>
 
         {/* ── Chevron & External Link ── */}
         <div>
@@ -380,7 +382,7 @@ function TrailingActionsSection() {
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr 1fr' : '1fr 1fr 1fr', gap: 16 }}>
 
         {/* ── Badge ── */}
         <div>
@@ -435,6 +437,7 @@ const SunIcon = () => (
 
 /* ── Preview ─────────────────────────────────────────────────────────────────── */
 export default function ListItemPreview() {
+  const isMobile = useIsMobile()
   return (
     <>
       <style>{`
@@ -591,7 +594,7 @@ export default function ListItemPreview() {
         .li-ta-status-info    { background: var(--color-info-fill);     }
       `}</style>
 
-      <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: '48px 40px' }}>
+      <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: isMobile ? '24px 16px' : '48px 40px' }}>
 
         {/* Header */}
         <div style={{ marginBottom: 40 }}>
@@ -603,7 +606,7 @@ export default function ListItemPreview() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
 
           {/* 1 — Sizes */}
-          <Section title="Sizes" note="sm (40px) · md (48px) · lg (56px) — label + description + leading icon">
+          <Section title="Sizes" note="sm (40px) · md (48px) · lg (56px) — label + description + leading icon" isMobile={isMobile}>
             <SubLabel>sm</SubLabel>
             <ListCard style={{ marginBottom: 12 }}>
               <ListItem size="sm" label="Account settings" description="Manage your personal information" leadingSlot={<Icon size={14}><UserIcon /></Icon>} trailingSlot={<Icon size={14} color="var(--color-content-tertiary)"><ChevronRightIcon /></Icon>} />
@@ -627,8 +630,8 @@ export default function ListItemPreview() {
           </Section>
 
           {/* 2 — Slots */}
-          <Section title="Slot Configurations" note="Mix and match leading + trailing slot content">
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+          <Section title="Slot Configurations" note="Mix and match leading + trailing slot content" isMobile={isMobile}>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 12 }}>
               <div>
                 <SubLabel>label only</SubLabel>
                 <ListCard>
@@ -681,8 +684,8 @@ export default function ListItemPreview() {
           </Section>
 
           {/* 3 — States */}
-          <Section title="States" note="interactive · selected · destructive · disabled">
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+          <Section title="States" note="interactive · selected · destructive · disabled" isMobile={isMobile}>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 12 }}>
               <div>
                 <SubLabel>interactive (hover me)</SubLabel>
                 <ListCard>
@@ -718,8 +721,8 @@ export default function ListItemPreview() {
           </Section>
 
           {/* 4 — Realistic examples */}
-          <Section title="Realistic Examples" note="Settings panel · Contacts · File list">
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
+          <Section title="Realistic Examples" note="Settings panel · Contacts · File list" isMobile={isMobile}>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(3, 1fr)', gap: 16 }}>
 
               {/* Settings panel */}
               <div>
@@ -800,8 +803,8 @@ export default function ListItemPreview() {
           </Section>
 
           {/* 5 — No divider */}
-          <Section title="Divider Control" note="divider=true (default) vs divider=false on the last item to prevent double borders">
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+          <Section title="Divider Control" note="divider=true (default) vs divider=false on the last item to prevent double borders" isMobile={isMobile}>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 12 }}>
               <div>
                 <SubLabel>all items with divider (last has extra border)</SubLabel>
                 <ListCard>
@@ -822,7 +825,7 @@ export default function ListItemPreview() {
           </Section>
 
           {/* 6 — Trailing Actions */}
-          <TrailingActionsSection />
+          <TrailingActionsSection isMobile={isMobile} />
 
         </div>
 

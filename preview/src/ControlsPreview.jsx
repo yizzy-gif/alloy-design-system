@@ -5,6 +5,7 @@
    ───────────────────────────────────────────────────────────────────────────── */
 
 import { useState } from 'react'
+import { useIsMobile } from './useIsMobile.js'
 import { Switch }        from '../../src/components/Switch/Switch'
 import { Checkbox }      from '../../src/components/Checkbox/Checkbox'
 import { Radio }         from '../../src/components/Radio/Radio'
@@ -17,12 +18,13 @@ import { Tabs }          from '../../src/components/Tabs/Tabs'
 /* ── Layout helpers ──────────────────────────────────────────────────────────── */
 
 function Section({ title, note, children }) {
+  const isMobile = useIsMobile()
   return (
     <section style={{
       background: 'var(--color-bg-primary)',
       border: '1px solid var(--color-border-opaque)',
       borderRadius: 'var(--radius-xl)',
-      padding: 32,
+      padding: isMobile ? 20 : 32,
     }}>
       <div style={{ marginBottom: 24 }}>
         <p style={{
@@ -411,11 +413,12 @@ const TABS = [
 
 /* ── Main export ─────────────────────────────────────────────────────────────── */
 export default function ControlsPreview() {
+  const isMobile = useIsMobile()
   const [activeTab, setActiveTab] = useState('switch')
   const active = TABS.find(t => t.id === activeTab)
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: '48px 40px' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: isMobile ? '24px 16px' : '48px 40px' }}>
 
       {/* ── Page header ── */}
       <div style={{ marginBottom: 32 }}>

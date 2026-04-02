@@ -4,6 +4,7 @@
    ───────────────────────────────────────────────────────────────────────────── */
 
 import { useState } from 'react'
+import { useIsMobile } from './useIsMobile.js'
 
 /* ── Icons ────────────────────────────────────────────────────────────────────── */
 const InboxIcon = () => (
@@ -94,9 +95,9 @@ function TabRow({ tabs, active, onSelect }) {
 }
 
 /* ── Section / helpers ────────────────────────────────────────────────────────── */
-function Section({ title, note, children }) {
+function Section({ title, note, children, isMobile }) {
   return (
-    <section style={{ background: 'var(--color-bg-primary)', border: '1px solid var(--color-border-opaque)', borderRadius: 'var(--radius-xl)', padding: 32 }}>
+    <section style={{ background: 'var(--color-bg-primary)', border: '1px solid var(--color-border-opaque)', borderRadius: 'var(--radius-xl)', padding: isMobile ? 20 : 32 }}>
       <div style={{ marginBottom: 24 }}>
         <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wider)', textTransform: 'uppercase', color: 'var(--color-content-disabled)', margin: '0 0 4px' }}>{title}</p>
         {note && <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-sm)', color: 'var(--color-content-tertiary)', margin: 0, lineHeight: 1.5 }}>{note}</p>}
@@ -117,6 +118,7 @@ function Row({ label, children }) {
 
 /* ── Preview ──────────────────────────────────────────────────────────────────── */
 export default function BadgePreview() {
+  const isMobile = useIsMobile()
   const [activeTab, setActiveTab] = useState('inbox')
 
   return (
@@ -182,7 +184,7 @@ export default function BadgePreview() {
 
       `}</style>
 
-      <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: '48px 40px' }}>
+      <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: isMobile ? '24px 16px' : '48px 40px' }}>
 
         {/* Header */}
         <div style={{ marginBottom: 40 }}>
@@ -194,7 +196,7 @@ export default function BadgePreview() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
 
           {/* 1 — Variants */}
-          <Section title="Variants" note="6 semantic variants — all driven by color tokens, consistent pill shape">
+          <Section title="Variants" note="6 semantic variants — all driven by color tokens, consistent pill shape" isMobile={isMobile}>
             <Row label="neutral">
               <Badge variant="neutral">12</Badge>
               <Badge variant="neutral">3</Badge>
@@ -230,7 +232,7 @@ export default function BadgePreview() {
           </Section>
 
           {/* 2 — Count vs Label */}
-          <Section title="Count vs Label" note="Same component — numeric counts and text labels both fit the 20px pill">
+          <Section title="Count vs Label" note="Same component — numeric counts and text labels both fit the 20px pill" isMobile={isMobile}>
             <Row label="counts">
               <Badge>1</Badge>
               <Badge>9</Badge>
@@ -257,7 +259,7 @@ export default function BadgePreview() {
           </Section>
 
           {/* 3 — In Tab context */}
-          <Section title="In Tab Bar" note="Pass <Badge> to the Tabs trailingBadge prop — the tabBadge wrapper is a flex positioner only">
+          <Section title="In Tab Bar" note="Pass <Badge> to the Tabs trailingBadge prop — the tabBadge wrapper is a flex positioner only" isMobile={isMobile}>
             <div style={{ marginBottom: 16 }}>
               <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', color: 'var(--color-content-disabled)', letterSpacing: 'var(--tracking-wide)', marginBottom: 8 }}>underline · neutral</p>
               <TabRow
@@ -287,8 +289,8 @@ export default function BadgePreview() {
           </Section>
 
           {/* 4 — In List Item context */}
-          <Section title="In List Item" note="Pass <Badge> as the trailingSlot or use trailingAction='badge' on ListItem">
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+          <Section title="In List Item" note="Pass <Badge> as the trailingSlot or use trailingAction='badge' on ListItem" isMobile={isMobile}>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 16 }}>
               <div>
                 <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', color: 'var(--color-content-disabled)', letterSpacing: 'var(--tracking-wide)', marginBottom: 8 }}>count badges</p>
                 <div style={{ border: '1px solid var(--color-border-opaque)', borderRadius: 10, overflow: 'hidden' }}>

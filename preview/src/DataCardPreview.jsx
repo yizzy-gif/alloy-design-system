@@ -3,6 +3,7 @@
    10 badge colors · ValueChangeLabel (trend + text) · light + dark
    ───────────────────────────────────────────────────────────────────────────── */
 
+import { useIsMobile } from './useIsMobile.js'
 import {
   DataCard,
   ValueChangeLabel,
@@ -19,9 +20,9 @@ import {
 
 /* ── Layout helpers ─────────────────────────────────────────────────────────── */
 
-function Section({ title, note, dark, children }) {
+function Section({ title, note, dark, children, isMobile }) {
   return (
-    <section style={{ background: dark ? 'var(--Alloy-slate-950)' : 'var(--color-bg-primary)', border: `1px solid ${dark ? 'rgba(255,255,255,0.07)' : 'var(--color-border-opaque)'}`, borderRadius: 'var(--radius-xl)', padding: 32 }}>
+    <section style={{ background: dark ? 'var(--Alloy-slate-950)' : 'var(--color-bg-primary)', border: `1px solid ${dark ? 'rgba(255,255,255,0.07)' : 'var(--color-border-opaque)'}`, borderRadius: 'var(--radius-xl)', padding: isMobile ? 20 : 32 }}>
       <div style={{ marginBottom: 24 }}>
         <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wider)', textTransform: 'uppercase', color: dark ? 'rgba(255,255,255,0.3)' : 'var(--color-content-disabled)', margin: '0 0 4px' }}>{title}</p>
         {note && <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-sm)', color: dark ? 'rgba(255,255,255,0.45)' : 'var(--color-content-tertiary)', margin: 0, lineHeight: 1.5 }}>{note}</p>}
@@ -34,9 +35,10 @@ function Section({ title, note, dark, children }) {
 /* ── Preview ─────────────────────────────────────────────────────────────────── */
 
 export default function DataCardPreview() {
+  const isMobile = useIsMobile()
   return (
     <>
-      <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: '48px 40px' }}>
+      <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: isMobile ? '24px 16px' : '48px 40px' }}>
 
         {/* Header */}
         <div style={{ marginBottom: 40 }}>
@@ -48,8 +50,8 @@ export default function DataCardPreview() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
 
           {/* 1 — Figma reference */}
-          <Section title="Figma Reference — Payroll Overview" note="Exact reproduction of the Alloy Payroll dashboard data card row">
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
+          <Section title="Figma Reference — Payroll Overview" note="Exact reproduction of the Alloy Payroll dashboard data card row" isMobile={isMobile}>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: 16 }}>
               <DataCard
                 color="green"
                 icon={<BookOpen01Icon size={24} />}
@@ -79,8 +81,8 @@ export default function DataCardPreview() {
           </Section>
 
           {/* 2 — All 10 badge color variants */}
-          <Section title="Badge Colors" note="All 10 Alloy semantic color variants — background uses -tertiary bg, icon uses -secondary content token">
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 12 }}>
+          <Section title="Badge Colors" note="All 10 Alloy semantic color variants — background uses -tertiary bg, icon uses -secondary content token" isMobile={isMobile}>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(5, 1fr)', gap: 12 }}>
               {[
                 { color: 'green',  icon: <BookOpen01Icon size={24} />,        label: 'Green',  value: '42' },
                 { color: 'yellow', icon: <CheckCircleDashedIcon size={24} />, label: 'Yellow', value: '18' },
@@ -99,8 +101,8 @@ export default function DataCardPreview() {
           </Section>
 
           {/* 3 — ValueChangeLabel: Trend mode */}
-          <Section title="Value Change Label — Trend" note="Arrow icon + text. Arrow direction and color derived from trend (up = green, down = red). Override with severity prop.">
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
+          <Section title="Value Change Label — Trend" note="Arrow icon + text. Arrow direction and color derived from trend (up = green, down = red). Override with severity prop." isMobile={isMobile}>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: 12 }}>
               <DataCard
                 color="green"
                 icon={<CurrencyDollarIcon size={24} />}
@@ -133,8 +135,8 @@ export default function DataCardPreview() {
           </Section>
 
           {/* 4 — ValueChangeLabel: Text mode */}
-          <Section title="Value Change Label — Text" note="Text-only label. Color based on severity: positive (green) · warning (yellow) · negative (red).">
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
+          <Section title="Value Change Label — Text" note="Text-only label. Color based on severity: positive (green) · warning (yellow) · negative (red)." isMobile={isMobile}>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: 12 }}>
               <DataCard
                 color="green"
                 icon={<LineChartUp02Icon size={24} />}

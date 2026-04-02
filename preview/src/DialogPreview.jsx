@@ -4,6 +4,7 @@
    ───────────────────────────────────────────────────────────────────────────── */
 
 import { useState } from 'react';
+import { useIsMobile } from './useIsMobile.js';
 import {
   Dialog,
   DialogHeader,
@@ -19,12 +20,13 @@ import {
 /* ── Shell helpers ──────────────────────────────────────────────────────────── */
 
 function Section({ title, note, children }) {
+  const isMobile = useIsMobile()
   return (
     <div style={{
       background: 'var(--color-bg-primary)',
       border: '1px solid var(--color-border-opaque)',
       borderRadius: 'var(--radius-xl)',
-      padding: 32,
+      padding: isMobile ? 20 : 32,
     }}>
       <div style={{ marginBottom: 24 }}>
         <p style={{
@@ -60,6 +62,7 @@ function Trigger({ label, onClick }) {
 /* ── Preview ─────────────────────────────────────────────────────────────────── */
 
 export default function DialogPreview() {
+  const isMobile = useIsMobile()
   const [open, setOpen] = useState({
     basic: false,
     form: false,
@@ -73,7 +76,13 @@ export default function DialogPreview() {
   const toggle = (key, val) => setOpen(s => ({ ...s, [key]: val ?? !s[key] }));
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: '48px 40px' }}>
+    <>
+    {isMobile && (
+      <style>{`
+        [data-alloy-dialog], .alloy-dialog, [role="dialog"] { max-width: 90vw !important; }
+      `}</style>
+    )}
+    <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: isMobile ? '24px 16px' : '48px 40px' }}>
 
       {/* Header */}
       <div style={{ marginBottom: 40 }}>
@@ -250,5 +259,6 @@ export default function DialogPreview() {
       </Dialog>
 
     </div>
+    </>
   );
 }

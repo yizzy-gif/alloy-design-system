@@ -4,6 +4,7 @@
    ───────────────────────────────────────────────────────────────────────────── */
 
 import { useRef, useState, useEffect, useCallback } from 'react'
+import { useIsMobile } from './useIsMobile.js'
 
 /* ── Inline ScrollArea — direct DOM mutation for lag-free thumb tracking ──── */
 
@@ -182,13 +183,13 @@ function WideContent() {
 
 /* ── Section wrapper ──────────────────────────────────────────────────────── */
 
-function Section({ label, description, children }) {
+function Section({ label, description, children, isMobile }) {
   return (
     <div style={{
       background: 'var(--color-bg-primary)',
       border: '1px solid var(--color-border-opaque)',
       borderRadius: 'var(--radius-xl)',
-      padding: 32,
+      padding: isMobile ? 20 : 32,
       display: 'flex',
       flexDirection: 'column',
       gap: 20,
@@ -211,6 +212,7 @@ function Section({ label, description, children }) {
 /* ── Preview ──────────────────────────────────────────────────────────────── */
 
 export default function ScrollAreaPreview() {
+  const isMobile = useIsMobile()
   return (
     <>
       <style>{`
@@ -225,7 +227,7 @@ export default function ScrollAreaPreview() {
       <div style={{
         minHeight: '100vh',
         background: 'var(--color-bg-secondary)',
-        padding: '48px 40px',
+        padding: isMobile ? '24px 16px' : '48px 40px',
         display: 'flex',
         flexDirection: 'column',
         gap: 20,
@@ -247,19 +249,20 @@ export default function ScrollAreaPreview() {
         <Section
           label="Vertical"
           description="Scrolls along the Y-axis. Scrollbar fades in on scroll, out after 1.2 s."
+          isMobile={isMobile}
         >
-          <div style={{ display: 'flex', gap: 24 }}>
-            <div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: isMobile ? 16 : 24 }}>
+            <div style={{ flex: '1 1 240px' }}>
               <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', color: 'var(--color-content-tertiary)', margin: '0 0 8px', letterSpacing: 'var(--tracking-wide)', textTransform: 'uppercase' }}>240 × 280</p>
-              <div className="sa-demo-box" style={{ width: 240, height: 280 }}>
+              <div className="sa-demo-box" style={{ maxWidth: 240, width: '100%', height: 280 }}>
                 <ScrollArea orientation="vertical" style={{ width: '100%', height: '100%' }}>
                   <LoremRows count={20} />
                 </ScrollArea>
               </div>
             </div>
-            <div>
+            <div style={{ flex: '1 1 320px' }}>
               <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', color: 'var(--color-content-tertiary)', margin: '0 0 8px', letterSpacing: 'var(--tracking-wide)', textTransform: 'uppercase' }}>320 × 400</p>
-              <div className="sa-demo-box" style={{ width: 320, height: 400 }}>
+              <div className="sa-demo-box" style={{ maxWidth: 320, width: '100%', height: 400 }}>
                 <ScrollArea orientation="vertical" style={{ width: '100%', height: '100%' }}>
                   <LoremRows count={32} />
                 </ScrollArea>
@@ -272,8 +275,9 @@ export default function ScrollAreaPreview() {
         <Section
           label="Horizontal"
           description="Scrolls along the X-axis — useful for wide tables and kanban boards."
+          isMobile={isMobile}
         >
-          <div>
+          <div style={{ overflowX: 'auto' }}>
             <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', color: 'var(--color-content-tertiary)', margin: '0 0 8px', letterSpacing: 'var(--tracking-wide)', textTransform: 'uppercase' }}>Full width × 180</p>
             <div className="sa-demo-box" style={{ width: '100%', height: 180 }}>
               <ScrollArea orientation="horizontal" style={{ width: '100%', height: '100%' }}>
@@ -287,10 +291,11 @@ export default function ScrollAreaPreview() {
         <Section
           label="Both axes"
           description="Horizontal + vertical simultaneously — for large content grids or maps."
+          isMobile={isMobile}
         >
           <div>
             <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', color: 'var(--color-content-tertiary)', margin: '0 0 8px', letterSpacing: 'var(--tracking-wide)', textTransform: 'uppercase' }}>480 × 320</p>
-            <div className="sa-demo-box" style={{ width: 480, height: 320 }}>
+            <div className="sa-demo-box" style={{ maxWidth: 480, width: '100%', height: 320 }}>
               <ScrollArea orientation="both" style={{ width: '100%', height: '100%' }}>
                 {/* Taller + wider than container */}
                 <div style={{ width: 900, padding: '0 0 16px' }}>
@@ -306,25 +311,27 @@ export default function ScrollAreaPreview() {
         <Section
           label="Dark mode"
           description="Same tokens — dark surface overrides for reference."
+          isMobile={isMobile}
         >
           <div className="dark" style={{
             background: 'var(--color-bg-primary)',
             borderRadius: 'var(--radius-lg)',
             padding: 24,
             display: 'flex',
-            gap: 24,
+            flexWrap: 'wrap',
+            gap: isMobile ? 16 : 24,
           }}>
-            <div>
+            <div style={{ flex: '1 1 240px' }}>
               <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', color: 'var(--color-content-tertiary)', margin: '0 0 8px', letterSpacing: 'var(--tracking-wide)', textTransform: 'uppercase' }}>Vertical</p>
-              <div style={{ width: 240, height: 280, border: '1px solid var(--color-border-opaque)', borderRadius: 'var(--radius-lg)', overflow: 'hidden', background: 'var(--color-bg-secondary)' }}>
+              <div style={{ maxWidth: 240, width: '100%', height: 280, border: '1px solid var(--color-border-opaque)', borderRadius: 'var(--radius-lg)', overflow: 'hidden', background: 'var(--color-bg-secondary)' }}>
                 <ScrollArea orientation="vertical" style={{ width: '100%', height: '100%' }}>
                   <LoremRows count={20} />
                 </ScrollArea>
               </div>
             </div>
-            <div>
+            <div style={{ flex: '1 1 320px', overflowX: 'auto' }}>
               <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', color: 'var(--color-content-tertiary)', margin: '0 0 8px', letterSpacing: 'var(--tracking-wide)', textTransform: 'uppercase' }}>Horizontal</p>
-              <div style={{ width: 400, height: 200, border: '1px solid var(--color-border-opaque)', borderRadius: 'var(--radius-lg)', overflow: 'hidden', background: 'var(--color-bg-secondary)' }}>
+              <div style={{ maxWidth: 400, width: '100%', height: 200, border: '1px solid var(--color-border-opaque)', borderRadius: 'var(--radius-lg)', overflow: 'hidden', background: 'var(--color-bg-secondary)' }}>
                 <ScrollArea orientation="horizontal" style={{ width: '100%', height: '100%' }}>
                   <WideContent />
                 </ScrollArea>

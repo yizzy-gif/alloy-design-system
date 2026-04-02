@@ -3,6 +3,8 @@
    Elevation shadows (below/above × low/md/high) · focus rings · light and dark
    ───────────────────────────────────────────────────────────────────────────── */
 
+import { useIsMobile } from './useIsMobile.js'
+
 /* ── Dark-mode CSS variable overrides ────────────────────────────────────────── */
 const DARK_VARS = {
   '--color-bg-primary':              'rgba(255,255,255,0.04)',
@@ -21,13 +23,13 @@ const DARK_VARS = {
 }
 
 /* ── Section wrapper ─────────────────────────────────────────────────────────── */
-function Section({ title, note, dark, children }) {
+function Section({ title, note, dark, children, isMobile }) {
   return (
     <section style={{
       background: dark ? 'rgba(14,17,21,1)' : 'var(--color-bg-primary)',
       border: `1px solid ${dark ? 'rgba(255,255,255,0.07)' : 'var(--color-border-opaque)'}`,
       borderRadius: 'var(--radius-xl)',
-      padding: 32,
+      padding: isMobile ? 20 : 32,
       overflow: 'hidden',
       ...(dark ? DARK_VARS : {}),
     }}>
@@ -50,9 +52,9 @@ function Section({ title, note, dark, children }) {
 }
 
 /* ── Shadow card grid ────────────────────────────────────────────────────────── */
-function ShadowGrid({ shadows, isDark }) {
+function ShadowGrid({ shadows, isDark, isMobile }) {
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
+    <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(1, 1fr)' : 'repeat(3, 1fr)', gap: 20 }}>
       {shadows.map(({ token, level, marginTop, marginBottom }) => (
         <div key={token}>
           <div style={{
@@ -101,13 +103,14 @@ const FOCUS_RINGS = [
 
 /* ── Main export ─────────────────────────────────────────────────────────────── */
 export default function ShadowsPreview() {
+  const isMobile = useIsMobile()
   return (
     <>
       <style>{`
         *, *::before, *::after { box-sizing: border-box; margin: 0; }
       `}</style>
 
-      <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: '48px 40px' }}>
+      <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: isMobile ? '24px 16px' : '48px 40px' }}>
 
         {/* Header */}
         <div style={{ marginBottom: 40 }}>
@@ -122,16 +125,18 @@ export default function ShadowsPreview() {
           <Section
             title="Below Shadows — Light"
             note="Downward projection · token: --shadow-below-{low|md|high}"
+            isMobile={isMobile}
           >
-            <ShadowGrid shadows={BELOW_SHADOWS} isDark={false} />
+            <ShadowGrid shadows={BELOW_SHADOWS} isDark={false} isMobile={isMobile} />
           </Section>
 
           {/* Section 2 — Above Shadows (Light) */}
           <Section
             title="Above Shadows — Light"
             note="Upward projection · token: --shadow-above-{low|md|high}"
+            isMobile={isMobile}
           >
-            <ShadowGrid shadows={ABOVE_SHADOWS} isDark={false} />
+            <ShadowGrid shadows={ABOVE_SHADOWS} isDark={false} isMobile={isMobile} />
           </Section>
 
           {/* Section 3 — Shadows on Dark Surface */}
@@ -139,6 +144,7 @@ export default function ShadowsPreview() {
             title="Shadows — Dark Surface"
             note="Dark mode shadows are more pronounced for visibility on dark backgrounds"
             dark={true}
+            isMobile={isMobile}
           >
             <div style={{ marginBottom: 32 }}>
               <p style={{
@@ -146,7 +152,7 @@ export default function ShadowsPreview() {
                 color: 'var(--color-content-disabled)', letterSpacing: 'var(--tracking-wide)',
                 marginBottom: 16,
               }}>below</p>
-              <ShadowGrid shadows={BELOW_SHADOWS} isDark={true} />
+              <ShadowGrid shadows={BELOW_SHADOWS} isDark={true} isMobile={isMobile} />
             </div>
             <div>
               <p style={{
@@ -154,7 +160,7 @@ export default function ShadowsPreview() {
                 color: 'var(--color-content-disabled)', letterSpacing: 'var(--tracking-wide)',
                 marginBottom: 16,
               }}>above</p>
-              <ShadowGrid shadows={ABOVE_SHADOWS} isDark={true} />
+              <ShadowGrid shadows={ABOVE_SHADOWS} isDark={true} isMobile={isMobile} />
             </div>
           </Section>
 
@@ -162,8 +168,9 @@ export default function ShadowsPreview() {
           <Section
             title="Focus Rings"
             note="3px spread rings for keyboard-navigable elements · token: --shadow-ring-{default|focus|error|success}"
+            isMobile={isMobile}
           >
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: 20 }}>
               {FOCUS_RINGS.map(({ token, label }) => (
                 <div key={token}>
                   <div style={{

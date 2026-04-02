@@ -4,16 +4,17 @@
 
 import { Tooltip } from '../../src/components/Tooltip/Tooltip'
 import { Button }  from '../../src/components/Button/Button'
+import { useIsMobile } from './useIsMobile.js'
 
 /* ── Layout helpers ─────────────────────────────────────────────────────────── */
 
-function Section({ title, note, children }) {
+function Section({ title, note, children, isMobile }) {
   return (
     <section style={{
       background:    'var(--color-bg-primary)',
       border:        '1px solid var(--color-border-opaque)',
       borderRadius:  'var(--radius-xl)',
-      padding:       32,
+      padding:       isMobile ? 20 : 32,
       overflow:      'visible',
     }}>
       <div style={{ marginBottom: 28 }}>
@@ -100,8 +101,9 @@ function SettingsIcon({ size = 14, color = 'currentColor' }) {
 /* ── Preview ─────────────────────────────────────────────────────────────────── */
 
 export default function TooltipPreview() {
+  const isMobile = useIsMobile()
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', padding: '48px 40px' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', padding: isMobile ? '24px 16px' : '48px 40px' }}>
     <div style={{ maxWidth: 960, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 20 }}>
 
       {/* ── Page header ─────────────────────────────────────────────────────── */}
@@ -118,8 +120,8 @@ export default function TooltipPreview() {
       </div>
 
       {/* ── 1. Placements ───────────────────────────────────────────────────── */}
-      <Section title="Placement" note="top (default) · bottom · left · right — each slides in from the trigger direction">
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 24, padding: '40px 0' }}>
+      <Section title="Placement" note="top (default) · bottom · left · right — each slides in from the trigger direction" isMobile={isMobile}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center', gap: isMobile ? 12 : 24, padding: '40px 0' }}>
           <Tooltip content="Above the trigger" placement="top">
             <Button variant="secondary" size="sm">Top</Button>
           </Tooltip>
@@ -136,8 +138,8 @@ export default function TooltipPreview() {
       </Section>
 
       {/* ── 2. Delay ─────────────────────────────────────────────────────────── */}
-      <Section title="Show Delay" note="delay=0 is instant · delay=300 gives users a moment to move the cursor without triggering every tooltip they pass">
-        <div style={{ display: 'flex', alignItems: 'center', gap: 24, padding: '40px 0' }}>
+      <Section title="Show Delay" note="delay=0 is instant · delay=300 gives users a moment to move the cursor without triggering every tooltip they pass" isMobile={isMobile}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: isMobile ? 12 : 24, padding: '40px 0' }}>
           <div>
             <Label text="Instant (delay=0)" />
             <Tooltip content="Instant — no delay" delay={0}>
@@ -160,8 +162,8 @@ export default function TooltipPreview() {
       </Section>
 
       {/* ── 3. Content length ────────────────────────────────────────────────── */}
-      <Section title="Content" note="Short label · longer description · rich ReactNode content">
-        <div style={{ display: 'flex', alignItems: 'flex-start', flexWrap: 'wrap', gap: 24, padding: '40px 0' }}>
+      <Section title="Content" note="Short label · longer description · rich ReactNode content" isMobile={isMobile}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', flexWrap: 'wrap', gap: isMobile ? 12 : 24, padding: '40px 0' }}>
           <div>
             <Label text="Short label" />
             <Tooltip content="Delete" placement="top">
@@ -203,7 +205,7 @@ export default function TooltipPreview() {
       </Section>
 
       {/* ── 4. Usage in context ─────────────────────────────────────────────── */}
-      <Section title="Usage in Context" note="Most common trigger types — icon-only buttons, help icons on form labels, inline text">
+      <Section title="Usage in Context" note="Most common trigger types — icon-only buttons, help icons on form labels, inline text" isMobile={isMobile}>
 
         {/* Icon-only action bar */}
         <Label text="Icon-only action buttons" />
@@ -277,8 +279,8 @@ export default function TooltipPreview() {
       </Section>
 
       {/* ── 5. Disabled state ───────────────────────────────────────────────── */}
-      <Section title="Disabled" note="disabled=true — tooltip never shows · useful when the trigger itself is disabled">
-        <div style={{ display: 'flex', gap: 24, padding: '40px 0', alignItems: 'center' }}>
+      <Section title="Disabled" note="disabled=true — tooltip never shows · useful when the trigger itself is disabled" isMobile={isMobile}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: isMobile ? 12 : 24, padding: '40px 0', alignItems: 'center' }}>
           <div>
             <Label text="Active tooltip" />
             <Tooltip content="This tooltip is active" placement="top">

@@ -4,6 +4,7 @@
    ───────────────────────────────────────────────────────────────────────────── */
 
 import { useState } from 'react'
+import { useIsMobile } from './useIsMobile.js'
 
 /* ── Inline icon ─────────────────────────────────────────────────────────────── */
 const SunIcon = () => (
@@ -46,9 +47,9 @@ const VARIANTS = ['subtle', 'outline', 'solid']
 const STATUSES = ['success', 'warning', 'error', 'info', 'neutral', 'pending']
 
 /* ── Layout helpers ──────────────────────────────────────────────────────────── */
-function Section({ title, note, children }) {
+function Section({ title, note, isMobile, children }) {
   return (
-    <section style={{ background: 'var(--color-bg-primary)', border: '1px solid var(--color-border-opaque)', borderRadius: 'var(--radius-xl)', padding: 32 }}>
+    <section style={{ background: 'var(--color-bg-primary)', border: '1px solid var(--color-border-opaque)', borderRadius: 'var(--radius-xl)', padding: isMobile ? 20 : 32 }}>
       <div style={{ marginBottom: 24 }}>
         <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wider)', textTransform: 'uppercase', color: 'var(--color-content-disabled)', margin: '0 0 4px' }}>{title}</p>
         {note && <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-sm)', color: 'var(--color-content-tertiary)', margin: 0, lineHeight: 1.5 }}>{note}</p>}
@@ -88,11 +89,11 @@ function SpecimenGroup({ label }) {
   )
 }
 
-function SpecimenRow({ label, tags = [], note, wide, children }) {
+function SpecimenRow({ label, tags = [], note, wide, isMobile, children }) {
   return (
     <div style={{
       display:             'grid',
-      gridTemplateColumns: wide ? '1fr 360px' : '1fr 200px',
+      gridTemplateColumns: isMobile ? '1fr' : wide ? '1fr 360px' : '1fr 200px',
       alignItems:          'center',
       borderBottom:        '1px solid var(--color-border-opaque)',
       minHeight:           '48px',
@@ -168,6 +169,7 @@ function ImportRow() {
 
 /* ── Preview ─────────────────────────────────────────────────────────────────── */
 export default function TagPreview() {
+  const isMobile = useIsMobile()
   const [dismissibleTags, setDismissibleTags] = useState(['Design', 'Engineering', 'Product', 'Marketing', 'Operations'])
 
   return (
@@ -439,7 +441,7 @@ export default function TagPreview() {
         .st-pending { --tag-dot: var(--color-yellow-bg-primary); --tag-subtle-bg: var(--color-yellow-bg-tertiary); --tag-subtle-border: var(--color-yellow-border-tertiary); --tag-subtle-color: var(--color-yellow-content-primary); }
       `}</style>
 
-      <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: '48px 40px' }}>
+      <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: isMobile ? '24px 16px' : '48px 40px' }}>
 
         {/* Header */}
         <div style={{ marginBottom: 40 }}>
@@ -448,18 +450,18 @@ export default function TagPreview() {
           <p style={{ fontSize: 'var(--text-base)', color: 'var(--color-content-tertiary)', lineHeight: 'var(--line-height-loose)' }}>3 variants · 10 colors + neutral · 3 sizes · dot · leading icon · dismissible · 6 status types</p>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? 12 : 20 }}>
 
           {/* 1 — Variants × Colors */}
-          <Section title="Tag — Variants & Colors" note="subtle · outline · solid across all 10 colors + neutral · md size">
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+          <Section title="Tag — Variants & Colors" note="subtle · outline · solid across all 10 colors + neutral · md size" isMobile={isMobile}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16, flexWrap: 'wrap' }}>
               <span style={{ width: 80 }} />
               {VARIANTS.map(v => (
                 <span key={v} style={{ width: 88, fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wide)', color: 'var(--color-content-disabled)' }}>{v}</span>
               ))}
             </div>
             {COLORS.map(color => (
-              <div key={color} style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
+              <div key={color} style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8, flexWrap: 'wrap' }}>
                 <ColLabel w={80}>{color}</ColLabel>
                 {VARIANTS.map(v => (
                   <div key={v} style={{ width: 88 }}>
@@ -471,15 +473,15 @@ export default function TagPreview() {
           </Section>
 
           {/* 2 — Sizes */}
-          <Section title="Tag — Sizes" note="sm (20px) · md (24px) · lg (32px) · subtle variant">
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+          <Section title="Tag — Sizes" note="sm (20px) · md (24px) · lg (32px) · subtle variant" isMobile={isMobile}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16, flexWrap: 'wrap' }}>
               <span style={{ width: 80 }} />
               {['sm', 'md', 'lg'].map(s => (
                 <span key={s} style={{ width: 88, fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wide)', color: 'var(--color-content-disabled)' }}>{s.toUpperCase()}</span>
               ))}
             </div>
             {COLORS.map(color => (
-              <div key={color} style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
+              <div key={color} style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8, flexWrap: 'wrap' }}>
                 <ColLabel w={80}>{color}</ColLabel>
                 {['sm', 'md', 'lg'].map(s => (
                   <div key={s} style={{ width: 88 }}>
@@ -491,7 +493,7 @@ export default function TagPreview() {
           </Section>
 
           {/* 3 — With Dot */}
-          <Section title="Tag — With Dot" note="dot prop renders a colored indicator before the label">
+          <Section title="Tag — With Dot" note="dot prop renders a colored indicator before the label" isMobile={isMobile}>
             <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
               {COLORS.map(color => (
                 <Tag key={color} variant="subtle" color={color} size="md" dot>
@@ -502,7 +504,7 @@ export default function TagPreview() {
           </Section>
 
           {/* 4 — With Leading Icon */}
-          <Section title="Tag — With Leading Icon" note="leadingIcon slot accepts any React node · icon scales with tag size">
+          <Section title="Tag — With Leading Icon" note="leadingIcon slot accepts any React node · icon scales with tag size" isMobile={isMobile}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
                 <ColLabel w={80}>subtle</ColLabel>
@@ -540,7 +542,7 @@ export default function TagPreview() {
           </Section>
 
           {/* 5 — Dismissible */}
-          <Section title="Tag — Dismissible" note="Click the × to remove a tag · tags are removed from the list">
+          <Section title="Tag — Dismissible" note="Click the × to remove a tag · tags are removed from the list" isMobile={isMobile}>
             {dismissibleTags.length > 0 ? (
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
                 {dismissibleTags.map((label, i) => {
@@ -573,15 +575,15 @@ export default function TagPreview() {
           </Section>
 
           {/* 6 — StatusTag */}
-          <Section title="StatusTag" note="6 semantic statuses · sm · md · lg sizes · dot always visible by default">
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+          <Section title="StatusTag" note="6 semantic statuses · sm · md · lg sizes · dot always visible by default" isMobile={isMobile}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16, flexWrap: 'wrap' }}>
               <span style={{ width: 80 }} />
               {['sm', 'md', 'lg'].map(s => (
                 <span key={s} style={{ width: 100, fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wide)', color: 'var(--color-content-disabled)' }}>{s.toUpperCase()}</span>
               ))}
             </div>
             {STATUSES.map(status => (
-              <div key={status} style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
+              <div key={status} style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8, flexWrap: 'wrap' }}>
                 <ColLabel w={80}>{status}</ColLabel>
                 {['sm', 'md', 'lg'].map(s => (
                   <div key={s} style={{ width: 100 }}>
@@ -595,7 +597,7 @@ export default function TagPreview() {
           </Section>
 
           {/* 7 — Specimen */}
-          <Section title="Specimen" note="Quick-reference table — scan to identify the exact variant, color, size, and layout to name when prompting.">
+          <Section title="Specimen" note="Quick-reference table — scan to identify the exact variant, color, size, and layout to name when prompting." isMobile={isMobile}>
             <div style={{
               background:   'var(--color-bg-primary)',
               borderRadius: 'var(--radius-lg)',
@@ -609,17 +611,17 @@ export default function TagPreview() {
 
               {/* Tag — Variant */}
               <SpecimenGroup label="Tag · Variant" />
-              <SpecimenRow label="Subtle" tags={['variant="subtle"']} note="Default — tinted background, muted border" wide>
+              <SpecimenRow label="Subtle" tags={['variant="subtle"']} note="Default — tinted background, muted border" wide isMobile={isMobile}>
                 <Tag variant="subtle"  color="blue" size="md">Blue</Tag>
                 <Tag variant="subtle"  color="purple" size="md">Purple</Tag>
                 <Tag variant="subtle"  color="neutral" size="md">Neutral</Tag>
               </SpecimenRow>
-              <SpecimenRow label="Outline" tags={['variant="outline"']} note="Transparent fill, colored border" wide>
+              <SpecimenRow label="Outline" tags={['variant="outline"']} note="Transparent fill, colored border" wide isMobile={isMobile}>
                 <Tag variant="outline" color="blue" size="md">Blue</Tag>
                 <Tag variant="outline" color="purple" size="md">Purple</Tag>
                 <Tag variant="outline" color="neutral" size="md">Neutral</Tag>
               </SpecimenRow>
-              <SpecimenRow label="Solid" tags={['variant="solid"']} note="Filled background, inverse label text" wide>
+              <SpecimenRow label="Solid" tags={['variant="solid"']} note="Filled background, inverse label text" wide isMobile={isMobile}>
                 <Tag variant="solid"   color="blue" size="md">Blue</Tag>
                 <Tag variant="solid"   color="purple" size="md">Purple</Tag>
                 <Tag variant="solid"   color="neutral" size="md">Neutral</Tag>
@@ -628,7 +630,7 @@ export default function TagPreview() {
               {/* Tag — Color */}
               <SpecimenGroup label="Tag · Color" />
               {COLORS.map(c => (
-                <SpecimenRow key={c} label={c.charAt(0).toUpperCase() + c.slice(1)} tags={[`color="${c}"`]} wide>
+                <SpecimenRow key={c} label={c.charAt(0).toUpperCase() + c.slice(1)} tags={[`color="${c}"`]} wide isMobile={isMobile}>
                   <Tag variant="subtle"  color={c} size="md">{c.charAt(0).toUpperCase() + c.slice(1)}</Tag>
                   <Tag variant="outline" color={c} size="md">{c.charAt(0).toUpperCase() + c.slice(1)}</Tag>
                   <Tag variant="solid"   color={c} size="md">{c.charAt(0).toUpperCase() + c.slice(1)}</Tag>
@@ -637,32 +639,32 @@ export default function TagPreview() {
 
               {/* Tag — Size */}
               <SpecimenGroup label="Tag · Size" />
-              <SpecimenRow label="SM" tags={['size="sm"', '20px height']}>
+              <SpecimenRow label="SM" tags={['size="sm"', '20px height']} isMobile={isMobile}>
                 <Tag variant="subtle" color="blue" size="sm">Label</Tag>
               </SpecimenRow>
-              <SpecimenRow label="MD" tags={['size="md"', '24px height', 'default']}>
+              <SpecimenRow label="MD" tags={['size="md"', '24px height', 'default']} isMobile={isMobile}>
                 <Tag variant="subtle" color="blue" size="md">Label</Tag>
               </SpecimenRow>
-              <SpecimenRow label="LG" tags={['size="lg"', '32px height']}>
+              <SpecimenRow label="LG" tags={['size="lg"', '32px height']} isMobile={isMobile}>
                 <Tag variant="subtle" color="blue" size="lg">Label</Tag>
               </SpecimenRow>
 
               {/* Tag — Layout / Artwork */}
               <SpecimenGroup label="Tag · Layout & Artwork" />
-              <SpecimenRow label="Default" tags={[]} note="Text only">
+              <SpecimenRow label="Default" tags={[]} note="Text only" isMobile={isMobile}>
                 <Tag variant="subtle" color="blue" size="md">Design</Tag>
               </SpecimenRow>
-              <SpecimenRow label="With Dot" tags={['dot']} note="Colored indicator before label">
+              <SpecimenRow label="With Dot" tags={['dot']} note="Colored indicator before label" isMobile={isMobile}>
                 <Tag variant="subtle" color="blue"   size="md" dot>Blue</Tag>
                 <Tag variant="subtle" color="purple" size="md" dot>Purple</Tag>
                 <Tag variant="subtle" color="green"  size="md" dot>Green</Tag>
               </SpecimenRow>
-              <SpecimenRow label="Leading Icon" tags={['leadingIcon']} note="Any React node — scales with size" wide>
+              <SpecimenRow label="Leading Icon" tags={['leadingIcon']} note="Any React node — scales with size" wide isMobile={isMobile}>
                 <Tag variant="subtle"  color="blue"   size="md" leadingIcon={<SunIcon />}>Subtle</Tag>
                 <Tag variant="outline" color="purple" size="md" leadingIcon={<SunIcon />}>Outline</Tag>
                 <Tag variant="solid"   color="neutral" size="md" leadingIcon={<SunIcon />}>Solid</Tag>
               </SpecimenRow>
-              <SpecimenRow label="Dismissible" tags={['dismissible', 'onDismiss']} note="Renders a × button — wire onDismiss to remove from state" wide>
+              <SpecimenRow label="Dismissible" tags={['dismissible', 'onDismiss']} note="Renders a × button — wire onDismiss to remove from state" wide isMobile={isMobile}>
                 <Tag variant="subtle" color="blue"   size="md" dismissible>Design</Tag>
                 <Tag variant="subtle" color="purple" size="md" dismissible>Engineering</Tag>
               </SpecimenRow>
@@ -670,7 +672,7 @@ export default function TagPreview() {
               {/* StatusTag — Status */}
               <SpecimenGroup label="StatusTag · Status" />
               {STATUSES.map(s => (
-                <SpecimenRow key={s} label={s.charAt(0).toUpperCase() + s.slice(1)} tags={[`status="${s}"`]} wide>
+                <SpecimenRow key={s} label={s.charAt(0).toUpperCase() + s.slice(1)} tags={[`status="${s}"`]} wide isMobile={isMobile}>
                   <StatusTag status={s} size="sm">{s.charAt(0).toUpperCase() + s.slice(1)}</StatusTag>
                   <StatusTag status={s} size="md">{s.charAt(0).toUpperCase() + s.slice(1)}</StatusTag>
                   <StatusTag status={s} size="lg">{s.charAt(0).toUpperCase() + s.slice(1)}</StatusTag>
@@ -679,13 +681,13 @@ export default function TagPreview() {
 
               {/* StatusTag — Size */}
               <SpecimenGroup label="StatusTag · Size" />
-              <SpecimenRow label="SM" tags={['size="sm"', '20px height']}>
+              <SpecimenRow label="SM" tags={['size="sm"', '20px height']} isMobile={isMobile}>
                 <StatusTag status="success" size="sm">Success</StatusTag>
               </SpecimenRow>
-              <SpecimenRow label="MD" tags={['size="md"', '24px height', 'default']}>
+              <SpecimenRow label="MD" tags={['size="md"', '24px height', 'default']} isMobile={isMobile}>
                 <StatusTag status="success" size="md">Success</StatusTag>
               </SpecimenRow>
-              <SpecimenRow label="LG" tags={['size="lg"', '32px height']}>
+              <SpecimenRow label="LG" tags={['size="lg"', '32px height']} isMobile={isMobile}>
                 <StatusTag status="success" size="lg">Success</StatusTag>
               </SpecimenRow>
 

@@ -4,6 +4,7 @@
    ───────────────────────────────────────────────────────────────────────────── */
 
 import { useState, useRef, useLayoutEffect } from 'react'
+import { useIsMobile } from './useIsMobile.js'
 
 /* ── Icons (from Alloy icon library — 24×24 viewBox, currentColor stroke) ────── */
 const GridIcon = () => (
@@ -111,9 +112,9 @@ function ControlledSC({ defaultValue, size = 'md', disabled = false, fullWidth =
 }
 
 /* ── Section layout ───────────────────────────────────────────────────────────── */
-function Section({ title, note, children }) {
+function Section({ title, note, children, isMobile }) {
   return (
-    <section style={{ background: 'var(--color-bg-primary)', border: '1px solid var(--color-border-opaque)', borderRadius: 'var(--radius-xl)', padding: 32 }}>
+    <section style={{ background: 'var(--color-bg-primary)', border: '1px solid var(--color-border-opaque)', borderRadius: 'var(--radius-xl)', padding: isMobile ? 20 : 32 }}>
       <div style={{ marginBottom: 24 }}>
         <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wider)', textTransform: 'uppercase', color: 'var(--color-content-disabled)', margin: '0 0 4px' }}>{title}</p>
         {note && <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-sm)', color: 'var(--color-content-tertiary)', margin: 0, lineHeight: 1.5 }}>{note}</p>}
@@ -125,7 +126,7 @@ function Section({ title, note, children }) {
 
 function Row({ label, children }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 12 }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 12, flexWrap: 'wrap' }}>
       <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', color: 'var(--color-content-disabled)', width: 56, flexShrink: 0, letterSpacing: 'var(--tracking-wide)' }}>{label}</span>
       {children}
     </div>
@@ -134,6 +135,7 @@ function Row({ label, children }) {
 
 /* ── Preview ─────────────────────────────────────────────────────────────────── */
 export default function SegmentedControlPreview() {
+  const isMobile = useIsMobile()
   return (
     <>
       <style>{`
@@ -229,7 +231,7 @@ export default function SegmentedControlPreview() {
 
       `}</style>
 
-      <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: '48px 40px' }}>
+      <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: isMobile ? '24px 16px' : '48px 40px' }}>
 
         {/* Header */}
         <div style={{ marginBottom: 40 }}>
@@ -241,7 +243,7 @@ export default function SegmentedControlPreview() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
 
           {/* 1 — Sizes */}
-          <Section title="Sizes" note="sm (28px) · md (32px) · lg (36px) outer height">
+          <Section title="Sizes" note="sm (28px) · md (32px) · lg (36px) outer height" isMobile={isMobile}>
             <Row label="sm">
               <ControlledSC size="sm" defaultValue="week" items={[
                 { value: 'day',   label: 'Day'   },
@@ -266,7 +268,7 @@ export default function SegmentedControlPreview() {
           </Section>
 
           {/* 2 — With leading icon */}
-          <Section title="With Leading Icon" note="leadingIcon renders before the label and scales with size">
+          <Section title="With Leading Icon" note="leadingIcon renders before the label and scales with size" isMobile={isMobile}>
             <Row label="sm">
               <ControlledSC size="sm" defaultValue="grid" items={[
                 { value: 'grid',    icon: <GridIcon />,    label: 'Grid'    },
@@ -291,7 +293,7 @@ export default function SegmentedControlPreview() {
           </Section>
 
           {/* 3 — Icon only */}
-          <Section title="Icon Only" note="Omit the label to render an icon-only control">
+          <Section title="Icon Only" note="Omit the label to render an icon-only control" isMobile={isMobile}>
             <Row label="sm">
               <ControlledSC size="sm" defaultValue="bar" items={[
                 { value: 'bar',  icon: <ChartBarIcon />,  label: undefined },
@@ -316,7 +318,7 @@ export default function SegmentedControlPreview() {
           </Section>
 
           {/* 4 — Full width */}
-          <Section title="Full Width" note="fullWidth stretches the control and distributes items equally">
+          <Section title="Full Width" note="fullWidth stretches the control and distributes items equally" isMobile={isMobile}>
             <ControlledSC size="md" defaultValue="week" fullWidth items={[
               { value: 'day',   label: 'Day'   },
               { value: 'week',  label: 'Week'  },
@@ -333,7 +335,7 @@ export default function SegmentedControlPreview() {
           </Section>
 
           {/* 5 — Disabled */}
-          <Section title="Disabled" note="disabled on root kills all items · disabled on individual items disables only those">
+          <Section title="Disabled" note="disabled on root kills all items · disabled on individual items disables only those" isMobile={isMobile}>
             <Row label="all off">
               <ControlledSC size="md" defaultValue="week" disabled items={[
                 { value: 'day',   label: 'Day'   },

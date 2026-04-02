@@ -5,6 +5,7 @@
    ───────────────────────────────────────────────────────────────────────────── */
 
 import { useState } from 'react'
+import { useIsMobile } from './useIsMobile.js'
 import { Table }        from '../../src/components/Table/Table'
 import { TableHeader }  from '../../src/components/Table/TableHeader'
 import { TableBody }    from '../../src/components/Table/TableBody'
@@ -84,13 +85,13 @@ const DARK_VARS = {
 
 /* ── Layout helpers ──────────────────────────────────────────────────────────── */
 
-function Section({ title, note, dark, children }) {
+function Section({ title, note, dark, children, isMobile }) {
   return (
     <section style={{
       background: dark ? 'rgba(14,17,21,1)' : 'var(--color-bg-primary)',
       border: `1px solid ${dark ? 'rgba(255,255,255,0.07)' : 'var(--color-border-opaque)'}`,
       borderRadius: 'var(--radius-xl)',
-      padding: 32,
+      padding: isMobile ? 20 : 32,
       overflow: 'hidden',
       ...(dark ? DARK_VARS : {}),
     }}>
@@ -136,6 +137,8 @@ function Avatar({ name, size = 24 }) {
 
 /* ── Preview ─────────────────────────────────────────────────────────────────── */
 export default function TablePreview() {
+  const isMobile = useIsMobile()
+
   /* Sorting for pay periods table */
   const [sortDir, setSortDir] = useState('none')
   const cycleSort = () =>
@@ -158,7 +161,7 @@ export default function TablePreview() {
   const toggleActive = id => setActiveRows(prev => ({ ...prev, [id]: !prev[id] }))
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', padding: '48px 40px' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', padding: isMobile ? '24px 16px' : '48px 40px' }}>
     <div style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 20 }}>
 
       {/* ── Page header ────────────────────────────────────────────────────── */}
@@ -175,8 +178,9 @@ export default function TablePreview() {
       </div>
 
       {/* ── 1. Figma reference — Pay Period ──────────────────────────────── */}
-      <Section title="Figma Reference — Pay Period" note="Matches the Alloy–Payroll Figma node exactly · sortable Pay Period column">
-        <Table style={{ maxWidth: 480 }}>
+      <Section title="Figma Reference — Pay Period" note="Matches the Alloy–Payroll Figma node exactly · sortable Pay Period column" isMobile={isMobile}>
+        <div style={{ overflowX: 'auto' }}>
+        <Table style={{ maxWidth: 480, width: '100%' }}>
           <TableHeader>
             <TableRow hoverable={false}>
               <TableHead sort={sortDir} onSort={cycleSort}>Pay Period</TableHead>
@@ -194,10 +198,12 @@ export default function TablePreview() {
             ))}
           </TableBody>
         </Table>
+        </div>
       </Section>
 
       {/* ── 2. Row selection + StatusTag + CellStack ──────────────────────── */}
-      <Section title="Row Selection + Rich Cells" note="Checkbox column · CellStack · CellStatusTag · CellTag · CellActions with DropdownMenu">
+      <Section title="Row Selection + Rich Cells" note="Checkbox column · CellStack · CellStatusTag · CellTag · CellActions with DropdownMenu" isMobile={isMobile}>
+        <div style={{ overflowX: 'auto' }}>
         <Table>
           <TableHeader>
             <TableRow hoverable={false}>
@@ -273,6 +279,7 @@ export default function TablePreview() {
             ))}
           </TableBody>
         </Table>
+        </div>
         {selected.size > 0 && (
           <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
             <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-sm)', color: 'var(--color-content-secondary)' }}>
@@ -284,8 +291,9 @@ export default function TablePreview() {
       </Section>
 
       {/* ── 3. Switch controls in cells ───────────────────────────────────── */}
-      <Section title="CellControl — Switch" note="Switch toggle embedded in table cells · sm size · compact column">
-        <Table style={{ maxWidth: 640 }}>
+      <Section title="CellControl — Switch" note="Switch toggle embedded in table cells · sm size · compact column" isMobile={isMobile}>
+        <div style={{ overflowX: 'auto' }}>
+        <Table style={{ maxWidth: 640, width: '100%' }}>
           <TableHeader>
             <TableRow hoverable={false}>
               <TableHead sort="none" onSort={() => {}}>Employee</TableHead>
@@ -315,11 +323,12 @@ export default function TablePreview() {
             ))}
           </TableBody>
         </Table>
+        </div>
       </Section>
 
       {/* ── 4. Size comparison — md vs sm ──────────────────────────────────── */}
-      <Section title="Size Comparison" note="size='md' (default, 48px rows) vs size='sm' (40px rows)">
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+      <Section title="Size Comparison" note="size='md' (default, 48px rows) vs size='sm' (40px rows)" isMobile={isMobile}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? 16 : 20 }}>
           <div>
             <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wide)', color: 'var(--color-content-disabled)', marginBottom: 10 }}>
               MD (default)
@@ -366,7 +375,8 @@ export default function TablePreview() {
       </Section>
 
       {/* ── 5. Cell content type catalog ──────────────────────────────────── */}
-      <Section title="Cell Content Types" note="All built-in helpers — each renders inside a plain TableCell">
+      <Section title="Cell Content Types" note="All built-in helpers — each renders inside a plain TableCell" isMobile={isMobile}>
+        <div style={{ overflowX: 'auto' }}>
         <Table>
           <TableHeader>
             <TableRow hoverable={false}>
@@ -466,11 +476,13 @@ export default function TablePreview() {
             </TableRow>
           </TableBody>
         </Table>
+        </div>
       </Section>
 
       {/* ── 6. Dark panel ─────────────────────────────────────────────────── */}
-      <Section title="Dark Surface" note="Table on a dark background — tokens adapt automatically via CSS custom properties" dark>
-        <Table style={{ maxWidth: 560 }}>
+      <Section title="Dark Surface" note="Table on a dark background — tokens adapt automatically via CSS custom properties" dark isMobile={isMobile}>
+        <div style={{ overflowX: 'auto' }}>
+        <Table style={{ maxWidth: 560, width: '100%' }}>
           <TableHeader>
             <TableRow hoverable={false}>
               <TableHead sort="none" onSort={() => {}}>Employee</TableHead>
@@ -496,6 +508,7 @@ export default function TablePreview() {
             ))}
           </TableBody>
         </Table>
+        </div>
       </Section>
 
       {/* ── Footer ────────────────────────────────────────────────────────── */}

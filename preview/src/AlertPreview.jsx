@@ -6,12 +6,13 @@
 
 import { useState } from 'react'
 import { Alert, ToastProvider, useToast } from '../../src/index.ts'
+import { useIsMobile } from './useIsMobile.js'
 
 /* ── Preview shell ────────────────────────────────────────────────────────────── */
 
-function Section({ title, note, children }) {
+function Section({ title, note, children, isMobile }) {
   return (
-    <section style={{ background: 'var(--color-bg-primary)', border: '1px solid var(--color-border-opaque)', borderRadius: 'var(--radius-xl)', padding: 32 }}>
+    <section style={{ background: 'var(--color-bg-primary)', border: '1px solid var(--color-border-opaque)', borderRadius: 'var(--radius-xl)', padding: isMobile ? 20 : 32 }}>
       <div style={{ marginBottom: 24 }}>
         <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wider)', textTransform: 'uppercase', color: 'var(--color-content-disabled)', margin: '0 0 4px' }}>{title}</p>
         {note && <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-sm)', color: 'var(--color-content-tertiary)', margin: 0, lineHeight: 1.5 }}>{note}</p>}
@@ -44,7 +45,7 @@ const TOAST_EXAMPLES = [
   { label: 'Feature',  status: 'feature', title: 'New feature: smart filters',   description: undefined },
 ]
 
-function ToastTriggers() {
+function ToastTriggers({ isMobile }) {
   const { toast } = useToast()
 
   const btnStyle = (color) => ({
@@ -62,7 +63,7 @@ function ToastTriggers() {
   })
 
   return (
-    <section style={{ background: 'var(--color-bg-primary)', border: '1px solid var(--color-border-opaque)', borderRadius: 'var(--radius-xl)', padding: 32 }}>
+    <section style={{ background: 'var(--color-bg-primary)', border: '1px solid var(--color-border-opaque)', borderRadius: 'var(--radius-xl)', padding: isMobile ? 20 : 32 }}>
       <div style={{ marginBottom: 24 }}>
         <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wider)', textTransform: 'uppercase', color: 'var(--color-content-disabled)', margin: '0 0 4px' }}>Toast · Live Demo</p>
         <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-sm)', color: 'var(--color-content-tertiary)', margin: 0, lineHeight: 1.5 }}>
@@ -111,6 +112,7 @@ function ToastTriggers() {
 }
 
 export default function AlertPreview() {
+  const isMobile = useIsMobile()
   const [dismissed, setDismissed] = useState({})
   const dismiss = (key) => setDismissed(d => ({ ...d, [key]: true }))
   const reset   = () => setDismissed({})
@@ -122,7 +124,7 @@ export default function AlertPreview() {
         button { font-family: var(--font-sans); }
       `}</style>
 
-      <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: '48px 40px' }}>
+      <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: isMobile ? '24px 16px' : '48px 40px' }}>
 
         {/* Header */}
         <div style={{ marginBottom: 40 }}>
@@ -134,10 +136,10 @@ export default function AlertPreview() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
 
           {/* Toast live demo */}
-          <ToastTriggers />
+          <ToastTriggers isMobile={isMobile} />
 
           {/* Small · Lighter */}
-          <Section title="Small · Lighter" note="Single-line title, action link, dismiss — tinted background per status">
+          <Section title="Small · Lighter" isMobile={isMobile} note="Single-line title, action link, dismiss — tinted background per status">
             {STATUSES.map(s => (
               <Row key={s} label={s}>
                 <Alert status={s} variant="lighter" size="sm" title="Insert your alert title here!" action="Action" onDismiss={() => {}} />
@@ -146,7 +148,7 @@ export default function AlertPreview() {
           </Section>
 
           {/* Small · Stroke */}
-          <Section title="Small · Stroke" note="White background with opaque border — status indicated by badge only">
+          <Section title="Small · Stroke" isMobile={isMobile} note="White background with opaque border — status indicated by badge only">
             {STATUSES.map(s => (
               <Row key={s} label={s}>
                 <Alert status={s} variant="stroke" size="sm" title="Insert your alert title here!" action="Action" onDismiss={() => {}} />
@@ -155,7 +157,7 @@ export default function AlertPreview() {
           </Section>
 
           {/* Large · Lighter */}
-          <Section title="Large · Lighter" note="Title + description + action links + dismiss">
+          <Section title="Large · Lighter" isMobile={isMobile} note="Title + description + action links + dismiss">
             {STATUSES.map(s => (
               <Row key={s} label={s}>
                 <Alert
@@ -173,7 +175,7 @@ export default function AlertPreview() {
           </Section>
 
           {/* Large · Stroke */}
-          <Section title="Large · Stroke">
+          <Section title="Large · Stroke" isMobile={isMobile}>
             {STATUSES.map(s => (
               <Row key={s} label={s}>
                 <Alert
@@ -191,7 +193,7 @@ export default function AlertPreview() {
           </Section>
 
           {/* Interactive dismiss */}
-          <Section title="Interactive" note="Dismiss removes the alert. Click Reset to restore.">
+          <Section title="Interactive" isMobile={isMobile} note="Dismiss removes the alert. Click Reset to restore.">
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {STATUSES.map(s => !dismissed[s] && (
                 <Alert key={s} status={s} size="sm" title="Insert your alert title here!" action="Action" onDismiss={() => dismiss(s)} />
@@ -207,7 +209,7 @@ export default function AlertPreview() {
           </Section>
 
           {/* No trailing / minimal */}
-          <Section title="Minimal" note="Title only — no action, no dismiss">
+          <Section title="Minimal" isMobile={isMobile} note="Title only — no action, no dismiss">
             <Row label="sm · lighter">
               {STATUSES.map(s => (
                 <Alert key={s} status={s} size="sm" title="Insert your alert title here!" />

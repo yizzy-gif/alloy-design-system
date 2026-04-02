@@ -3,14 +3,16 @@
    Type scale · weights · line heights · letter spacing · composite styles
    ───────────────────────────────────────────────────────────────────────────── */
 
+import { useIsMobile } from './useIsMobile.js'
+
 /* ── Section wrapper ─────────────────────────────────────────────────────────── */
-function Section({ title, note, children }) {
+function Section({ title, note, children, isMobile }) {
   return (
     <section style={{
       background: 'var(--color-bg-primary)',
       border: '1px solid var(--color-border-opaque)',
       borderRadius: 'var(--radius-xl)',
-      padding: 32,
+      padding: isMobile ? 20 : 32,
       overflow: 'hidden',
     }}>
       <div style={{ marginBottom: 24 }}>
@@ -132,6 +134,7 @@ function MetaCol({ token, sub }) {
 
 /* ── Main export ─────────────────────────────────────────────────────────────── */
 export default function TypographyPreview() {
+  const isMobile = useIsMobile()
   /* Group COMPOSITE entries by group label */
   const compositeGroups = COMPOSITE.reduce((acc, entry) => {
     if (!acc[entry.group]) acc[entry.group] = []
@@ -143,7 +146,7 @@ export default function TypographyPreview() {
     <div style={{
       minHeight: '100vh',
       background: 'var(--color-bg-secondary)',
-      padding: '48px 40px',
+      padding: isMobile ? '24px 16px' : '48px 40px',
     }}>
       <div style={{
         maxWidth: 1100,
@@ -183,7 +186,7 @@ export default function TypographyPreview() {
         </div>
 
         {/* ── Section 1: Type Scale ────────────────────────────────────────────── */}
-        <Section title="Type Scale" note="All --text-* size tokens · Geist Sans">
+        <Section title="Type Scale" note="All --text-* size tokens · Geist Sans" isMobile={isMobile}>
           {TYPE_SCALE.map((item, i) => {
             const isLarge = ['--text-5xl', '--text-6xl', '--text-7xl'].includes(item.token)
             return (
@@ -194,6 +197,7 @@ export default function TypographyPreview() {
                   ...(i > 0 ? rowDivider : {}),
                   alignItems: isLarge ? 'flex-start' : 'center',
                   padding: isLarge ? '16px 0' : '12px 0',
+                  flexWrap: 'wrap',
                 }}
               >
                 <MetaCol token={item.token} sub={`${item.rem} · ${item.px}`} />
@@ -201,6 +205,7 @@ export default function TypographyPreview() {
                   flex: 1,
                   overflow: isLarge ? 'visible' : 'hidden',
                   whiteSpace: isLarge ? 'normal' : 'nowrap',
+                  wordBreak: isLarge ? 'break-word' : undefined,
                 }}>
                   <span style={{
                     fontSize: `var(${item.token})`,
@@ -217,7 +222,7 @@ export default function TypographyPreview() {
         </Section>
 
         {/* ── Section 2: Font Weights ──────────────────────────────────────────── */}
-        <Section title="Font Weights" note="Five weights — applied to Geist Sans">
+        <Section title="Font Weights" note="Five weights — applied to Geist Sans" isMobile={isMobile}>
           {WEIGHTS.map((item, i) => (
             <div
               key={item.token}
@@ -240,10 +245,10 @@ export default function TypographyPreview() {
         </Section>
 
         {/* ── Section 3: Line Heights ──────────────────────────────────────────── */}
-        <Section title="Line Heights" note="Rhythm scale from none (1) to loose (1.6)">
+        <Section title="Line Heights" note="Rhythm scale from none (1) to loose (1.6)" isMobile={isMobile}>
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
+            gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)',
             gap: 16,
           }}>
             {LINE_HEIGHTS.map((item) => (
@@ -283,10 +288,10 @@ export default function TypographyPreview() {
         </Section>
 
         {/* ── Section 4: Letter Spacing ────────────────────────────────────────── */}
-        <Section title="Letter Spacing" note="Four tracking values">
+        <Section title="Letter Spacing" note="Four tracking values" isMobile={isMobile}>
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(4, 1fr)',
+            gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)',
             gap: 16,
           }}>
             {TRACKING.map((item) => (
@@ -328,7 +333,7 @@ export default function TypographyPreview() {
         </Section>
 
         {/* ── Section 5: Composite Styles ─────────────────────────────────────── */}
-        <Section title="Composite Styles" note="Named type ramps — Display, Heading, Paragraph, Label">
+        <Section title="Composite Styles" note="Named type ramps — Display, Heading, Paragraph, Label" isMobile={isMobile}>
           {Object.entries(compositeGroups).map(([group, entries], groupIndex) => (
             <div key={group}>
               {/* Group sub-header */}
@@ -355,6 +360,7 @@ export default function TypographyPreview() {
                     ...rowBase,
                     ...(i > 0 ? rowDivider : { borderTop: '1px solid var(--color-border-opaque)' }),
                     alignItems: 'center',
+                    flexWrap: 'wrap',
                   }}
                 >
                   <div style={{ width: 200, flexShrink: 0 }}>

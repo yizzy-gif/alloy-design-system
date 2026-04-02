@@ -3,6 +3,7 @@
    solid / dashed · 1px & 2px thickness · horizontal & vertical · light + dark
    ───────────────────────────────────────────────────────────────────────────── */
 
+import { useIsMobile } from './useIsMobile.js'
 import { Divider } from '../../src/components/Divider/index.ts'
 import '../../src/styles/tokens.css'
 
@@ -18,12 +19,12 @@ const DARK_VARS = {
   '--color-border-transparent':'rgba(255,255,255,0.08)',
 }
 
-function Section({ title, subtitle, children }) {
+function Section({ title, subtitle, children, isMobile }) {
   return (
     <div style={{
       background: 'var(--color-bg-primary)',
       borderRadius: 'var(--radius-xl)',
-      padding: '32px',
+      padding: isMobile ? '20px' : '32px',
       display: 'flex',
       flexDirection: 'column',
       gap: '24px',
@@ -84,8 +85,9 @@ function ListRow({ label }) {
 }
 
 export default function DividerPreview() {
+  const isMobile = useIsMobile()
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', padding: '48px 40px' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', padding: isMobile ? '24px 16px' : '48px 40px' }}>
 
       {/* Header */}
       <div style={{ marginBottom: '40px' }}>
@@ -103,7 +105,7 @@ export default function DividerPreview() {
       <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
 
         {/* Solid variants */}
-        <Section title="SOLID" subtitle="Default variant — 1px and 2px thickness">
+        <Section title="SOLID" subtitle="Default variant — 1px and 2px thickness" isMobile={isMobile}>
           <Row>
             <DividerRow variant="solid" thickness={1} />
             <DividerRow variant="solid" thickness={2} />
@@ -111,7 +113,7 @@ export default function DividerPreview() {
         </Section>
 
         {/* Dashed variants */}
-        <Section title="DASHED" subtitle="2px dash · 2px gap — 1px and 2px thickness">
+        <Section title="DASHED" subtitle="2px dash · 2px gap — 1px and 2px thickness" isMobile={isMobile}>
           <Row>
             <DividerRow variant="dashed" thickness={1} />
             <DividerRow variant="dashed" thickness={2} />
@@ -119,7 +121,7 @@ export default function DividerPreview() {
         </Section>
 
         {/* Horizontal — in context */}
-        <Section title="HORIZONTAL — IN CONTEXT" subtitle="Solid separating list rows / dashed grouping hint">
+        <Section title="HORIZONTAL — IN CONTEXT" subtitle="Solid separating list rows / dashed grouping hint" isMobile={isMobile}>
           <ContentRow>
             <ListRow label="Invoice #1042 — Acme Corp" />
             <Divider thickness={1} variant="solid" />
@@ -134,7 +136,7 @@ export default function DividerPreview() {
         </Section>
 
         {/* Vertical — in context */}
-        <Section title="VERTICAL — IN CONTEXT" subtitle="Inline separator between actions or metadata">
+        <Section title="VERTICAL — IN CONTEXT" subtitle="Inline separator between actions or metadata" isMobile={isMobile}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', height: '20px' }}>
             {['Dashboard', 'Reports', 'Settings'].map((label, i, arr) => (
               <>
@@ -155,7 +157,7 @@ export default function DividerPreview() {
 
         {/* Dark mode */}
         <div className="dark" style={{ ...DARK_VARS }}>
-          <Section title="DARK MODE — ALL VARIANTS">
+          <Section title="DARK MODE — ALL VARIANTS" isMobile={isMobile}>
             <Row>
               <DividerRow variant="solid"  thickness={1} />
               <DividerRow variant="solid"  thickness={2} />

@@ -4,6 +4,7 @@
    ───────────────────────────────────────────────────────────────────────────── */
 
 import { useState } from 'react'
+import { useIsMobile } from './useIsMobile.js'
 
 /* ── Inline FilterPill mirror ─────────────────────────────────────────────── */
 
@@ -71,7 +72,7 @@ function FilterPillGroup({ children, style }) {
   return (
     <div style={{
       display: 'flex', alignItems: 'center', gap: 4,
-      overflowX: 'auto', scrollbarWidth: 'none',
+      flexWrap: 'wrap',
       paddingBottom: 1, ...style
     }}>
       {children}
@@ -102,12 +103,13 @@ const ConditionIcon = () => (
 /* ── Section wrapper ──────────────────────────────────────────────────────── */
 
 function Section({ label, description, children }) {
+  const isMobile = useIsMobile()
   return (
     <div style={{
       background: 'var(--color-bg-primary)',
       border: '1px solid var(--color-border-opaque)',
       borderRadius: 'var(--radius-xl)',
-      padding: 32,
+      padding: isMobile ? 20 : 32,
       display: 'flex',
       flexDirection: 'column',
       gap: 20,
@@ -152,6 +154,7 @@ const TYPE_FILTERS = [
 ]
 
 export default function FilterPillPreview() {
+  const isMobile = useIsMobile()
   const [typeFilter, setTypeFilter]     = useState('all')
   const [multiActive, setMultiActive]   = useState({ trigger: true, action: false, condition: true })
   const [applied, setApplied]           = useState(['Status: Active', 'Role: Engineer', 'Location: Remote', 'Start: 2022'])
@@ -175,7 +178,7 @@ export default function FilterPillPreview() {
       <div className="fp-demo" style={{
         minHeight: '100vh',
         background: 'var(--color-bg-secondary)',
-        padding: '48px 40px',
+        padding: isMobile ? '24px 16px' : '48px 40px',
         display: 'flex',
         flexDirection: 'column',
         gap: 20,

@@ -3,6 +3,8 @@
    Spacing scale (4px base) · border radius tokens
    ───────────────────────────────────────────────────────────────────────────── */
 
+import { useIsMobile } from './useIsMobile.js'
+
 /* ── Dark-mode CSS variable overrides ────────────────────────────────────────── */
 const DARK_VARS = {
   '--color-bg-primary':              'rgba(255,255,255,0.04)',
@@ -21,13 +23,13 @@ const DARK_VARS = {
 }
 
 /* ── Section wrapper ─────────────────────────────────────────────────────────── */
-function Section({ title, note, dark, children }) {
+function Section({ title, note, dark, children, isMobile }) {
   return (
     <section style={{
       background: dark ? 'rgba(14,17,21,1)' : 'var(--color-bg-primary)',
       border: `1px solid ${dark ? 'rgba(255,255,255,0.07)' : 'var(--color-border-opaque)'}`,
       borderRadius: 'var(--radius-xl)',
-      padding: 32,
+      padding: isMobile ? 20 : 32,
       overflow: 'hidden',
       ...(dark ? DARK_VARS : {}),
     }}>
@@ -79,13 +81,14 @@ const RADII = [
 
 /* ── Main export ─────────────────────────────────────────────────────────────── */
 export default function SpacingPreview() {
+  const isMobile = useIsMobile()
   return (
     <>
       <style>{`
         *, *::before, *::after { box-sizing: border-box; margin: 0; }
       `}</style>
 
-      <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: '48px 40px' }}>
+      <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: isMobile ? '24px 16px' : '48px 40px' }}>
 
         {/* Header */}
         <div style={{ marginBottom: 40 }}>
@@ -100,6 +103,7 @@ export default function SpacingPreview() {
           <Section
             title="Spacing Scale"
             note="Base unit: 4px · token: --space-{n}"
+            isMobile={isMobile}
           >
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               {SPACING.map(({ token, px }, i) => (
@@ -121,7 +125,7 @@ export default function SpacingPreview() {
                       fontFamily: 'var(--font-mono)',
                       fontSize: 'var(--text-xs)',
                       color: 'var(--color-content-secondary)',
-                      width: 160,
+                      width: isMobile ? 100 : 160,
                       flexShrink: 0,
                     }}>{token}</span>
                     <span style={{
@@ -147,11 +151,13 @@ export default function SpacingPreview() {
           <Section
             title="Border Radius"
             note="8 radius tokens from xs (2px) to full (9999px)"
+            isMobile={isMobile}
           >
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
               {RADII.map(({ token, px, label }) => (
                 <div key={token} style={{
                   width: 110,
+                  flexShrink: 0,
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',

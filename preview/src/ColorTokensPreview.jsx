@@ -4,6 +4,8 @@
    All semantic --color-* usage tokens + raw --Alloy-* palette
    ───────────────────────────────────────────────────────────────────────────── */
 
+import { useIsMobile } from './useIsMobile.js'
+
 /* ── Palette data ─────────────────────────────────────────────────────────── */
 
 const PALETTE = [
@@ -42,13 +44,13 @@ const DARK_VARS = {
 
 /* ── Layout helpers ──────────────────────────────────────────────────────────── */
 
-function Section({ title, note, dark, children }) {
+function Section({ title, note, dark, children, isMobile }) {
   return (
     <section style={{
       background: dark ? 'rgba(14,17,21,1)' : 'var(--color-bg-primary)',
       border: `1px solid ${dark ? 'rgba(255,255,255,0.07)' : 'var(--color-border-opaque)'}`,
       borderRadius: 'var(--radius-xl)',
-      padding: 32,
+      padding: isMobile ? 20 : 32,
       overflow: 'hidden',
       ...(dark ? DARK_VARS : {}),
     }}>
@@ -72,7 +74,7 @@ function Section({ title, note, dark, children }) {
 
 /* ── Section 1 — Palette ──────────────────────────────────────────────────── */
 
-function PaletteSection() {
+function PaletteSection({ isMobile }) {
   /* Determine if a hex color is "dark" so we can pick a contrasting stop label */
   function isDark(hex) {
     const r = parseInt(hex.slice(1, 3), 16)
@@ -121,7 +123,7 @@ function PaletteSection() {
   )
 
   return (
-    <Section title="Palette" note="11 hues × 13 stops · all raw --Alloy-* tokens">
+    <Section title="Palette" note="11 hues × 13 stops · all raw --Alloy-* tokens" isMobile={isMobile}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         {/* White + Black at the top */}
         {neutralRow('White', '#ffffff')}
@@ -163,9 +165,9 @@ const BG_TOKENS = [
   { token: '--color-bg-always-light',description: 'Always light' },
 ]
 
-function BackgroundSection() {
+function BackgroundSection({ isMobile }) {
   return (
-    <Section title="Background Tokens" note="Use these for all filled surfaces — never use palette tokens directly in components">
+    <Section title="Background Tokens" note="Use these for all filled surfaces — never use palette tokens directly in components" isMobile={isMobile}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         {BG_TOKENS.map(({ token, description }) => (
           <div key={token} style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
@@ -209,12 +211,12 @@ const CONTENT_TOKENS = [
   '--color-content-link',
 ]
 
-function ContentSection() {
+function ContentSection({ isMobile }) {
   return (
-    <Section title="Content Tokens" note="Text and icon color hierarchy">
+    <Section title="Content Tokens" note="Text and icon color hierarchy" isMobile={isMobile}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
         {CONTENT_TOKENS.map(token => (
-          <div key={token} style={{ display: 'flex', alignItems: 'baseline', gap: 16 }}>
+          <div key={token} style={{ display: 'flex', alignItems: 'baseline', gap: 16, flexWrap: 'wrap' }}>
             <p style={{
               fontFamily: 'var(--font-sans)',
               fontSize: 'var(--text-base)',
@@ -247,9 +249,9 @@ const BORDER_TOKENS = [
   '--color-border-focus',
 ]
 
-function BorderSection() {
+function BorderSection({ isMobile }) {
   return (
-    <Section title="Border Tokens" note="Stroke colors for dividers, outlines, inputs, cards">
+    <Section title="Border Tokens" note="Stroke colors for dividers, outlines, inputs, cards" isMobile={isMobile}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         {BORDER_TOKENS.map(token => (
           <div key={token} style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
@@ -279,10 +281,10 @@ function BorderSection() {
 
 const STATUSES = ['success', 'warning', 'error', 'info']
 
-function StatusSection() {
+function StatusSection({ isMobile }) {
   return (
-    <Section title="Status Tokens" note="success · warning · error · info — fill / bg / border / content">
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20 }}>
+    <Section title="Status Tokens" note="success · warning · error · info — fill / bg / border / content" isMobile={isMobile}>
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: 20 }}>
         {STATUSES.map(status => (
           <div key={status} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             {/* Column header */}
@@ -371,9 +373,10 @@ function StatusSection() {
 /* ── Main export ──────────────────────────────────────────────────────────── */
 
 export default function ColorTokensPreview() {
+  const isMobile = useIsMobile()
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', padding: '48px 40px' }}>
-      <div style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 20 }}>
+    <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', padding: isMobile ? '24px 16px' : '48px 40px' }}>
+      <div style={{ maxWidth: 1100, width: '100%', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 20 }}>
 
         {/* ── Page header ─────────────────────────────────────────────────── */}
         <div style={{ marginBottom: 20 }}>
@@ -406,11 +409,11 @@ export default function ColorTokensPreview() {
         </div>
 
         {/* ── Sections ────────────────────────────────────────────────────── */}
-        <PaletteSection />
-        <BackgroundSection />
-        <ContentSection />
-        <BorderSection />
-        <StatusSection />
+        <PaletteSection isMobile={isMobile} />
+        <BackgroundSection isMobile={isMobile} />
+        <ContentSection isMobile={isMobile} />
+        <BorderSection isMobile={isMobile} />
+        <StatusSection isMobile={isMobile} />
 
         {/* ── Footer ──────────────────────────────────────────────────────── */}
         <div style={{

@@ -5,6 +5,7 @@
    ───────────────────────────────────────────────────────────────────────────── */
 
 import { useState } from 'react'
+import { useIsMobile } from './useIsMobile.js'
 import {
   ChartCard,
   BarChart,
@@ -93,12 +94,12 @@ function Section({ title, children }) {
 }
 
 /* ── Grid layout ─────────────────────────────────────────────────────────────── */
-function Grid({ children, cols = 2 }) {
+function Grid({ children, cols = 2, isMobile }) {
   return (
     <div style={{
       display: 'grid',
-      gridTemplateColumns: `repeat(${cols}, 1fr)`,
-      gap: 'var(--space-4)',
+      gridTemplateColumns: isMobile ? '1fr' : `repeat(${cols}, 1fr)`,
+      gap: isMobile ? 'var(--space-3)' : 'var(--space-4)',
     }}>
       {children}
     </div>
@@ -107,6 +108,7 @@ function Grid({ children, cols = 2 }) {
 
 /* ── Preview page ─────────────────────────────────────────────────────────────── */
 export default function ChartsPreview() {
+  const isMobile = useIsMobile()
   const [activeSection, setActiveSection] = useState('bar')
 
   const NAV = [
@@ -118,15 +120,17 @@ export default function ChartsPreview() {
   ]
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh' }}>
+    <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', minHeight: '100vh' }}>
       {/* Inner sub-nav */}
       <div style={{
-        width: 160,
+        width: isMobile ? '100%' : 160,
         flexShrink: 0,
         padding: '24px 12px',
-        borderRight: '1px solid var(--color-border-opaque)',
+        borderRight: isMobile ? 'none' : '1px solid var(--color-border-opaque)',
+        borderBottom: isMobile ? '1px solid var(--color-border-opaque)' : 'none',
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: isMobile ? 'row' : 'column',
+        flexWrap: 'wrap',
         gap: 2,
       }}>
         <span style={{
@@ -166,7 +170,7 @@ export default function ChartsPreview() {
       </div>
 
       {/* Content */}
-      <div style={{ flex: 1, padding: '40px 48px', maxWidth: 1100, overflowY: 'auto' }}>
+      <div style={{ flex: 1, padding: isMobile ? '24px 16px' : '40px 48px', maxWidth: 1100, overflowY: 'auto' }}>
 
         {/* ─── BAR CHART ─── */}
         {activeSection === 'bar' && (
@@ -187,7 +191,7 @@ export default function ChartsPreview() {
             </Section>
 
             <Section title="Grouped Bar Chart">
-              <Grid>
+              <Grid isMobile={isMobile}>
                 <ChartCard title="Fill Rate" subtitle="Dec. 12 – Dec. 18, 2025">
                   <BarChart series={FILL_SERIES} labels={FILL_LABELS} variant="grouped" height={220} yUnit="k" />
                 </ChartCard>
@@ -225,7 +229,7 @@ export default function ChartsPreview() {
             </Section>
 
             <Section title="Single Line">
-              <Grid>
+              <Grid isMobile={isMobile}>
                 <ChartCard title="Fill Rate Trend" subtitle="Dec. 12 – Dec. 18">
                   <LineChart
                     series={[{ label: 'Fill Rate', data: [1750, 1100, 1620, 1200, 1750, 400, 450], area: true }]}
@@ -257,7 +261,7 @@ export default function ChartsPreview() {
         {activeSection === 'donut' && (
           <>
             <Section title="Donut with Stat Legend">
-              <Grid>
+              <Grid isMobile={isMobile}>
                 <ChartCard title="Risk Distribution" subtitle="Dec. 12 – Dec. 18, 2025">
                   <DonutChart
                     segments={RISK_SEGMENTS}
@@ -271,7 +275,7 @@ export default function ChartsPreview() {
             </Section>
 
             <Section title="Pie Chart (innerRadius=0) + List Legend">
-              <Grid>
+              <Grid isMobile={isMobile}>
                 <ChartCard title="Shift Type Mix" subtitle="Current week">
                   <DonutChart
                     segments={[

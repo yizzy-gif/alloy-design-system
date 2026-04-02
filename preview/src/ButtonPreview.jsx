@@ -86,11 +86,11 @@ function SpecimenGroup({ label }) {
  * note    — faint explanatory text on a second line
  * wide    — expands the render column to 260px (for full-width override demos)
  */
-function SpecimenRow({ label, tags = [], note, wide, children }) {
+function SpecimenRow({ label, tags = [], note, wide, isMobile, children }) {
   return (
     <div style={{
       display:             'grid',
-      gridTemplateColumns: wide ? '1fr 260px' : '1fr 200px',
+      gridTemplateColumns: isMobile ? '1fr' : wide ? '1fr 260px' : '1fr 200px',
       alignItems:          'center',
       borderBottom:        '1px solid var(--color-border-opaque)',
       minHeight:           '52px',
@@ -169,9 +169,9 @@ function ImportRow() {
 }
 
 /* ── Layout helpers ─────────────────────────────────────────────────────────── */
-function Section({ title, note, dark, children }) {
+function Section({ title, note, dark, children, isMobile }) {
   return (
-    <section style={{ background: dark ? 'var(--Alloy-slate-950)' : 'var(--color-bg-primary)', border: `1px solid ${dark ? 'rgba(255,255,255,0.07)' : 'var(--color-border-opaque)'}`, borderRadius: 'var(--radius-xl)', padding: 32 }}>
+    <section style={{ background: dark ? 'var(--Alloy-slate-950)' : 'var(--color-bg-primary)', border: `1px solid ${dark ? 'rgba(255,255,255,0.07)' : 'var(--color-border-opaque)'}`, borderRadius: 'var(--radius-xl)', padding: isMobile ? 20 : 32 }}>
       <div style={{ marginBottom: 24 }}>
         <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wider)', textTransform: 'uppercase', color: dark ? 'rgba(255,255,255,0.3)' : 'var(--color-content-disabled)', margin: '0 0 4px' }}>{title}</p>
         {note && <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-sm)', color: dark ? 'rgba(255,255,255,0.45)' : 'var(--color-content-tertiary)', margin: 0, lineHeight: 1.5 }}>{note}</p>}
@@ -185,8 +185,11 @@ function ColLabel({ w = 96, children, dark }) {
   return <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wide)', color: dark ? 'rgba(255,255,255,0.3)' : 'var(--color-content-disabled)', width: w, flexShrink: 0 }}>{children}</span>
 }
 
+import { useIsMobile } from './useIsMobile.js'
+
 /* ── Preview ─────────────────────────────────────────────────────────────────── */
 export default function ButtonPreview() {
+  const isMobile = useIsMobile()
   return (
     <>
       <style>{`
@@ -281,7 +284,7 @@ export default function ButtonPreview() {
         .specimen-import-src { color: var(--color-content-secondary); }
       `}</style>
 
-      <div style={{ minHeight:'100vh', background:'var(--color-bg-secondary)', fontFamily:'var(--font-sans)', padding:'48px 40px' }}>
+      <div style={{ minHeight:'100vh', background:'var(--color-bg-secondary)', fontFamily:'var(--font-sans)', padding: isMobile ? '24px 16px' : '48px 40px' }}>
 
         {/* Header */}
         <div style={{ marginBottom: 40 }}>
@@ -290,18 +293,18 @@ export default function ButtonPreview() {
           <p style={{ fontSize:'var(--text-base)', color:'var(--color-content-tertiary)', lineHeight:'var(--line-height-loose)' }}>6 variants · 5 sizes · scaled artwork · light &amp; dark</p>
         </div>
 
-        <div style={{ display:'flex', flexDirection:'column', gap: 20 }}>
+        <div style={{ display:'flex', flexDirection:'column', gap: isMobile ? 12 : 20 }}>
 
           {/* 1 — Variants × Sizes */}
-          <Section title="Variants & Sizes" note="Hover and click to test interactive states · artwork scales with size">
-            <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:16 }}>
+          <Section title="Variants & Sizes" note="Hover and click to test interactive states · artwork scales with size" isMobile={isMobile}>
+            <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:16, flexWrap:'wrap' }}>
               <span style={{ width:128 }} />
               {SIZES.map(s => (
                 <span key={s} style={{ width:88, textAlign:'center', fontFamily:'var(--font-sans)', fontSize:'var(--text-xs)', letterSpacing:'var(--tracking-wide)', color:'var(--color-content-disabled)' }}>{s.toUpperCase()}</span>
               ))}
             </div>
             {VARIANTS.map(v => (
-              <div key={v} style={{ display:'flex', alignItems:'center', gap:12, marginBottom:10 }}>
+              <div key={v} style={{ display:'flex', alignItems:'center', gap:12, marginBottom:10, flexWrap:'wrap' }}>
                 <ColLabel w={128}>{VARIANT_LABEL[v]}</ColLabel>
                 {SIZES.map(s => (
                   <div key={s} style={{ width:88, display:'flex', justifyContent:'center' }}>
@@ -313,15 +316,15 @@ export default function ButtonPreview() {
           </Section>
 
           {/* 2 — States */}
-          <Section title="States" note="Default · Loading (animated) · Disabled — md size">
-            <div style={{ display:'flex', alignItems:'center', gap:20, marginBottom:16 }}>
+          <Section title="States" note="Default · Loading (animated) · Disabled — md size" isMobile={isMobile}>
+            <div style={{ display:'flex', alignItems:'center', gap: isMobile ? 12 : 20, marginBottom:16, flexWrap:'wrap' }}>
               <span style={{ width:128 }} />
               {['Default', 'Loading', 'Disabled'].map(s => (
                 <span key={s} style={{ width:110, textAlign:'center', fontFamily:'var(--font-sans)', fontSize:'var(--text-xs)', letterSpacing:'var(--tracking-wide)', color:'var(--color-content-disabled)' }}>{s}</span>
               ))}
             </div>
             {VARIANTS.map(v => (
-              <div key={v} style={{ display:'flex', alignItems:'center', gap:20, marginBottom:10 }}>
+              <div key={v} style={{ display:'flex', alignItems:'center', gap: isMobile ? 12 : 20, marginBottom:10, flexWrap:'wrap' }}>
                 <ColLabel w={128}>{VARIANT_LABEL[v]}</ColLabel>
                 <div style={{ width:110, display:'flex', justifyContent:'center' }}><Button variant={v}>{VARIANT_LABEL_TEXT[v]}</Button></div>
                 <div style={{ width:110, display:'flex', justifyContent:'center' }}><Button variant={v} loading>{VARIANT_LABEL_TEXT[v]}</Button></div>
@@ -331,7 +334,7 @@ export default function ButtonPreview() {
           </Section>
 
           {/* 3 — Artwork */}
-          <Section title="Artwork" note="Leading · Trailing · Both · Icon-only — stroke scales automatically with size">
+          <Section title="Artwork" note="Leading · Trailing · Both · Icon-only — stroke scales automatically with size" isMobile={isMobile}>
             <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
               <div style={{ display:'flex', alignItems:'center', gap:12 }}>
                 <ColLabel w={128}>Leading</ColLabel>
@@ -379,6 +382,7 @@ export default function ButtonPreview() {
           <Section
             title="Specimen"
             note="Quick-reference table — scan to identify the exact variant, size, and layout to name when prompting."
+            isMobile={isMobile}
           >
             <div style={{
               background:   'var(--color-bg-primary)',
@@ -393,87 +397,87 @@ export default function ButtonPreview() {
 
               {/* ── Variants ── */}
               <SpecimenGroup label="Variant" />
-              <SpecimenRow label="Primary" tags={['variant="primary"']}>
+              <SpecimenRow label="Primary" tags={['variant="primary"']} isMobile={isMobile}>
                 <Button variant="primary">Save</Button>
               </SpecimenRow>
-              <SpecimenRow label="Secondary" tags={['variant="secondary"']}>
+              <SpecimenRow label="Secondary" tags={['variant="secondary"']} isMobile={isMobile}>
                 <Button variant="secondary">Save</Button>
               </SpecimenRow>
-              <SpecimenRow label="Tertiary" tags={['variant="tertiary"']}>
+              <SpecimenRow label="Tertiary" tags={['variant="tertiary"']} isMobile={isMobile}>
                 <Button variant="tertiary">Save</Button>
               </SpecimenRow>
-              <SpecimenRow label="Ghost" tags={['variant="ghost"']}>
+              <SpecimenRow label="Ghost" tags={['variant="ghost"']} isMobile={isMobile}>
                 <Button variant="ghost">Dismiss</Button>
               </SpecimenRow>
-              <SpecimenRow label="Destructive" tags={['variant="destructive"']}>
+              <SpecimenRow label="Destructive" tags={['variant="destructive"']} isMobile={isMobile}>
                 <Button variant="destructive">Delete</Button>
               </SpecimenRow>
-              <SpecimenRow label="Destructive Secondary" tags={['variant="destructive-secondary"']}>
+              <SpecimenRow label="Destructive Secondary" tags={['variant="destructive-secondary"']} isMobile={isMobile}>
                 <Button variant="destructive-secondary">Remove</Button>
               </SpecimenRow>
 
               {/* ── Sizes ── */}
               <SpecimenGroup label="Size" />
-              <SpecimenRow label="XS" tags={['size="xs"', '24px height']}>
+              <SpecimenRow label="XS" tags={['size="xs"', '24px height']} isMobile={isMobile}>
                 <Button size="xs">Confirm</Button>
               </SpecimenRow>
-              <SpecimenRow label="SM" tags={['size="sm"', '32px height']}>
+              <SpecimenRow label="SM" tags={['size="sm"', '32px height']} isMobile={isMobile}>
                 <Button size="sm">Confirm</Button>
               </SpecimenRow>
-              <SpecimenRow label="MD" tags={['size="md"', '36px height', 'default']}>
+              <SpecimenRow label="MD" tags={['size="md"', '36px height', 'default']} isMobile={isMobile}>
                 <Button size="md">Confirm</Button>
               </SpecimenRow>
-              <SpecimenRow label="LG" tags={['size="lg"', '48px height']}>
+              <SpecimenRow label="LG" tags={['size="lg"', '48px height']} isMobile={isMobile}>
                 <Button size="lg">Confirm</Button>
               </SpecimenRow>
-              <SpecimenRow label="XL" tags={['size="xl"', '56px height']}>
+              <SpecimenRow label="XL" tags={['size="xl"', '56px height']} isMobile={isMobile}>
                 <Button size="xl">Confirm</Button>
               </SpecimenRow>
 
               {/* ── Artwork & Layout ── */}
               <SpecimenGroup label="Artwork & Layout" />
-              <SpecimenRow label="Leading artwork" tags={['leadingArtwork']} wide>
+              <SpecimenRow label="Leading artwork" tags={['leadingArtwork']} wide isMobile={isMobile}>
                 <Button leadingArtwork={<PlusIcon />}>Add member</Button>
               </SpecimenRow>
-              <SpecimenRow label="Trailing artwork" tags={['trailingArtwork']} wide>
+              <SpecimenRow label="Trailing artwork" tags={['trailingArtwork']} wide isMobile={isMobile}>
                 <Button trailingArtwork={<ArrowNarrowRightIcon />}>View all</Button>
               </SpecimenRow>
-              <SpecimenRow label="Leading + Trailing" tags={['leadingArtwork', 'trailingArtwork']} wide>
+              <SpecimenRow label="Leading + Trailing" tags={['leadingArtwork', 'trailingArtwork']} wide isMobile={isMobile}>
                 <Button leadingArtwork={<SearchSmIcon />} trailingArtwork={<ChevronDownIcon />}>Browse</Button>
               </SpecimenRow>
-              <SpecimenRow label="Icon Only" tags={['iconOnly', 'aria-label']} wide>
+              <SpecimenRow label="Icon Only" tags={['iconOnly', 'aria-label']} wide isMobile={isMobile}>
                 <Button iconOnly aria-label="Add"><PlusIcon /></Button>
               </SpecimenRow>
 
               {/* ── States ── */}
               <SpecimenGroup label="State" />
-              <SpecimenRow label="Default" tags={[]}>
+              <SpecimenRow label="Default" tags={[]} isMobile={isMobile}>
                 <Button>Save</Button>
               </SpecimenRow>
-              <SpecimenRow label="Loading" tags={['loading']} note="Shows spinner, blocks interaction">
+              <SpecimenRow label="Loading" tags={['loading']} note="Shows spinner, blocks interaction" isMobile={isMobile}>
                 <Button loading>Saving…</Button>
               </SpecimenRow>
-              <SpecimenRow label="Disabled" tags={['disabled']} note="Cursor not-allowed, all variants collapse to same muted style">
+              <SpecimenRow label="Disabled" tags={['disabled']} note="Cursor not-allowed, all variants collapse to same muted style" isMobile={isMobile}>
                 <Button disabled>Save</Button>
               </SpecimenRow>
 
               {/* ── Overrides ── */}
               <SpecimenGroup label="Override" />
-              <SpecimenRow label="Full width" tags={["style={{ width: '100%' }}"]} note="Stretches to fill its container" wide>
+              <SpecimenRow label="Full width" tags={["style={{ width: '100%' }}"]} note="Stretches to fill its container" wide isMobile={isMobile}>
                 <div style={{ width: '100%' }}>
                   <Button style={{ width: '100%' }}>Full width</Button>
                 </div>
               </SpecimenRow>
-              <SpecimenRow label="Custom height" tags={['style={{ height: 44 }}']} wide>
+              <SpecimenRow label="Custom height" tags={['style={{ height: 44 }}']} wide isMobile={isMobile}>
                 <Button style={{ height: 44 }}>Custom height</Button>
               </SpecimenRow>
-              <SpecimenRow label="Pill shape" tags={["style={{ borderRadius: 'var(--radius-full)' }}"]} wide>
+              <SpecimenRow label="Pill shape" tags={["style={{ borderRadius: 'var(--radius-full)' }}"]} wide isMobile={isMobile}>
                 <Button style={{ borderRadius: 'var(--radius-full)' }}>Pill shape</Button>
               </SpecimenRow>
-              <SpecimenRow label="className forwarded" tags={['className']} note="Spreads onto the root <button> element" wide>
+              <SpecimenRow label="className forwarded" tags={['className']} note="Spreads onto the root <button> element" wide isMobile={isMobile}>
                 <Button>Custom class</Button>
               </SpecimenRow>
-              <SpecimenRow label="Native button attributes" tags={['type', 'form', '...props']} note="All native attributes forwarded via rest props" wide>
+              <SpecimenRow label="Native button attributes" tags={['type', 'form', '...props']} note="All native attributes forwarded via rest props" wide isMobile={isMobile}>
                 <Button type="submit">Place order</Button>
               </SpecimenRow>
 

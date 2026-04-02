@@ -107,13 +107,13 @@ function FormCard({ title, fields }) {
 }
 
 /* ── Layout helpers ─────────────────────────────────────────────────────────── */
-function Section({ title, note, children }) {
+function Section({ title, note, isMobile, children }) {
   return (
     <section style={{
       background: 'var(--color-bg-primary)',
       border: '1px solid var(--color-border-opaque)',
       borderRadius: 'var(--radius-xl)',
-      padding: 32,
+      padding: isMobile ? 20 : 32,
     }}>
       <div style={{ marginBottom: 24 }}>
         <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wider)', textTransform: 'uppercase', color: 'var(--color-content-disabled)', margin: '0 0 4px' }}>{title}</p>
@@ -124,8 +124,11 @@ function Section({ title, note, children }) {
   )
 }
 
+import { useIsMobile } from './useIsMobile.js'
+
 /* ── Preview ─────────────────────────────────────────────────────────────────── */
 export default function AreaButtonPreview() {
+  const isMobile = useIsMobile()
   return (
     <>
       <style>{`
@@ -214,7 +217,7 @@ export default function AreaButtonPreview() {
         }
       `}</style>
 
-      <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: '48px 40px' }}>
+      <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: isMobile ? '24px 16px' : '48px 40px' }}>
 
         {/* Header */}
         <div style={{ marginBottom: 40 }}>
@@ -223,11 +226,11 @@ export default function AreaButtonPreview() {
           <p style={{ fontSize: 'var(--text-base)', color: 'var(--color-content-tertiary)', lineHeight: 'var(--line-height-loose)' }}>Ghost add-zone · dashed border · 3 sizes · configurable height & radius</p>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? 12 : 20 }}>
 
           {/* 1 — Layout: Horizontal (default) */}
-          <Section title="Layout: Horizontal (Default)" note="Icon and label sit side-by-side — 36px default height · align=center or align=start">
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 20 }}>
+          <Section title="Layout: Horizontal (Default)" note="Icon and label sit side-by-side — 36px default height · align=center or align=start" isMobile={isMobile}>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 16, marginBottom: 20 }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wide)', color: 'var(--color-content-disabled)', textTransform: 'uppercase' }}>align=center (default)</span>
                 <AreaButton label="Add item" />
@@ -237,7 +240,7 @@ export default function AreaButtonPreview() {
                 <AreaButton align="start" label="Add item" />
               </div>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginBottom: 16 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(3, 1fr)', gap: 16, marginBottom: 16 }}>
               {['sm', 'md', 'lg'].map(s => (
                 <div key={s} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                   <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wide)', color: 'var(--color-content-disabled)', textTransform: 'uppercase' }}>{s} · start</span>
@@ -245,7 +248,7 @@ export default function AreaButtonPreview() {
                 </div>
               ))}
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(3, 1fr)', gap: 16 }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wide)', color: 'var(--color-content-disabled)', textTransform: 'uppercase' }}>Custom label</span>
                 <AreaButton align="start" label="Add metric" />
@@ -262,7 +265,7 @@ export default function AreaButtonPreview() {
           </Section>
 
           {/* 2 — States */}
-          <Section title="States" note="Default · Disabled — hover and active are interactive, try them">
+          <Section title="States" note="Default · Disabled — hover and active are interactive, try them" isMobile={isMobile}>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 16 }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wide)', color: 'var(--color-content-disabled)', textTransform: 'uppercase' }}>Default</span>
@@ -276,8 +279,8 @@ export default function AreaButtonPreview() {
           </Section>
 
           {/* 3 — Customization */}
-          <Section title="Customization" note="Custom label · icon-only (hideLabel) · custom icon">
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
+          <Section title="Customization" note="Custom label · icon-only (hideLabel) · custom icon" isMobile={isMobile}>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(3, 1fr)', gap: 16 }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wide)', color: 'var(--color-content-disabled)', textTransform: 'uppercase' }}>Custom label</span>
                 <AreaButton align="start" label="New card" />
@@ -294,8 +297,8 @@ export default function AreaButtonPreview() {
           </Section>
 
           {/* 4 — Layout: Vertical */}
-          <Section title="Layout: Vertical" note="Icon stacked above label — height driven by size prop · sm 80px · md 120px · lg 160px">
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
+          <Section title="Layout: Vertical" note="Icon stacked above label — height driven by size prop · sm 80px · md 120px · lg 160px" isMobile={isMobile}>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(3, 1fr)', gap: 16 }}>
               {['sm', 'md', 'lg'].map(s => (
                 <div key={s} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                   <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wide)', color: 'var(--color-content-disabled)', textTransform: 'uppercase' }}>{s}</span>
@@ -306,8 +309,8 @@ export default function AreaButtonPreview() {
           </Section>
 
           {/* 5 — Configurable height & radius */}
-          <Section title="Height & Border Radius" note="height and borderRadius props override the defaults — useful to match adjacent UI">
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
+          <Section title="Height & Border Radius" note="height and borderRadius props override the defaults — useful to match adjacent UI" isMobile={isMobile}>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(3, 1fr)', gap: 16 }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wide)', color: 'var(--color-content-disabled)', textTransform: 'uppercase' }}>height=80 · vertical</span>
                 <AreaButton layout="vertical" height={80} label="Add" />
@@ -324,8 +327,8 @@ export default function AreaButtonPreview() {
           </Section>
 
           {/* 6 — In context: metric cards (horizontal row) */}
-          <Section title="In Context — Metric Cards" note="AreaButton at the end of a horizontal card group">
-            <div style={{ display: 'flex', gap: 12, alignItems: 'stretch' }}>
+          <Section title="In Context — Metric Cards" note="AreaButton at the end of a horizontal card group" isMobile={isMobile}>
+            <div style={{ display: 'flex', gap: 12, alignItems: 'stretch', flexWrap: 'wrap' }}>
               <DataCard title="Monthly Revenue" value="$84,210" trend="up" />
               <DataCard title="Churn Rate" value="2.4%" trend="down" />
               <div style={{ flex: 1, minWidth: 0 }}>
@@ -335,7 +338,7 @@ export default function AreaButtonPreview() {
           </Section>
 
           {/* 7 — In context: form card group (horizontal, left-aligned) */}
-          <Section title="In Context — Form Cards" note="AreaButton in horizontal left-aligned layout at the end of a stacked form section group">
+          <Section title="In Context — Form Cards" note="AreaButton in horizontal left-aligned layout at the end of a stacked form section group" isMobile={isMobile}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12, maxWidth: 560 }}>
               <FormCard
                 title="Basic Information"

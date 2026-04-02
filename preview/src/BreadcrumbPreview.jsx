@@ -3,6 +3,8 @@
    Slash · Chevron · With icon · Without icon · Current-page state · Dark mode
    ───────────────────────────────────────────────────────────────────────────── */
 
+import { useIsMobile } from './useIsMobile.js'
+
 /* ── Icons ─────────────────────────────────────────────────────────────────── */
 
 const HomeLineIcon = ({ size = 16, color = 'currentColor' }) => (
@@ -97,9 +99,9 @@ function Breadcrumb({ items = [], separator = 'slash' }) {
 
 /* ── Preview shell ──────────────────────────────────────────────────────────── */
 
-function Section({ title, note, children }) {
+function Section({ title, note, children, isMobile }) {
   return (
-    <section style={{ background: 'var(--color-bg-primary)', border: '1px solid var(--color-border-opaque)', borderRadius: 'var(--radius-xl)', padding: 32 }}>
+    <section style={{ background: 'var(--color-bg-primary)', border: '1px solid var(--color-border-opaque)', borderRadius: 'var(--radius-xl)', padding: isMobile ? 20 : 32 }}>
       <div style={{ marginBottom: 24 }}>
         <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wider)', textTransform: 'uppercase', color: 'var(--color-content-disabled)', margin: '0 0 4px' }}>{title}</p>
         {note && <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-sm)', color: 'var(--color-content-tertiary)', margin: 0, lineHeight: 1.5 }}>{note}</p>}
@@ -126,6 +128,7 @@ const profile = { label: 'Profile', href: '/profile' }
 const account = { label: 'Account' /* no href = current */ }
 
 export default function BreadcrumbPreview() {
+  const isMobile = useIsMobile()
   return (
     <>
       <style>{`
@@ -139,7 +142,7 @@ export default function BreadcrumbPreview() {
 
       `}</style>
 
-      <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: '48px 40px' }}>
+      <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: isMobile ? '24px 16px' : '48px 40px' }}>
 
         {/* Header */}
         <div style={{ marginBottom: 40 }}>
@@ -151,7 +154,7 @@ export default function BreadcrumbPreview() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
 
           {/* Slash separator */}
-          <Section title="Slash separator" note="Default — / character, 20px wide, centered">
+          <Section title="Slash separator" note="Default — / character, 20px wide, centered" isMobile={isMobile}>
             <Row label="3 items — home icon on first">
               <Breadcrumb separator="slash" items={[home, settings, account]} />
             </Row>
@@ -174,7 +177,7 @@ export default function BreadcrumbPreview() {
           </Section>
 
           {/* Chevron separator */}
-          <Section title="Chevron separator" note="Chevron › replaces the slash — same sizing and spacing">
+          <Section title="Chevron separator" note="Chevron › replaces the slash — same sizing and spacing" isMobile={isMobile}>
             <Row label="3 items — home icon on first">
               <Breadcrumb separator="chevron" items={[home, settings, account]} />
             </Row>
@@ -196,7 +199,7 @@ export default function BreadcrumbPreview() {
           </Section>
 
           {/* With icons */}
-          <Section title="With leading icon" note="Icon is wrapped in alloy-icon-slot — stroke-width follows the artwork system">
+          <Section title="With leading icon" note="Icon is wrapped in alloy-icon-slot — stroke-width follows the artwork system" isMobile={isMobile}>
             <Row label="home icon on first item only">
               <Breadcrumb separator="slash" items={[
                 { label: 'Home', href: '/', icon: <HomeLineIcon size={16} /> },
@@ -214,7 +217,7 @@ export default function BreadcrumbPreview() {
           </Section>
 
           {/* Current page */}
-          <Section title="Current page state" note="Last item has no href — renders as non-interactive with tertiary color and no underline">
+          <Section title="Current page state" note="Last item has no href — renders as non-interactive with tertiary color and no underline" isMobile={isMobile}>
             <Row label="middle item is clickable, last is current">
               <Breadcrumb separator="slash" items={[home, profile, account]} />
             </Row>

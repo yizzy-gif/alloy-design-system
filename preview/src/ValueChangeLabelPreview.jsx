@@ -3,6 +3,7 @@
    trend & text modes · in table cells, chart cards, data cards · light + dark
    ───────────────────────────────────────────────────────────────────────────── */
 
+import { useIsMobile } from './useIsMobile.js'
 import {
   ValueChangeLabel,
   DataCard,
@@ -32,9 +33,9 @@ const DARK_VARS = {
 
 /* ── Shell helpers ──────────────────────────────────────────────────────────── */
 
-function Section({ title, subtitle, children }) {
+function Section({ title, subtitle, children, isMobile }) {
   return (
-    <div style={{ background: 'var(--color-bg-primary)', borderRadius: 'var(--radius-xl)', padding: '32px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+    <div style={{ background: 'var(--color-bg-primary)', borderRadius: 'var(--radius-xl)', padding: isMobile ? '20px' : '32px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
       <div>
         <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', fontWeight: 'var(--font-weight-semibold)', letterSpacing: 'var(--tracking-wider)', textTransform: 'uppercase', color: 'var(--color-content-tertiary)', marginBottom: '4px' }}>{title}</p>
         {subtitle && <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-sm)', color: 'var(--color-content-secondary)' }}>{subtitle}</p>}
@@ -145,8 +146,9 @@ function Sparkline({ color, points }) {
 /* ── Preview ─────────────────────────────────────────────────────────────────── */
 
 export default function ValueChangeLabelPreview() {
+  const isMobile = useIsMobile()
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', padding: '48px 40px' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', padding: isMobile ? '24px 16px' : '48px 40px' }}>
 
       {/* Header */}
       <div style={{ marginBottom: '40px' }}>
@@ -164,11 +166,11 @@ export default function ValueChangeLabelPreview() {
       <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
 
         {/* All variants reference */}
-        <Section title="ALL VARIANTS" subtitle="Trend mode: value + arrow, color from direction. Text mode: value only, color from severity.">
+        <Section title="ALL VARIANTS" subtitle="Trend mode: value + arrow, color from direction. Text mode: value only, color from severity." isMobile={isMobile}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <div>
               <Label>mode="trend"</Label>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '24px', marginTop: '10px', flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? 12 : 24, marginTop: '10px', flexWrap: 'wrap' }}>
                 <ValueChangeLabel mode="trend" value="12%" trend="up" />
                 <ValueChangeLabel mode="trend" value="8.4%" trend="up" severity="positive" />
                 <ValueChangeLabel mode="trend" value="0.3%" trend="up" severity="negative" />
@@ -180,7 +182,7 @@ export default function ValueChangeLabelPreview() {
             </div>
             <div>
               <Label>mode="text"</Label>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '24px', marginTop: '10px', flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? 12 : 24, marginTop: '10px', flexWrap: 'wrap' }}>
                 <ValueChangeLabel mode="text" value="On track" severity="positive" />
                 <ValueChangeLabel mode="text" value="Review needed" severity="warning" />
                 <ValueChangeLabel mode="text" value="Overdue" severity="negative" />
@@ -193,13 +195,13 @@ export default function ValueChangeLabelPreview() {
         </Section>
 
         {/* In a table */}
-        <Section title="IN A TABLE" subtitle="Right-aligned in the change column — tabular-nums value, trend arrow after.">
+        <Section title="IN A TABLE" subtitle="Right-aligned in the change column — tabular-nums value, trend arrow after." isMobile={isMobile}>
           <MetricTable />
         </Section>
 
         {/* In chart cards */}
-        <Section title="IN CHART CARDS" subtitle="Trend label sits inline with the headline metric below the card title.">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
+        <Section title="IN CHART CARDS" subtitle="Trend label sits inline with the headline metric below the card title." isMobile={isMobile}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(3, 1fr)', gap: '12px' }}>
             <ChartCard title="Total Revenue" value="$1.4M" change="12%" trend="up">
               <Sparkline color="var(--color-success-content)" points={[40, 55, 48, 62, 70, 65, 80, 88, 95]} />
             </ChartCard>
@@ -222,8 +224,8 @@ export default function ValueChangeLabelPreview() {
         </Section>
 
         {/* In data cards */}
-        <Section title="IN DATA CARDS" subtitle="change prop on DataCard — ValueChangeLabel sits beside the headline value.">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px' }}>
+        <Section title="IN DATA CARDS" subtitle="change prop on DataCard — ValueChangeLabel sits beside the headline value." isMobile={isMobile}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: '12px' }}>
             <DataCard
               color="green"
               icon={<CurrencyDollarIcon size={24} />}
@@ -257,10 +259,10 @@ export default function ValueChangeLabelPreview() {
 
         {/* Dark mode */}
         <div className="dark" style={{ ...DARK_VARS }}>
-          <Section title="DARK MODE">
+          <Section title="DARK MODE" isMobile={isMobile}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               {/* Trend row */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '24px', flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? 12 : 24, flexWrap: 'wrap' }}>
                 <ValueChangeLabel mode="trend" value="12%" trend="up" />
                 <ValueChangeLabel mode="trend" value="0.3%" trend="up" severity="negative" />
                 <ValueChangeLabel mode="trend" value="18%" trend="down" severity="warning" />
@@ -270,7 +272,7 @@ export default function ValueChangeLabelPreview() {
                 <ValueChangeLabel mode="text" value="Critical" severity="negative" />
               </div>
               {/* Data cards in dark */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: '12px' }}>
                 <DataCard color="green" icon={<CurrencyDollarIcon size={24} />} label="Revenue" value="$1.4M"
                   change={<ValueChangeLabel mode="trend" value="12%" trend="up" />} />
                 <DataCard color="red" icon={<AlertTriangleIcon size={24} />} label="Churn" value="2.1%"

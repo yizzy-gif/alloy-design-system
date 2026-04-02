@@ -5,6 +5,7 @@
    ───────────────────────────────────────────────────────────────────────────── */
 
 import { useState, useRef, useEffect, useCallback } from 'react'
+import { useIsMobile } from './useIsMobile.js'
 
 /* ── Icons ────────────────────────────────────────────────────────────────── */
 const ChevronRightIcon = ({ size = 16 }) => (
@@ -417,8 +418,9 @@ function TriggerBtn({ children, icon }) {
 
 /* ── Section / Row helpers ────────────────────────────────────────────────── */
 function Section({ title, note, children }) {
+  const isMobile = useIsMobile()
   return (
-    <section style={{ background: 'var(--color-bg-primary)', border: '1px solid var(--color-border-opaque)', borderRadius: 'var(--radius-xl)', padding: 32 }}>
+    <section style={{ background: 'var(--color-bg-primary)', border: '1px solid var(--color-border-opaque)', borderRadius: 'var(--radius-xl)', padding: isMobile ? 20 : 32 }}>
       <div style={{ marginBottom: 24 }}>
         <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wider)', textTransform: 'uppercase', color: 'var(--color-content-disabled)', margin: '0 0 4px' }}>{title}</p>
         {note && <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-sm)', color: 'var(--color-content-tertiary)', margin: 0, lineHeight: 1.5 }}>{note}</p>}
@@ -769,6 +771,7 @@ function PlacementsDemo() {
 
 /* ── Main export ──────────────────────────────────────────────────────────── */
 export default function DropdownMenuPreview() {
+  const isMobile = useIsMobile()
   return (
     <>
       <style>{`
@@ -978,7 +981,7 @@ export default function DropdownMenuPreview() {
 
       `}</style>
 
-      <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: '48px 40px' }}>
+      <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: isMobile ? '24px 16px' : '48px 40px' }}>
 
         {/* Header */}
         <div style={{ marginBottom: 40 }}>

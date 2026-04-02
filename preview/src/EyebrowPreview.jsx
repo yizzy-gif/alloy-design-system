@@ -26,12 +26,12 @@ function Eyebrow({ as: Tag = 'span', style, children, ...props }) {
 }
 
 /* ── Section shell — matches ButtonPreview pattern ───────────────────────────── */
-function Section({ title, subtitle, children }) {
+function Section({ title, subtitle, isMobile, children }) {
   return (
     <div style={{
       background:   'var(--color-bg-primary)',
       borderRadius: 'var(--radius-xl)',
-      padding:      '32px',
+      padding:      isMobile ? '20px' : '32px',
       display:      'flex',
       flexDirection:'column',
       gap:          '24px',
@@ -75,8 +75,11 @@ function TextLine({ width = '100%', height = 12, opacity = 1 }) {
   )
 }
 
+import { useIsMobile } from './useIsMobile.js'
+
 /* ── Main preview ─────────────────────────────────────────────────────────────── */
 export default function EyebrowPreview() {
+  const isMobile = useIsMobile()
   return (
     <div style={{
       minHeight:       '100vh',
@@ -86,7 +89,7 @@ export default function EyebrowPreview() {
 
       {/* Header */}
       <div style={{
-        padding:      '48px 48px 0',
+        padding:      isMobile ? '24px 16px 0' : '48px 48px 0',
         marginBottom: '32px',
       }}>
         <p style={{ fontSize:'var(--text-xs)', fontWeight:'var(--font-weight-medium)', color:'var(--color-content-tertiary)', marginBottom:'8px', textTransform:'uppercase', letterSpacing:'var(--tracking-wider)' }}>
@@ -100,10 +103,10 @@ export default function EyebrowPreview() {
         </p>
       </div>
 
-      <div style={{ padding:'0 48px 64px', display:'flex', flexDirection:'column', gap:'24px' }}>
+      <div style={{ padding: isMobile ? '0 16px 64px' : '0 48px 64px', display:'flex', flexDirection:'column', gap:'24px' }}>
 
         {/* ── 1. The Component ─────────────────────────────────────────────────── */}
-        <Section title="The Component" subtitle="Eyebrow renders as a <span> by default. Use the as prop to render any semantic element.">
+        <Section title="The Component" subtitle="Eyebrow renders as a <span> by default. Use the as prop to render any semantic element." isMobile={isMobile}>
           <div style={{ display:'flex', flexDirection:'column', gap:'16px' }}>
 
             {/* Plain usage */}
@@ -127,8 +130,8 @@ export default function EyebrowPreview() {
         </Section>
 
         {/* ── 2. Semantic as prop ───────────────────────────────────────────────── */}
-        <Section title="Semantic Element (as prop)" subtitle="Pass as='h2'–'h6' or 'p' when the eyebrow should carry heading semantics for accessibility.">
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(3, 1fr)', gap:'16px' }}>
+        <Section title="Semantic Element (as prop)" subtitle="Pass as='h2'–'h6' or 'p' when the eyebrow should carry heading semantics for accessibility." isMobile={isMobile}>
+          <div style={{ display:'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', gap:'16px' }}>
             {[
               { as: 'span',  label: 'as="span" (default)' },
               { as: 'p',     label: 'as="p"' },
@@ -143,8 +146,8 @@ export default function EyebrowPreview() {
         </Section>
 
         {/* ── 3. In Context — Metric Card ───────────────────────────────────────── */}
-        <Section title="In Context — Metric Cards" subtitle="Eyebrow labels each section inside a data card, creating clear visual hierarchy.">
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(3, 1fr)', gap:'16px' }}>
+        <Section title="In Context — Metric Cards" subtitle="Eyebrow labels each section inside a data card, creating clear visual hierarchy." isMobile={isMobile}>
+          <div style={{ display:'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', gap:'16px' }}>
 
             {/* Revenue card */}
             <MockCard>
@@ -176,7 +179,7 @@ export default function EyebrowPreview() {
         </Section>
 
         {/* ── 4. In Context — Content Sections ─────────────────────────────────── */}
-        <Section title="In Context — Content Sections" subtitle="Eyebrow divides content zones inside a larger card panel.">
+        <Section title="In Context — Content Sections" subtitle="Eyebrow divides content zones inside a larger card panel." isMobile={isMobile}>
           <MockCard>
             <div style={{ display:'flex', flexDirection:'column', gap:'20px' }}>
 
@@ -219,7 +222,7 @@ export default function EyebrowPreview() {
         </Section>
 
         {/* ── 5. In Context — Form Card ─────────────────────────────────────────── */}
-        <Section title="In Context — Form Card" subtitle="Eyebrow groups form fields into logical sections.">
+        <Section title="In Context — Form Card" subtitle="Eyebrow groups form fields into logical sections." isMobile={isMobile}>
           <MockCard style={{ maxWidth:'480px' }}>
 
             <div style={{ display:'flex', flexDirection:'column', gap:'16px' }}>
@@ -252,14 +255,14 @@ export default function EyebrowPreview() {
         </Section>
 
         {/* ── 6. Typography Specimen ────────────────────────────────────────────── */}
-        <Section title="Typography Specimen" subtitle="Full type specimen showing all Label-sm properties.">
+        <Section title="Typography Specimen" subtitle="Full type specimen showing all Label-sm properties." isMobile={isMobile}>
           <div style={{
             background:   'var(--color-bg-secondary)',
             borderRadius: 'var(--radius-lg)',
             padding:      '24px',
             display:      'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap:          '20px',
+            gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+            gap:          isMobile ? 12 : 20,
           }}>
             {[
               { label: 'Font family', value: 'var(--font-sans) — Geist' },
@@ -287,7 +290,7 @@ export default function EyebrowPreview() {
 
       {/* Footer */}
       <div style={{
-        padding:      '24px 48px',
+        padding:      isMobile ? '24px 16px' : '24px 48px',
         borderTop:    '1px solid var(--color-border-opaque)',
         fontFamily:   'var(--font-sans)',
         fontSize:     'var(--text-xs)',

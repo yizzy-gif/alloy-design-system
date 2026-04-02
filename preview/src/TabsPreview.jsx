@@ -4,6 +4,7 @@
    ───────────────────────────────────────────────────────────────────────────── */
 
 import { useState, useRef, useLayoutEffect } from 'react'
+import { useIsMobile } from './useIsMobile.js'
 
 /* ── Icons (from Alloy icon library — 24×24 viewBox, currentColor stroke) ────── */
 const HomeIcon = () => (
@@ -78,9 +79,9 @@ function ControlledTabs({ defaultValue, variant = 'underline', size = 'md', item
 }
 
 /* ── Layout helpers ──────────────────────────────────────────────────────────── */
-function Section({ title, note, children }) {
+function Section({ title, note, children, isMobile }) {
   return (
-    <section style={{ background: 'var(--color-bg-primary)', border: '1px solid var(--color-border-opaque)', borderRadius: 'var(--radius-xl)', padding: 32 }}>
+    <section style={{ background: 'var(--color-bg-primary)', border: '1px solid var(--color-border-opaque)', borderRadius: 'var(--radius-xl)', padding: isMobile ? 20 : 32 }}>
       <div style={{ marginBottom: 24 }}>
         <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wider)', textTransform: 'uppercase', color: 'var(--color-content-disabled)', margin: '0 0 4px' }}>{title}</p>
         {note && <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-sm)', color: 'var(--color-content-tertiary)', margin: 0, lineHeight: 1.5 }}>{note}</p>}
@@ -94,7 +95,9 @@ function Row({ label, children }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginBottom: 24 }}>
       <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', color: 'var(--color-content-disabled)', letterSpacing: 'var(--tracking-wide)' }}>{label}</span>
-      {children}
+      <div style={{ overflowX: 'auto' }}>
+        {children}
+      </div>
     </div>
   )
 }
@@ -131,6 +134,7 @@ const ITEMS_DISABLED = [
 
 /* ── Preview ─────────────────────────────────────────────────────────────────── */
 export default function TabsPreview() {
+  const isMobile = useIsMobile()
   return (
     <>
       <style>{`
@@ -252,7 +256,7 @@ export default function TabsPreview() {
 
       `}</style>
 
-      <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: '48px 40px' }}>
+      <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: isMobile ? '24px 16px' : '48px 40px' }}>
 
         {/* Header */}
         <div style={{ marginBottom: 40 }}>
@@ -264,7 +268,7 @@ export default function TabsPreview() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
 
           {/* 1 — Variants */}
-          <Section title="Variants" note="underline — sliding 2px brand indicator · background — active tab gets a rounded pill">
+          <Section title="Variants" note="underline — sliding 2px brand indicator · background — active tab gets a rounded pill" isMobile={isMobile}>
             <Row label="underline · md">
               <ControlledTabs variant="underline" size="md" defaultValue="overview" items={ITEMS_BASIC} />
             </Row>
@@ -280,7 +284,7 @@ export default function TabsPreview() {
           </Section>
 
           {/* 2 — With Leading Icon */}
-          <Section title="With Leading Icon" note="leadingIcon slot scales with the font size">
+          <Section title="With Leading Icon" note="leadingIcon slot scales with the font size" isMobile={isMobile}>
             <Row label="underline · md">
               <ControlledTabs variant="underline" size="md" defaultValue="home" items={ITEMS_ICONS} />
             </Row>
@@ -296,7 +300,7 @@ export default function TabsPreview() {
           </Section>
 
           {/* 3 — With Trailing Badge */}
-          <Section title="With Trailing Badge" note="trailingBadge accepts any ReactNode — number, string, or custom element">
+          <Section title="With Trailing Badge" note="trailingBadge accepts any ReactNode — number, string, or custom element" isMobile={isMobile}>
             <Row label="underline · md">
               <ControlledTabs variant="underline" size="md" defaultValue="inbox" items={ITEMS_BADGE} />
             </Row>
@@ -306,7 +310,7 @@ export default function TabsPreview() {
           </Section>
 
           {/* 4 — Disabled */}
-          <Section title="Disabled" note="disabled on root disables all · disabled on individual items disables only those">
+          <Section title="Disabled" note="disabled on root disables all · disabled on individual items disables only those" isMobile={isMobile}>
             <Row label="individual disabled">
               <ControlledTabs variant="underline" size="md" defaultValue="overview" items={ITEMS_DISABLED} />
             </Row>

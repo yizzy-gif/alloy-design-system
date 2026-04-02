@@ -4,6 +4,7 @@
    ───────────────────────────────────────────────────────────────────────────── */
 
 import { useState } from 'react'
+import { useIsMobile } from './useIsMobile.js'
 
 /* ── Icons ───────────────────────────────────────────────────────────────────── */
 const SunIcon       = () => <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2V4M12 20V22M4 12H2M6.31412 6.31412L4.8999 4.8999M17.6859 6.31412L19.1001 4.8999M6.31412 17.69L4.8999 19.1042M17.6859 17.69L19.1001 19.1042M22 12H20M17 12C17 14.7614 14.7614 17 12 17C9.23858 17 7 14.7614 7 12C7 9.23858 9.23858 7 12 7C14.7614 7 17 9.23858 17 12Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -65,12 +66,12 @@ function ToggleGroup({ options, size = 'md', defaultVariant = 'secondary', selec
 }
 
 /* ── Section / label helpers ─────────────────────────────────────────────────── */
-function Section({ title, note, dark, children }) {
+function Section({ title, note, dark, isMobile, children }) {
   return (
     <section style={{
       background: dark ? 'var(--Alloy-slate-950)' : 'var(--color-bg-primary)',
       border: `1px solid ${dark ? 'rgba(255,255,255,0.07)' : 'var(--color-border-opaque)'}`,
-      borderRadius: 'var(--radius-xl)', padding: 32,
+      borderRadius: 'var(--radius-xl)', padding: isMobile ? 20 : 32,
     }}>
       <div style={{ marginBottom: 24 }}>
         <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wider)', textTransform: 'uppercase', color: dark ? 'rgba(255,255,255,0.3)' : 'var(--color-content-disabled)', margin: '0 0 4px' }}>{title}</p>
@@ -83,8 +84,9 @@ function Section({ title, note, dark, children }) {
 function SubLabel({ dark, children }) {
   return <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', color: dark ? 'rgba(255,255,255,0.3)' : 'var(--color-content-disabled)', letterSpacing: 'var(--tracking-wide)', marginBottom: 10 }}>{children}</p>
 }
-function ColLabel({ w = 80, dark, children }) {
-  return <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wide)', color: dark ? 'rgba(255,255,255,0.3)' : 'var(--color-content-disabled)', width: w, flexShrink: 0 }}>{children}</span>
+function ColLabel({ w = 80, isMobile, dark, children }) {
+  const effectiveW = isMobile ? Math.min(w, 56) : w
+  return <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wide)', color: dark ? 'rgba(255,255,255,0.3)' : 'var(--color-content-disabled)', width: effectiveW, flexShrink: 0 }}>{children}</span>
 }
 
 /* ── Specimen helpers (same pattern as ButtonPreview) ───────────────────────── */
@@ -103,11 +105,11 @@ function SpecimenGroup({ label }) {
   )
 }
 
-function SpecimenRow({ label, tags = [], note, wide, children }) {
+function SpecimenRow({ label, tags = [], note, wide, isMobile, children }) {
   return (
     <div style={{
       display: 'grid',
-      gridTemplateColumns: wide ? '1fr 260px' : '1fr 200px',
+      gridTemplateColumns: isMobile ? '1fr' : wide ? '1fr 260px' : '1fr 200px',
       gap: 16, alignItems: 'center',
       padding: '10px 0',
       borderBottom: '1px solid var(--color-border-opaque)',
@@ -163,6 +165,7 @@ function ImportRow() {
 
 /* ── Preview ─────────────────────────────────────────────────────────────────── */
 export default function ToggleButtonPreview() {
+  const isMobile = useIsMobile()
   return (
     <>
       <style>{`
@@ -240,7 +243,7 @@ export default function ToggleButtonPreview() {
 
       `}</style>
 
-      <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: '48px 40px' }}>
+      <div style={{ minHeight: '100vh', background: 'var(--color-bg-secondary)', fontFamily: 'var(--font-sans)', padding: isMobile ? '24px 16px' : '48px 40px' }}>
 
         {/* Header */}
         <div style={{ marginBottom: 40 }}>
@@ -249,10 +252,10 @@ export default function ToggleButtonPreview() {
           <p style={{ fontSize: 'var(--text-base)', color: 'var(--color-content-tertiary)', lineHeight: 'var(--line-height-loose)' }}>Two selection styles · border (outline only) · fill (inverse bg)</p>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? 12 : 20 }}>
 
           {/* 1 — Selection styles */}
-          <Section title="Selection Styles" note="Click any button to toggle · both styles available on any defaultVariant">
+          <Section title="Selection Styles" note="Click any button to toggle · both styles available on any defaultVariant" isMobile={isMobile}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
 
               <div>
@@ -260,7 +263,7 @@ export default function ToggleButtonPreview() {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                   {['secondary', 'tertiary', 'ghost'].map(v => (
                     <div key={v} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                      <ColLabel>{v}</ColLabel>
+                      <ColLabel isMobile={isMobile}>{v}</ColLabel>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
                         {SIZES.map(s => (
                           <ToggleButton key={s} size={s} defaultVariant={v} selectionStyle="border">Toggle</ToggleButton>
@@ -278,7 +281,7 @@ export default function ToggleButtonPreview() {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                   {['secondary', 'tertiary', 'ghost'].map(v => (
                     <div key={v} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                      <ColLabel>{v}</ColLabel>
+                      <ColLabel isMobile={isMobile}>{v}</ColLabel>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
                         {SIZES.map(s => (
                           <ToggleButton key={s} size={s} defaultVariant={v} selectionStyle="fill">Toggle</ToggleButton>
@@ -292,10 +295,10 @@ export default function ToggleButtonPreview() {
           </Section>
 
           {/* 2 — Icon-only */}
-          <Section title="Icon-only" note="Both selection styles · click to toggle">
+          <Section title="Icon-only" note="Both selection styles · click to toggle" isMobile={isMobile}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                <ColLabel>border</ColLabel>
+                <ColLabel isMobile={isMobile}>border</ColLabel>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                   {SIZES.map(s => (
                     <ToggleButton key={s} size={s} iconOnly defaultVariant="secondary" selectionStyle="border" label="Toggle sun">
@@ -305,7 +308,7 @@ export default function ToggleButtonPreview() {
                 </div>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                <ColLabel>fill</ColLabel>
+                <ColLabel isMobile={isMobile}>fill</ColLabel>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                   {SIZES.map(s => (
                     <ToggleButton key={s} size={s} iconOnly defaultVariant="secondary" selectionStyle="fill" label="Toggle sun">
@@ -318,10 +321,10 @@ export default function ToggleButtonPreview() {
           </Section>
 
           {/* 3 — Toggle groups */}
-          <Section title="Toggle Groups" note="Single-select groups — one active at a time">
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+          <Section title="Toggle Groups" note="Single-select groups — one active at a time" isMobile={isMobile}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? 12 : 20 }}>
 
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: 32, flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: isMobile ? 12 : 32, flexWrap: 'wrap' }}>
                 <div>
                   <SubLabel>Alignment · border</SubLabel>
                   <ToggleGroup size="md" defaultVariant="tertiary" selectionStyle="border" options={[
@@ -340,7 +343,7 @@ export default function ToggleButtonPreview() {
                 </div>
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: 32, flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: isMobile ? 12 : 32, flexWrap: 'wrap' }}>
                 <div>
                   <SubLabel>View mode · border</SubLabel>
                   <ToggleGroup size="sm" defaultVariant="ghost" selectionStyle="border" options={[
@@ -357,7 +360,7 @@ export default function ToggleButtonPreview() {
                 </div>
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: 32, flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: isMobile ? 12 : 32, flexWrap: 'wrap' }}>
                 <div>
                   <SubLabel>Label group · border</SubLabel>
                   <ToggleGroup size="sm" defaultVariant="secondary" selectionStyle="border" options={[
@@ -379,7 +382,7 @@ export default function ToggleButtonPreview() {
           </Section>
 
           {/* 4 — Disabled */}
-          <Section title="Disabled">
+          <Section title="Disabled" isMobile={isMobile}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <ToggleButton size="md" defaultVariant="secondary" selectionStyle="border" disabled>Disabled</ToggleButton>
               <ToggleButton size="md" defaultVariant="secondary" selectionStyle="fill"   disabled>Disabled</ToggleButton>
@@ -392,7 +395,7 @@ export default function ToggleButtonPreview() {
           <section style={{
             background: 'var(--color-bg-primary)',
             border: '1px solid var(--color-border-opaque)',
-            borderRadius: 'var(--radius-xl)', padding: 32,
+            borderRadius: 'var(--radius-xl)', padding: isMobile ? 20 : 32,
           }}>
             <div style={{ marginBottom: 24 }}>
               <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wider)', textTransform: 'uppercase', color: 'var(--color-content-disabled)', margin: '0 0 4px' }}>Specimen</p>
@@ -411,6 +414,7 @@ export default function ToggleButtonPreview() {
               label="Border"
               tags={['selectionStyle="border"']}
               note="Keeps the base background, adds --color-border-selected outline when selected"
+              isMobile={isMobile}
             >
               <ToggleButton defaultVariant="secondary" selectionStyle="border">Toggle</ToggleButton>
             </SpecimenRow>
@@ -418,73 +422,74 @@ export default function ToggleButtonPreview() {
               label="Fill"
               tags={['selectionStyle="fill"']}
               note="Switches to inverse background (--color-bg-inverse-primary) when selected"
+              isMobile={isMobile}
             >
               <ToggleButton defaultVariant="secondary" selectionStyle="fill">Toggle</ToggleButton>
             </SpecimenRow>
 
             {/* Base Variant */}
             <SpecimenGroup label="Base Variant" />
-            <SpecimenRow label="Secondary" tags={['defaultVariant="secondary"']} note="Filled secondary background — default">
+            <SpecimenRow label="Secondary" tags={['defaultVariant="secondary"']} note="Filled secondary background — default" isMobile={isMobile}>
               <ToggleButton defaultVariant="secondary" selectionStyle="border">Toggle</ToggleButton>
               <ToggleButton defaultVariant="secondary" selectionStyle="fill">Toggle</ToggleButton>
             </SpecimenRow>
-            <SpecimenRow label="Tertiary" tags={['defaultVariant="tertiary"']} note="White background with opaque border">
+            <SpecimenRow label="Tertiary" tags={['defaultVariant="tertiary"']} note="White background with opaque border" isMobile={isMobile}>
               <ToggleButton defaultVariant="tertiary" selectionStyle="border">Toggle</ToggleButton>
               <ToggleButton defaultVariant="tertiary" selectionStyle="fill">Toggle</ToggleButton>
             </SpecimenRow>
-            <SpecimenRow label="Ghost" tags={['defaultVariant="ghost"']} note="Transparent — no background or border at rest">
+            <SpecimenRow label="Ghost" tags={['defaultVariant="ghost"']} note="Transparent — no background or border at rest" isMobile={isMobile}>
               <ToggleButton defaultVariant="ghost" selectionStyle="border">Toggle</ToggleButton>
               <ToggleButton defaultVariant="ghost" selectionStyle="fill">Toggle</ToggleButton>
             </SpecimenRow>
 
             {/* Size */}
             <SpecimenGroup label="Size" />
-            <SpecimenRow label="XS" tags={['size="xs"', '24px height']}>
+            <SpecimenRow label="XS" tags={['size="xs"', '24px height']} isMobile={isMobile}>
               <ToggleButton size="xs" defaultVariant="secondary" selectionStyle="border">Toggle</ToggleButton>
             </SpecimenRow>
-            <SpecimenRow label="SM" tags={['size="sm"', '32px height']}>
+            <SpecimenRow label="SM" tags={['size="sm"', '32px height']} isMobile={isMobile}>
               <ToggleButton size="sm" defaultVariant="secondary" selectionStyle="border">Toggle</ToggleButton>
             </SpecimenRow>
-            <SpecimenRow label="MD" tags={['size="md"', '36px height', 'default']}>
+            <SpecimenRow label="MD" tags={['size="md"', '36px height', 'default']} isMobile={isMobile}>
               <ToggleButton size="md" defaultVariant="secondary" selectionStyle="border">Toggle</ToggleButton>
             </SpecimenRow>
-            <SpecimenRow label="LG" tags={['size="lg"', '48px height']}>
+            <SpecimenRow label="LG" tags={['size="lg"', '48px height']} isMobile={isMobile}>
               <ToggleButton size="lg" defaultVariant="secondary" selectionStyle="border">Toggle</ToggleButton>
             </SpecimenRow>
-            <SpecimenRow label="XL" tags={['size="xl"', '56px height']}>
+            <SpecimenRow label="XL" tags={['size="xl"', '56px height']} isMobile={isMobile}>
               <ToggleButton size="xl" defaultVariant="secondary" selectionStyle="border">Toggle</ToggleButton>
             </SpecimenRow>
 
             {/* Layout */}
             <SpecimenGroup label="Layout" />
-            <SpecimenRow label="Text label" tags={['children="Label"']}>
+            <SpecimenRow label="Text label" tags={['children="Label"']} isMobile={isMobile}>
               <ToggleButton defaultVariant="secondary" selectionStyle="border">Toggle</ToggleButton>
             </SpecimenRow>
-            <SpecimenRow label="Leading artwork" tags={['leadingArtwork={<Icon />}']}>
+            <SpecimenRow label="Leading artwork" tags={['leadingArtwork={<Icon />}']} isMobile={isMobile}>
               <ToggleButton defaultVariant="secondary" selectionStyle="border" leadingArtwork={<SunIcon />}>Toggle</ToggleButton>
             </SpecimenRow>
-            <SpecimenRow label="Icon only" tags={['iconOnly', 'aria-label="..."']} note="Pass aria-label via label prop for accessibility">
+            <SpecimenRow label="Icon only" tags={['iconOnly', 'aria-label="..."']} note="Pass aria-label via label prop for accessibility" isMobile={isMobile}>
               <ToggleButton defaultVariant="secondary" selectionStyle="border" iconOnly label="Toggle sun"><SunIcon /></ToggleButton>
               <ToggleButton defaultVariant="secondary" selectionStyle="fill"   iconOnly label="Toggle sun"><SunIcon /></ToggleButton>
             </SpecimenRow>
 
             {/* Group Mode */}
             <SpecimenGroup label="Group Mode" />
-            <SpecimenRow label="ToggleGroup · Border" tags={['selectionStyle="border"']} note="Single-select; one active at a time" wide>
+            <SpecimenRow label="ToggleGroup · Border" tags={['selectionStyle="border"']} note="Single-select; one active at a time" wide isMobile={isMobile}>
               <ToggleGroup size="md" defaultVariant="tertiary" selectionStyle="border" options={[
                 { id: 'sp-left',   icon: <AlignLeftIcon />,   iconOnly: true, label: 'Left' },
                 { id: 'sp-center', icon: <AlignCenterIcon />, iconOnly: true, label: 'Center' },
                 { id: 'sp-right',  icon: <AlignRightIcon />,  iconOnly: true, label: 'Right' },
               ]} />
             </SpecimenRow>
-            <SpecimenRow label="ToggleGroup · Fill" tags={['selectionStyle="fill"']} note="Inverse fill on the active item" wide>
+            <SpecimenRow label="ToggleGroup · Fill" tags={['selectionStyle="fill"']} note="Inverse fill on the active item" wide isMobile={isMobile}>
               <ToggleGroup size="md" defaultVariant="tertiary" selectionStyle="fill" options={[
                 { id: 'sp2-left',   icon: <AlignLeftIcon />,   iconOnly: true, label: 'Left' },
                 { id: 'sp2-center', icon: <AlignCenterIcon />, iconOnly: true, label: 'Center' },
                 { id: 'sp2-right',  icon: <AlignRightIcon />,  iconOnly: true, label: 'Right' },
               ]} />
             </SpecimenRow>
-            <SpecimenRow label="Label group" tags={['options=[{ id, label }]']} note="Text labels instead of icons" wide>
+            <SpecimenRow label="Label group" tags={['options=[{ id, label }]']} note="Text labels instead of icons" wide isMobile={isMobile}>
               <ToggleGroup size="sm" defaultVariant="secondary" selectionStyle="border" options={[
                 { id: 'sp3-day',   label: 'Day' },
                 { id: 'sp3-week',  label: 'Week' },
@@ -494,18 +499,18 @@ export default function ToggleButtonPreview() {
 
             {/* State */}
             <SpecimenGroup label="State" />
-            <SpecimenRow label="Default (unselected)" tags={['aria-pressed="false"']}>
+            <SpecimenRow label="Default (unselected)" tags={['aria-pressed="false"']} isMobile={isMobile}>
               <ToggleButton defaultVariant="secondary" selectionStyle="border">Toggle</ToggleButton>
             </SpecimenRow>
             <SpecimenRow label="Selected · Border" tags={['aria-pressed="true"', 'selectionStyle="border"']}
-              note="Click the button to see selected state">
+              note="Click the button to see selected state" isMobile={isMobile}>
               <ToggleButton defaultVariant="secondary" selectionStyle="border">Toggle</ToggleButton>
             </SpecimenRow>
             <SpecimenRow label="Selected · Fill" tags={['aria-pressed="true"', 'selectionStyle="fill"']}
-              note="Click the button to see selected state">
+              note="Click the button to see selected state" isMobile={isMobile}>
               <ToggleButton defaultVariant="secondary" selectionStyle="fill">Toggle</ToggleButton>
             </SpecimenRow>
-            <SpecimenRow label="Disabled" tags={['disabled']}>
+            <SpecimenRow label="Disabled" tags={['disabled']} isMobile={isMobile}>
               <ToggleButton defaultVariant="secondary" selectionStyle="border" disabled>Toggle</ToggleButton>
               <ToggleButton defaultVariant="secondary" selectionStyle="fill"   disabled>Toggle</ToggleButton>
             </SpecimenRow>
