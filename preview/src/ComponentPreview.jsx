@@ -403,8 +403,7 @@ export default function ComponentPreview() {
             position: sticky;
             top: 0;
             z-index: 100;
-            height: 52px;
-            padding: 0 16px;
+            padding: 8px 16px;
             background: var(--color-bg-primary);
             border-bottom: 1px solid var(--color-border-opaque);
             gap: 8px;
@@ -413,8 +412,9 @@ export default function ComponentPreview() {
 
           .preview-topnav-wordmark {
             font-family: var(--font-sans);
-            font-size: var(--text-sm);
+            font-size: var(--text-lg);
             font-weight: var(--font-weight-semibold);
+            line-height: var(--line-height-snug);
             color: var(--color-content-primary);
             letter-spacing: var(--tracking-tight);
             flex: 1;
@@ -437,7 +437,7 @@ export default function ComponentPreview() {
             background: var(--color-bg-primary);
             border-bottom: 1px solid var(--color-border-opaque);
             position: sticky;
-            top: 52px;
+            top: 0;
             z-index: 99;
           }
           .preview-mobile-search-bar.hidden {
