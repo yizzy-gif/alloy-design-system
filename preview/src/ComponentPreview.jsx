@@ -131,15 +131,15 @@ const HamburgerIcon = () => (
     <path d="M2 4h14M2 9h14M2 14h14" />
   </svg>
 )
+/* Exact paths from the provided icon files — stroke uses currentColor */
 const SunIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="4" />
-    <path d="M12 2v2M12 20v2M4 12H2M22 12h-2M6.3 6.3L4.9 4.9M19.1 19.1l-1.4-1.4M17.7 6.3l1.4-1.4M4.9 19.1l1.4-1.4" />
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 2V4M12 20V22M4 12H2M6.31412 6.31412L4.8999 4.8999M17.6859 6.31412L19.1001 4.8999M6.31412 17.69L4.8999 19.1042M17.6859 17.69L19.1001 19.1042M22 12H20M17 12C17 14.7614 14.7614 17 12 17C9.23858 17 7 14.7614 7 12C7 9.23858 9.23858 7 12 7C14.7614 7 17 9.23858 17 12Z" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round"/>
   </svg>
 )
 const MoonIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" />
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M22 15.8442C20.6866 16.4382 19.2286 16.7688 17.6935 16.7688C11.9153 16.7688 7.23116 12.0847 7.23116 6.30654C7.23116 4.77135 7.5618 3.3134 8.15577 2C4.52576 3.64163 2 7.2947 2 11.5377C2 17.3159 6.68414 22 12.4623 22C16.7053 22 20.3584 19.4742 22 15.8442Z" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round"/>
   </svg>
 )
 
@@ -231,26 +231,34 @@ export default function ComponentPreview() {
           letter-spacing: var(--tracking-tight);
         }
 
-        /* ─────────────── Dark/light icon toggle ─────────────── */
-        .preview-theme-btn {
-          display: flex;
+        /* ─────────────── Alloy Button · tertiary · icon-only (sidebar) ─────────────── */
+        .alloy-icon-btn {
+          display: inline-flex;
           align-items: center;
           justify-content: center;
-          width: 28px;
-          height: 28px;
+          width: 32px;
+          height: 32px;
           border-radius: var(--radius-md);
           border: 1px solid var(--color-border-opaque);
-          background: var(--color-bg-secondary);
-          color: var(--color-content-secondary);
-          cursor: pointer;
-          transition:
-            background var(--duration-fast) var(--ease-default),
-            color var(--duration-fast) var(--ease-default);
-          flex-shrink: 0;
-        }
-        .preview-theme-btn:hover {
-          background: var(--color-bg-tertiary);
+          background: var(--color-bg-primary);
           color: var(--color-content-primary);
+          cursor: pointer;
+          flex-shrink: 0;
+          transition:
+            background-color var(--duration-fast) var(--ease-default),
+            border-color     var(--duration-fast) var(--ease-default),
+            color            var(--duration-fast) var(--ease-default);
+        }
+        .alloy-icon-btn:hover {
+          background: var(--color-bg-secondary);
+          border-color: var(--color-border-hover);
+        }
+        .alloy-icon-btn:active {
+          background: var(--color-bg-tertiary);
+        }
+        .alloy-icon-btn:focus-visible {
+          outline: 2px solid var(--color-border-focus);
+          outline-offset: 2px;
         }
 
         /* ─────────────── Sidebar search ─────────────── */
@@ -410,28 +418,10 @@ export default function ComponentPreview() {
             gap: 6px;
           }
 
-          .preview-icon-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
+          /* Mobile top-nav icon buttons inherit .alloy-icon-btn */
+          .alloy-icon-btn {
             width: 36px;
             height: 36px;
-            border-radius: var(--radius-md);
-            border: none;
-            background: none;
-            color: var(--color-content-secondary);
-            cursor: pointer;
-            transition:
-              background var(--duration-fast) var(--ease-default),
-              color var(--duration-fast) var(--ease-default);
-          }
-          .preview-icon-btn:hover {
-            background: var(--color-bg-secondary);
-            color: var(--color-content-primary);
-          }
-          .preview-icon-btn[aria-pressed="true"] {
-            background: var(--color-bg-secondary);
-            color: var(--color-content-primary);
           }
 
           /* Mobile search bar (full-width, below top-nav) */
@@ -545,7 +535,7 @@ export default function ComponentPreview() {
           <div className="preview-sidebar-header">
             <span className="preview-wordmark">Alloy</span>
             <button
-              className="preview-theme-btn"
+              className="alloy-icon-btn"
               aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
               onClick={() => setIsDark(d => !d)}
             >
@@ -592,7 +582,7 @@ export default function ComponentPreview() {
           <div className="preview-topnav-actions">
             {/* Search icon */}
             <button
-              className="preview-icon-btn"
+              className="alloy-icon-btn"
               aria-label="Search components"
               aria-pressed={searchOpen}
               onClick={() => setSearchOpen(s => !s)}
@@ -601,7 +591,7 @@ export default function ComponentPreview() {
             </button>
             {/* Dark/light toggle */}
             <button
-              className="preview-icon-btn"
+              className="alloy-icon-btn"
               aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
               onClick={() => setIsDark(d => !d)}
             >
@@ -609,7 +599,7 @@ export default function ComponentPreview() {
             </button>
             {/* Hamburger */}
             <button
-              className="preview-icon-btn"
+              className="alloy-icon-btn"
               aria-label="Open navigation menu"
               aria-expanded={menuOpen}
               onClick={() => setMenuOpen(true)}
@@ -649,7 +639,7 @@ export default function ComponentPreview() {
           <div className="preview-drawer-header">
             <span className="preview-drawer-title">Components</span>
             <button
-              className="preview-icon-btn"
+              className="alloy-icon-btn"
               aria-label="Close navigation"
               onClick={() => setMenuOpen(false)}
             >
