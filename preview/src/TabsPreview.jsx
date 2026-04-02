@@ -78,6 +78,99 @@ function ControlledTabs({ defaultValue, variant = 'underline', size = 'md', item
   )
 }
 
+/* ── Specimen sub-components ─────────────────────────────────────────────────── */
+
+function SpecimenGroup({ label }) {
+  return (
+    <div style={{
+      padding:      '9px 20px 8px',
+      borderTop:    '1px solid var(--color-border-opaque)',
+      borderBottom: '1px solid var(--color-border-opaque)',
+      background:   'var(--color-bg-secondary)',
+    }}>
+      <span style={{
+        fontFamily:    'var(--font-sans)',
+        fontSize:      '10px',
+        fontWeight:    700,
+        letterSpacing: '0.1em',
+        textTransform: 'uppercase',
+        color:         'var(--color-content-disabled)',
+      }}>{label}</span>
+    </div>
+  )
+}
+
+function SpecimenRow({ label, tags = [], note, isMobile, children }) {
+  return (
+    <div style={{
+      display:             'grid',
+      gridTemplateColumns: isMobile ? '1fr' : '200px 1fr',
+      alignItems:          'center',
+      borderBottom:        '1px solid var(--color-border-opaque)',
+      minHeight:           '52px',
+    }}>
+      <div style={{
+        padding:     '12px 20px',
+        borderRight: '1px solid var(--color-border-opaque)',
+        display:     'flex',
+        alignItems:  'center',
+        gap:         '8px',
+        flexWrap:    'wrap',
+      }}>
+        <span style={{
+          fontFamily: 'var(--font-sans)',
+          fontSize:   'var(--text-sm)',
+          fontWeight: 'var(--font-weight-medium)',
+          color:      'var(--color-content-primary)',
+          lineHeight: 1,
+        }}>{label}</span>
+        {tags.map(t => (
+          <span key={t} style={{
+            fontFamily:   'var(--font-mono)',
+            fontSize:     '10.5px',
+            fontWeight:   500,
+            color:        'var(--color-content-tertiary)',
+            background:   'var(--color-bg-secondary)',
+            border:       '1px solid var(--color-border-opaque)',
+            borderRadius: 'var(--radius-sm)',
+            padding:      '1px 6px',
+            lineHeight:   1.6,
+          }}>{t}</span>
+        ))}
+        {note && (
+          <span style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize:   'var(--text-xs)',
+            color:      'var(--color-content-disabled)',
+            width:      '100%',
+            marginTop:  '2px',
+          }}>{note}</span>
+        )}
+      </div>
+      <div style={{ padding: '12px 20px', overflowX: 'auto' }}>
+        {children}
+      </div>
+    </div>
+  )
+}
+
+function ImportRow() {
+  return (
+    <div style={{
+      padding:      '14px 20px',
+      borderBottom: '1px solid var(--color-border-opaque)',
+      fontFamily:   'var(--font-mono)',
+      fontSize:     '12.5px',
+      color:        'var(--color-content-secondary)',
+    }}>
+      <span className="specimen-import-kw">import </span>
+      <span className="specimen-import-exp">{'{ Tabs }'}</span>
+      <span className="specimen-import-kw"> from </span>
+      <span className="specimen-import-src">'alloy-design-system'</span>
+    </div>
+  )
+}
+
 /* ── Layout helpers ──────────────────────────────────────────────────────────── */
 function Section({ title, note, children, isMobile }) {
   return (
@@ -139,6 +232,11 @@ export default function TabsPreview() {
     <>
       <style>{`
         *, *::before, *::after { box-sizing: border-box; margin: 0; }
+
+        /* ─ Specimen ─ */
+        .specimen-import-kw  { color: var(--color-content-disabled); }
+        .specimen-import-exp { color: var(--color-content-primary); font-weight: 500; }
+        .specimen-import-src { color: var(--color-content-secondary); }
 
         /* ─ Root ─ */
         .tab-root {
@@ -324,6 +422,68 @@ export default function TabsPreview() {
             <Row label="background · individual disabled">
               <ControlledTabs variant="background" size="md" defaultValue="overview" items={ITEMS_DISABLED} />
             </Row>
+          </Section>
+
+          {/* 5 — Specimen */}
+          <Section
+            title="Specimen"
+            note="Quick-reference table — scan to identify the exact variant, size, and configuration to name when prompting."
+            isMobile={isMobile}
+          >
+            <div style={{
+              background:   'var(--color-bg-primary)',
+              borderRadius: 'var(--radius-lg)',
+              border:       '1px solid var(--color-border-opaque)',
+              overflow:     'hidden',
+            }}>
+
+              {/* ── Package ── */}
+              <SpecimenGroup label="Package" />
+              <ImportRow />
+
+              {/* ── Variant ── */}
+              <SpecimenGroup label="Variant" />
+              <SpecimenRow label="Underline" tags={['variant="underline"', 'default']} isMobile={isMobile}>
+                <ControlledTabs variant="underline" size="md" defaultValue="overview" items={ITEMS_BASIC} />
+              </SpecimenRow>
+              <SpecimenRow label="Background" tags={['variant="background"']} isMobile={isMobile}>
+                <ControlledTabs variant="background" size="md" defaultValue="overview" items={ITEMS_BASIC} />
+              </SpecimenRow>
+
+              {/* ── Size ── */}
+              <SpecimenGroup label="Size" />
+              <SpecimenRow label="MD" tags={['size="md"', 'default']} isMobile={isMobile}>
+                <ControlledTabs variant="underline" size="md" defaultValue="overview" items={ITEMS_BASIC} />
+              </SpecimenRow>
+              <SpecimenRow label="LG" tags={['size="lg"']} isMobile={isMobile}>
+                <ControlledTabs variant="underline" size="lg" defaultValue="overview" items={ITEMS_BASIC} />
+              </SpecimenRow>
+
+              {/* ── Content ── */}
+              <SpecimenGroup label="Content" />
+              <SpecimenRow label="Labels only" tags={['label']} isMobile={isMobile}>
+                <ControlledTabs variant="underline" size="md" defaultValue="overview" items={ITEMS_BASIC} />
+              </SpecimenRow>
+              <SpecimenRow label="With leading icon" tags={['icon']} isMobile={isMobile}>
+                <ControlledTabs variant="underline" size="md" defaultValue="home" items={ITEMS_ICONS} />
+              </SpecimenRow>
+              <SpecimenRow label="With badge" tags={['badge']} isMobile={isMobile}>
+                <ControlledTabs variant="underline" size="md" defaultValue="inbox" items={ITEMS_BADGE} />
+              </SpecimenRow>
+
+              {/* ── State ── */}
+              <SpecimenGroup label="State" />
+              <SpecimenRow label="Default" tags={[]} isMobile={isMobile}>
+                <ControlledTabs variant="underline" size="md" defaultValue="overview" items={ITEMS_BASIC} />
+              </SpecimenRow>
+              <SpecimenRow label="Disabled items" tags={['disabled (per item)']} note="Settings and Billing are disabled" isMobile={isMobile}>
+                <ControlledTabs variant="underline" size="md" defaultValue="overview" items={ITEMS_DISABLED} />
+              </SpecimenRow>
+              <SpecimenRow label="All disabled" tags={['disabled (all)']} isMobile={isMobile}>
+                <ControlledTabs variant="underline" size="md" defaultValue="overview" items={ITEMS_BASIC.map(i => ({ ...i, disabled: true }))} />
+              </SpecimenRow>
+
+            </div>
           </Section>
 
         </div>

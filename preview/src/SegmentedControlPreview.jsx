@@ -111,6 +111,99 @@ function ControlledSC({ defaultValue, size = 'md', disabled = false, fullWidth =
   )
 }
 
+/* ── Specimen sub-components ─────────────────────────────────────────────────── */
+
+function SpecimenGroup({ label }) {
+  return (
+    <div style={{
+      padding:      '9px 20px 8px',
+      borderTop:    '1px solid var(--color-border-opaque)',
+      borderBottom: '1px solid var(--color-border-opaque)',
+      background:   'var(--color-bg-secondary)',
+    }}>
+      <span style={{
+        fontFamily:    'var(--font-sans)',
+        fontSize:      '10px',
+        fontWeight:    700,
+        letterSpacing: '0.1em',
+        textTransform: 'uppercase',
+        color:         'var(--color-content-disabled)',
+      }}>{label}</span>
+    </div>
+  )
+}
+
+function SpecimenRow({ label, tags = [], note, isMobile, children }) {
+  return (
+    <div style={{
+      display:             'grid',
+      gridTemplateColumns: isMobile ? '1fr' : '200px 1fr',
+      alignItems:          'center',
+      borderBottom:        '1px solid var(--color-border-opaque)',
+      minHeight:           '52px',
+    }}>
+      <div style={{
+        padding:     '12px 20px',
+        borderRight: '1px solid var(--color-border-opaque)',
+        display:     'flex',
+        alignItems:  'center',
+        gap:         '8px',
+        flexWrap:    'wrap',
+      }}>
+        <span style={{
+          fontFamily: 'var(--font-sans)',
+          fontSize:   'var(--text-sm)',
+          fontWeight: 'var(--font-weight-medium)',
+          color:      'var(--color-content-primary)',
+          lineHeight: 1,
+        }}>{label}</span>
+        {tags.map(t => (
+          <span key={t} style={{
+            fontFamily:   'var(--font-mono)',
+            fontSize:     '10.5px',
+            fontWeight:   500,
+            color:        'var(--color-content-tertiary)',
+            background:   'var(--color-bg-secondary)',
+            border:       '1px solid var(--color-border-opaque)',
+            borderRadius: 'var(--radius-sm)',
+            padding:      '1px 6px',
+            lineHeight:   1.6,
+          }}>{t}</span>
+        ))}
+        {note && (
+          <span style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize:   'var(--text-xs)',
+            color:      'var(--color-content-disabled)',
+            width:      '100%',
+            marginTop:  '2px',
+          }}>{note}</span>
+        )}
+      </div>
+      <div style={{ padding: '12px 20px', overflowX: 'auto' }}>
+        {children}
+      </div>
+    </div>
+  )
+}
+
+function ImportRow() {
+  return (
+    <div style={{
+      padding:      '14px 20px',
+      borderBottom: '1px solid var(--color-border-opaque)',
+      fontFamily:   'var(--font-mono)',
+      fontSize:     '12.5px',
+      color:        'var(--color-content-secondary)',
+    }}>
+      <span className="specimen-import-kw">import </span>
+      <span className="specimen-import-exp">{'{ SegmentedControl }'}</span>
+      <span className="specimen-import-kw"> from </span>
+      <span className="specimen-import-src">'alloy-design-system'</span>
+    </div>
+  )
+}
+
 /* ── Section layout ───────────────────────────────────────────────────────────── */
 function Section({ title, note, children, isMobile }) {
   return (
@@ -140,6 +233,11 @@ export default function SegmentedControlPreview() {
     <>
       <style>{`
         *, *::before, *::after { box-sizing: border-box; margin: 0; }
+
+        /* ─ Specimen ─ */
+        .specimen-import-kw  { color: var(--color-content-disabled); }
+        .specimen-import-exp { color: var(--color-content-primary); font-weight: 500; }
+        .specimen-import-src { color: var(--color-content-secondary); }
 
         /* ─ Root track ─ */
         .sc-root {
@@ -350,6 +448,118 @@ export default function SegmentedControlPreview() {
                 { value: 'month', label: 'Month', disabled: true },
               ]} />
             </Row>
+          </Section>
+
+          {/* 6 — Specimen */}
+          <Section
+            title="Specimen"
+            note="Quick-reference table — scan to identify the exact size, items configuration, and state to name when prompting."
+            isMobile={isMobile}
+          >
+            <div style={{
+              background:   'var(--color-bg-primary)',
+              borderRadius: 'var(--radius-lg)',
+              border:       '1px solid var(--color-border-opaque)',
+              overflow:     'hidden',
+            }}>
+
+              {/* ── Package ── */}
+              <SpecimenGroup label="Package" />
+              <ImportRow />
+
+              {/* ── Size ── */}
+              <SpecimenGroup label="Size" />
+              <SpecimenRow label="SM" tags={['size="sm"', '24px height']} isMobile={isMobile}>
+                <ControlledSC size="sm" defaultValue="week" items={[
+                  { value: 'day',   label: 'Day'   },
+                  { value: 'week',  label: 'Week'  },
+                  { value: 'month', label: 'Month' },
+                ]} />
+              </SpecimenRow>
+              <SpecimenRow label="MD" tags={['size="md"', '28px height', 'default']} isMobile={isMobile}>
+                <ControlledSC size="md" defaultValue="week" items={[
+                  { value: 'day',   label: 'Day'   },
+                  { value: 'week',  label: 'Week'  },
+                  { value: 'month', label: 'Month' },
+                ]} />
+              </SpecimenRow>
+              <SpecimenRow label="LG" tags={['size="lg"', '32px height']} isMobile={isMobile}>
+                <ControlledSC size="lg" defaultValue="week" items={[
+                  { value: 'day',   label: 'Day'   },
+                  { value: 'week',  label: 'Week'  },
+                  { value: 'month', label: 'Month' },
+                ]} />
+              </SpecimenRow>
+
+              {/* ── Items ── */}
+              <SpecimenGroup label="Items" />
+              <SpecimenRow label="Label only" tags={['label']} isMobile={isMobile}>
+                <ControlledSC size="md" defaultValue="week" items={[
+                  { value: 'day',   label: 'Day'   },
+                  { value: 'week',  label: 'Week'  },
+                  { value: 'month', label: 'Month' },
+                ]} />
+              </SpecimenRow>
+              <SpecimenRow label="With leading icon" tags={['icon', 'label']} isMobile={isMobile}>
+                <ControlledSC size="md" defaultValue="grid" items={[
+                  { value: 'grid',    icon: <GridIcon />,    label: 'Grid'    },
+                  { value: 'list',    icon: <ListIcon />,    label: 'List'    },
+                  { value: 'columns', icon: <ColumnsIcon />, label: 'Columns' },
+                ]} />
+              </SpecimenRow>
+              <SpecimenRow label="Icon only" tags={['icon', 'no label']} note="Omit label to render icon-only items" isMobile={isMobile}>
+                <ControlledSC size="md" defaultValue="bar" items={[
+                  { value: 'bar',  icon: <ChartBarIcon />,  label: undefined },
+                  { value: 'line', icon: <ChartLineIcon />, label: undefined },
+                  { value: 'area', icon: <ChartAreaIcon />, label: undefined },
+                ]} />
+              </SpecimenRow>
+
+              {/* ── Width ── */}
+              <SpecimenGroup label="Width" />
+              <SpecimenRow label="Inline" tags={['default']} note="Shrinks to fit content" isMobile={isMobile}>
+                <ControlledSC size="md" defaultValue="week" items={[
+                  { value: 'day',   label: 'Day'   },
+                  { value: 'week',  label: 'Week'  },
+                  { value: 'month', label: 'Month' },
+                ]} />
+              </SpecimenRow>
+              <SpecimenRow label="Full width" tags={['fullWidth']} note="Stretches to fill container, items share space equally" isMobile={isMobile}>
+                <div style={{ width: '100%' }}>
+                  <ControlledSC size="md" defaultValue="week" fullWidth items={[
+                    { value: 'day',   label: 'Day'   },
+                    { value: 'week',  label: 'Week'  },
+                    { value: 'month', label: 'Month' },
+                    { value: 'year',  label: 'Year'  },
+                  ]} />
+                </div>
+              </SpecimenRow>
+
+              {/* ── State ── */}
+              <SpecimenGroup label="State" />
+              <SpecimenRow label="Default" tags={[]} isMobile={isMobile}>
+                <ControlledSC size="md" defaultValue="week" items={[
+                  { value: 'day',   label: 'Day'   },
+                  { value: 'week',  label: 'Week'  },
+                  { value: 'month', label: 'Month' },
+                ]} />
+              </SpecimenRow>
+              <SpecimenRow label="All disabled" tags={['disabled']} note="Pass disabled on the root to disable all items" isMobile={isMobile}>
+                <ControlledSC size="md" defaultValue="week" disabled items={[
+                  { value: 'day',   label: 'Day'   },
+                  { value: 'week',  label: 'Week'  },
+                  { value: 'month', label: 'Month' },
+                ]} />
+              </SpecimenRow>
+              <SpecimenRow label="Per-item disabled" tags={['disabled (item)']} note="Day and Month are disabled individually" isMobile={isMobile}>
+                <ControlledSC size="md" defaultValue="week" items={[
+                  { value: 'day',   label: 'Day',   disabled: true },
+                  { value: 'week',  label: 'Week'                  },
+                  { value: 'month', label: 'Month', disabled: true },
+                ]} />
+              </SpecimenRow>
+
+            </div>
           </Section>
 
         </div>
