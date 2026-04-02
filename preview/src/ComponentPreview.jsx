@@ -114,32 +114,32 @@ const GROUPS = [
 
 const ALL_TABS = GROUPS.flatMap(g => g.items)
 
-/* ── Icon atoms — no fixed w/h; sized by the .alloy-btn-icon slot ────────────── */
+/* ── Icon atoms — no fixed w/h or strokeWidth; slot CSS applies --icon-stroke-width ── */
 const SearchIcon = () => (
-  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" style={{ display: 'block', width: '100%', height: '100%' }}>
+  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeLinecap="round" style={{ display: 'block', width: '100%', height: '100%' }}>
     <circle cx="6.5" cy="6.5" r="4" />
-    <path d="M10 10l3 3" strokeLinecap="round" />
+    <path d="M10 10l3 3" />
   </svg>
 )
 const CloseIcon = () => (
-  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" style={{ display: 'block', width: '100%', height: '100%' }}>
+  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeLinecap="round" style={{ display: 'block', width: '100%', height: '100%' }}>
     <path d="M3 3l10 10M13 3L3 13" />
   </svg>
 )
 const HamburgerIcon = () => (
-  <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" style={{ display: 'block', width: '100%', height: '100%' }}>
+  <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeLinecap="round" style={{ display: 'block', width: '100%', height: '100%' }}>
     <path d="M2 4h14M2 9h14M2 14h14" />
   </svg>
 )
 /* Exact paths from the provided icon files */
 const SunIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ display: 'block', width: '100%', height: '100%' }}>
-    <path d="M12 2V4M12 20V22M4 12H2M6.31412 6.31412L4.8999 4.8999M17.6859 6.31412L19.1001 4.8999M6.31412 17.69L4.8999 19.1042M17.6859 17.69L19.1001 19.1042M22 12H20M17 12C17 14.7614 14.7614 17 12 17C9.23858 17 7 14.7614 7 12C7 9.23858 9.23858 7 12 7C14.7614 7 17 9.23858 17 12Z" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round"/>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'block', width: '100%', height: '100%' }}>
+    <path d="M12 2V4M12 20V22M4 12H2M6.31412 6.31412L4.8999 4.8999M17.6859 6.31412L19.1001 4.8999M6.31412 17.69L4.8999 19.1042M17.6859 17.69L19.1001 19.1042M22 12H20M17 12C17 14.7614 14.7614 17 12 17C9.23858 17 7 14.7614 7 12C7 9.23858 9.23858 7 12 7C14.7614 7 17 9.23858 17 12Z"/>
   </svg>
 )
 const MoonIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ display: 'block', width: '100%', height: '100%' }}>
-    <path d="M22 15.8442C20.6866 16.4382 19.2286 16.7688 17.6935 16.7688C11.9153 16.7688 7.23116 12.0847 7.23116 6.30654C7.23116 4.77135 7.5618 3.3134 8.15577 2C4.52576 3.64163 2 7.2947 2 11.5377C2 17.3159 6.68414 22 12.4623 22C16.7053 22 20.3584 19.4742 22 15.8442Z" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round"/>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'block', width: '100%', height: '100%' }}>
+    <path d="M22 15.8442C20.6866 16.4382 19.2286 16.7688 17.6935 16.7688C11.9153 16.7688 7.23116 12.0847 7.23116 6.30654C7.23116 4.77135 7.5618 3.3134 8.15577 2C4.52576 3.64163 2 7.2947 2 11.5377C2 17.3159 6.68414 22 12.4623 22C16.7053 22 20.3584 19.4742 22 15.8442Z"/>
   </svg>
 )
 
@@ -267,6 +267,11 @@ export default function ComponentPreview() {
         .alloy-icon-btn:focus-visible {
           outline: 2px solid var(--color-border-focus);
           outline-offset: 2px;
+        }
+        /* Apply the Alloy icon stroke-width token — overrides any SVG attribute */
+        .alloy-icon-btn svg,
+        .alloy-icon-btn svg * {
+          stroke-width: var(--icon-stroke-width, 1.75);
         }
 
         /* ─────────────── Sidebar search ─────────────── */
