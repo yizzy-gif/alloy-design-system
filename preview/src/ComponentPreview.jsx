@@ -30,6 +30,7 @@ import DataCardPreview            from './DataCardPreview.jsx'
 import ValueChangeLabelPreview    from './ValueChangeLabelPreview.jsx'
 import DividerPreview             from './DividerPreview.jsx'
 import AILoaderPreview         from './AILoaderPreview.jsx'
+import TagSpecimen             from '../../specimens/TagSpecimen'
 
 /* ── Component registry (grouped) ───────────────────────────────────────────── */
 const GROUPS = [
@@ -97,6 +98,12 @@ const GROUPS = [
     label: 'Teambridge AI',
     items: [
       { id: 'ai-loader', label: 'AI Loader', component: AILoaderPreview },
+    ],
+  },
+  {
+    label: 'Specimens',
+    items: [
+      { id: 'specimen-tag', label: 'Tag', component: TagSpecimen },
     ],
   },
 ]
