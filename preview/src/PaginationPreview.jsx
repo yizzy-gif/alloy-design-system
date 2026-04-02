@@ -229,6 +229,99 @@ function Pagination({
   )
 }
 
+/* ── Specimen sub-components ─────────────────────────────────────────────────── */
+
+function SpecimenGroup({ label }) {
+  return (
+    <div style={{
+      padding:      '9px 20px 8px',
+      borderTop:    '1px solid var(--color-border-opaque)',
+      borderBottom: '1px solid var(--color-border-opaque)',
+      background:   'var(--color-bg-secondary)',
+    }}>
+      <span style={{
+        fontFamily:    'var(--font-sans)',
+        fontSize:      '10px',
+        fontWeight:    700,
+        letterSpacing: '0.1em',
+        textTransform: 'uppercase',
+        color:         'var(--color-content-disabled)',
+      }}>{label}</span>
+    </div>
+  )
+}
+
+function SpecimenRow({ label, tags = [], note, isMobile, children }) {
+  return (
+    <div style={{
+      display:             'grid',
+      gridTemplateColumns: isMobile ? '1fr' : '200px 1fr',
+      alignItems:          'center',
+      borderBottom:        '1px solid var(--color-border-opaque)',
+      minHeight:           '52px',
+    }}>
+      <div style={{
+        padding:     '12px 20px',
+        borderRight: '1px solid var(--color-border-opaque)',
+        display:     'flex',
+        alignItems:  'center',
+        gap:         '8px',
+        flexWrap:    'wrap',
+      }}>
+        <span style={{
+          fontFamily: 'var(--font-sans)',
+          fontSize:   'var(--text-sm)',
+          fontWeight: 'var(--font-weight-medium)',
+          color:      'var(--color-content-primary)',
+          lineHeight: 1,
+        }}>{label}</span>
+        {tags.map(t => (
+          <span key={t} style={{
+            fontFamily:   'var(--font-mono)',
+            fontSize:     '10.5px',
+            fontWeight:   500,
+            color:        'var(--color-content-tertiary)',
+            background:   'var(--color-bg-secondary)',
+            border:       '1px solid var(--color-border-opaque)',
+            borderRadius: 'var(--radius-sm)',
+            padding:      '1px 6px',
+            lineHeight:   1.6,
+          }}>{t}</span>
+        ))}
+        {note && (
+          <span style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize:   'var(--text-xs)',
+            color:      'var(--color-content-disabled)',
+            width:      '100%',
+            marginTop:  '2px',
+          }}>{note}</span>
+        )}
+      </div>
+      <div style={{ padding: '12px 20px', overflowX: 'auto' }}>
+        {children}
+      </div>
+    </div>
+  )
+}
+
+function ImportRow() {
+  return (
+    <div style={{
+      padding:      '14px 20px',
+      borderBottom: '1px solid var(--color-border-opaque)',
+      fontFamily:   'var(--font-mono)',
+      fontSize:     '12.5px',
+      color:        'var(--color-content-secondary)',
+    }}>
+      <span className="specimen-import-kw">import </span>
+      <span className="specimen-import-exp">{'{ Pagination }'}</span>
+      <span className="specimen-import-kw"> from </span>
+      <span className="specimen-import-src">'alloy-design-system'</span>
+    </div>
+  )
+}
+
 /* ── Preview shell helpers ────────────────────────────────────────────────── */
 
 function Section({ title, note, children }) {
@@ -282,6 +375,11 @@ export default function PaginationPreview() {
         .alloy-icon-slot { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .alloy-icon-slot > svg, .alloy-icon-slot > svg * { stroke-width: 1.75; }
         .alloy-icon-slot > svg { display: block; }
+
+        /* ─ Specimen ─ */
+        .specimen-import-kw  { color: var(--color-content-disabled); }
+        .specimen-import-exp { color: var(--color-content-primary); font-weight: 500; }
+        .specimen-import-src { color: var(--color-content-secondary); }
 
         /* Hide number input spinners */
         input[type=number]::-webkit-inner-spin-button,
@@ -373,6 +471,82 @@ export default function PaginationPreview() {
             <Row>
               <PaginationDemo totalPages={10} initialPage={5} disabled />
             </Row>
+          </Section>
+
+          {/* 6 — Specimen */}
+          <Section
+            title="Specimen"
+            note="Quick-reference table — scan to identify the exact size, controls, and state to name when prompting."
+          >
+            <div style={{
+              background:   'var(--color-bg-primary)',
+              borderRadius: 'var(--radius-lg)',
+              border:       '1px solid var(--color-border-opaque)',
+              overflow:     'hidden',
+            }}>
+
+              {/* ── Package ── */}
+              <SpecimenGroup label="Package" />
+              <ImportRow />
+
+              {/* ── Size ── */}
+              <SpecimenGroup label="Size" />
+              <SpecimenRow label="SM" tags={['size="sm"', '32px height', 'default']} isMobile={isMobile}>
+                <PaginationDemo totalPages={10} initialPage={5} size="sm" />
+              </SpecimenRow>
+              <SpecimenRow label="MD" tags={['size="md"', '36px height']} isMobile={isMobile}>
+                <PaginationDemo totalPages={10} initialPage={5} size="md" />
+              </SpecimenRow>
+
+              {/* ── Controls ── */}
+              <SpecimenGroup label="Controls" />
+              <SpecimenRow label="Basic" tags={['page', 'totalPages', 'onPageChange']} isMobile={isMobile}>
+                <PaginationDemo totalPages={10} initialPage={5} siblingCount={1} />
+              </SpecimenRow>
+              <SpecimenRow label="Rows per page" tags={['showRowsPerPage', 'totalCount', 'rowsPerPage']} isMobile={isMobile}>
+                <PaginationDemo
+                  totalPages={25} initialPage={3}
+                  showRowsPerPage totalCount={247} rowsPerPage={10}
+                  rowsPerPageOptions={[10, 25, 50, 100]}
+                />
+              </SpecimenRow>
+              <SpecimenRow label="Go to page" tags={['showGoToPage']} note="Press Enter to jump" isMobile={isMobile}>
+                <PaginationDemo totalPages={20} initialPage={7} showGoToPage />
+              </SpecimenRow>
+              <SpecimenRow label="Full controls" tags={['showRowsPerPage', 'showGoToPage', 'totalCount']} isMobile={isMobile}>
+                <PaginationDemo
+                  totalPages={25} initialPage={4}
+                  showRowsPerPage totalCount={247} rowsPerPage={10}
+                  rowsPerPageOptions={[10, 25, 50, 100]}
+                  showGoToPage
+                />
+              </SpecimenRow>
+
+              {/* ── Sibling count ── */}
+              <SpecimenGroup label="siblingCount" />
+              <SpecimenRow label="0" tags={['siblingCount={0}']} note="No adjacent pages shown" isMobile={isMobile}>
+                <PaginationDemo totalPages={10} initialPage={5} siblingCount={0} />
+              </SpecimenRow>
+              <SpecimenRow label="1" tags={['siblingCount={1}', 'default']} isMobile={isMobile}>
+                <PaginationDemo totalPages={10} initialPage={5} siblingCount={1} />
+              </SpecimenRow>
+              <SpecimenRow label="2" tags={['siblingCount={2}']} isMobile={isMobile}>
+                <PaginationDemo totalPages={10} initialPage={5} siblingCount={2} />
+              </SpecimenRow>
+
+              {/* ── State ── */}
+              <SpecimenGroup label="State" />
+              <SpecimenRow label="First page" tags={['page={1}']} note="Previous button is dimmed" isMobile={isMobile}>
+                <PaginationDemo totalPages={10} initialPage={1} />
+              </SpecimenRow>
+              <SpecimenRow label="Last page" tags={['page={totalPages}']} note="Next button is dimmed" isMobile={isMobile}>
+                <PaginationDemo totalPages={10} initialPage={10} />
+              </SpecimenRow>
+              <SpecimenRow label="Disabled" tags={['disabled']} note="All controls non-interactive" isMobile={isMobile}>
+                <PaginationDemo totalPages={10} initialPage={5} disabled />
+              </SpecimenRow>
+
+            </div>
           </Section>
 
         </div>

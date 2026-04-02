@@ -97,6 +97,99 @@ function Breadcrumb({ items = [], separator = 'slash' }) {
   )
 }
 
+/* ── Specimen sub-components ─────────────────────────────────────────────────── */
+
+function SpecimenGroup({ label }) {
+  return (
+    <div style={{
+      padding:      '9px 20px 8px',
+      borderTop:    '1px solid var(--color-border-opaque)',
+      borderBottom: '1px solid var(--color-border-opaque)',
+      background:   'var(--color-bg-secondary)',
+    }}>
+      <span style={{
+        fontFamily:    'var(--font-sans)',
+        fontSize:      '10px',
+        fontWeight:    700,
+        letterSpacing: '0.1em',
+        textTransform: 'uppercase',
+        color:         'var(--color-content-disabled)',
+      }}>{label}</span>
+    </div>
+  )
+}
+
+function SpecimenRow({ label, tags = [], note, isMobile, children }) {
+  return (
+    <div style={{
+      display:             'grid',
+      gridTemplateColumns: isMobile ? '1fr' : '200px 1fr',
+      alignItems:          'center',
+      borderBottom:        '1px solid var(--color-border-opaque)',
+      minHeight:           '52px',
+    }}>
+      <div style={{
+        padding:     '12px 20px',
+        borderRight: '1px solid var(--color-border-opaque)',
+        display:     'flex',
+        alignItems:  'center',
+        gap:         '8px',
+        flexWrap:    'wrap',
+      }}>
+        <span style={{
+          fontFamily: 'var(--font-sans)',
+          fontSize:   'var(--text-sm)',
+          fontWeight: 'var(--font-weight-medium)',
+          color:      'var(--color-content-primary)',
+          lineHeight: 1,
+        }}>{label}</span>
+        {tags.map(t => (
+          <span key={t} style={{
+            fontFamily:   'var(--font-mono)',
+            fontSize:     '10.5px',
+            fontWeight:   500,
+            color:        'var(--color-content-tertiary)',
+            background:   'var(--color-bg-secondary)',
+            border:       '1px solid var(--color-border-opaque)',
+            borderRadius: 'var(--radius-sm)',
+            padding:      '1px 6px',
+            lineHeight:   1.6,
+          }}>{t}</span>
+        ))}
+        {note && (
+          <span style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize:   'var(--text-xs)',
+            color:      'var(--color-content-disabled)',
+            width:      '100%',
+            marginTop:  '2px',
+          }}>{note}</span>
+        )}
+      </div>
+      <div style={{ padding: '12px 20px', overflowX: 'auto' }}>
+        {children}
+      </div>
+    </div>
+  )
+}
+
+function ImportRow() {
+  return (
+    <div style={{
+      padding:      '14px 20px',
+      borderBottom: '1px solid var(--color-border-opaque)',
+      fontFamily:   'var(--font-mono)',
+      fontSize:     '12.5px',
+      color:        'var(--color-content-secondary)',
+    }}>
+      <span className="specimen-import-kw">import </span>
+      <span className="specimen-import-exp">{'{ Breadcrumb }'}</span>
+      <span className="specimen-import-kw"> from </span>
+      <span className="specimen-import-src">'alloy-design-system'</span>
+    </div>
+  )
+}
+
 /* ── Preview shell ──────────────────────────────────────────────────────────── */
 
 function Section({ title, note, children, isMobile }) {
@@ -139,6 +232,11 @@ export default function BreadcrumbPreview() {
         .alloy-icon-slot > svg { display: block; width: 100%; height: 100%; }
 
         a { color: inherit; }
+
+        /* ─ Specimen ─ */
+        .specimen-import-kw  { color: var(--color-content-disabled); }
+        .specimen-import-exp { color: var(--color-content-primary); font-weight: 500; }
+        .specimen-import-src { color: var(--color-content-secondary); }
 
       `}</style>
 
@@ -228,6 +326,91 @@ export default function BreadcrumbPreview() {
                 { label: 'Q4 2025 Summary' },
               ]} />
             </Row>
+          </Section>
+
+          {/* 5 — Specimen */}
+          <Section
+            title="Specimen"
+            note="Quick-reference table — scan to identify the exact separator, depth, and item configuration to name when prompting."
+            isMobile={isMobile}
+          >
+            <div style={{
+              background:   'var(--color-bg-primary)',
+              borderRadius: 'var(--radius-lg)',
+              border:       '1px solid var(--color-border-opaque)',
+              overflow:     'hidden',
+            }}>
+
+              {/* ── Package ── */}
+              <SpecimenGroup label="Package" />
+              <ImportRow />
+
+              {/* ── Separator ── */}
+              <SpecimenGroup label="Separator" />
+              <SpecimenRow label="Slash" tags={['separator="slash"', 'default']} isMobile={isMobile}>
+                <Breadcrumb separator="slash" items={[home, settings, account]} />
+              </SpecimenRow>
+              <SpecimenRow label="Chevron" tags={['separator="chevron"']} isMobile={isMobile}>
+                <Breadcrumb separator="chevron" items={[home, settings, account]} />
+              </SpecimenRow>
+
+              {/* ── Depth ── */}
+              <SpecimenGroup label="Depth" />
+              <SpecimenRow label="1 item" tags={['items.length = 1']} note="No separator rendered" isMobile={isMobile}>
+                <Breadcrumb separator="slash" items={[{ label: 'Home', icon: <HomeLineIcon size={16} /> }]} />
+              </SpecimenRow>
+              <SpecimenRow label="2 items" tags={['items.length = 2']} isMobile={isMobile}>
+                <Breadcrumb separator="slash" items={[
+                  { label: 'Home', href: '/', icon: <HomeLineIcon size={16} /> },
+                  { label: 'Notifications' },
+                ]} />
+              </SpecimenRow>
+              <SpecimenRow label="3 items" tags={['items.length = 3']} isMobile={isMobile}>
+                <Breadcrumb separator="slash" items={[home, settings, account]} />
+              </SpecimenRow>
+              <SpecimenRow label="4 items" tags={['items.length = 4']} isMobile={isMobile}>
+                <Breadcrumb separator="chevron" items={[
+                  { label: 'Home', href: '/', icon: <HomeLineIcon size={16} /> },
+                  { label: 'Settings', href: '/settings' },
+                  { label: 'Privacy', href: '/settings/privacy' },
+                  { label: 'Data & cookies' },
+                ]} />
+              </SpecimenRow>
+
+              {/* ── Icon ── */}
+              <SpecimenGroup label="Leading icon" />
+              <SpecimenRow label="First item only" tags={['icon (first item)']} isMobile={isMobile}>
+                <Breadcrumb separator="slash" items={[home, settings, account]} />
+              </SpecimenRow>
+              <SpecimenRow label="All items" tags={['icon (all items)']} isMobile={isMobile}>
+                <Breadcrumb separator="slash" items={[
+                  { label: 'Home',     href: '/',         icon: <HomeLineIcon size={16} /> },
+                  { label: 'Settings', href: '/settings', icon: <HomeLineIcon size={16} /> },
+                  { label: 'Profile',                     icon: <HomeLineIcon size={16} /> },
+                ]} />
+              </SpecimenRow>
+              <SpecimenRow label="No icon" tags={['icon omitted']} isMobile={isMobile}>
+                <Breadcrumb separator="slash" items={[
+                  { label: 'Dashboard', href: '/' },
+                  { label: 'Users',     href: '/users' },
+                  { label: 'Edit profile' },
+                ]} />
+              </SpecimenRow>
+
+              {/* ── State ── */}
+              <SpecimenGroup label="State" />
+              <SpecimenRow label="Current page" tags={['no href on last item']} note="Last item renders as non-interactive with tertiary color" isMobile={isMobile}>
+                <Breadcrumb separator="slash" items={[home, settings, account]} />
+              </SpecimenRow>
+              <SpecimenRow label="Clickable items" tags={['href']} note="Items with href render as <a> with underline" isMobile={isMobile}>
+                <Breadcrumb separator="slash" items={[
+                  { label: 'Home',     href: '/' },
+                  { label: 'Settings', href: '/settings' },
+                  { label: 'Account',  href: '/account' },
+                ]} />
+              </SpecimenRow>
+
+            </div>
           </Section>
 
         </div>
