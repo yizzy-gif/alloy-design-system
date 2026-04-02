@@ -114,33 +114,40 @@ const GROUPS = [
 
 const ALL_TABS = GROUPS.flatMap(g => g.items)
 
-/* ── Icon atoms ──────────────────────────────────────────────────────────────── */
+/* ── Icon atoms — no fixed w/h; sized by the .alloy-btn-icon slot ────────────── */
 const SearchIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" style={{ display: 'block', width: '100%', height: '100%' }}>
     <circle cx="6.5" cy="6.5" r="4" />
     <path d="M10 10l3 3" strokeLinecap="round" />
   </svg>
 )
 const CloseIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round">
+  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" style={{ display: 'block', width: '100%', height: '100%' }}>
     <path d="M3 3l10 10M13 3L3 13" />
   </svg>
 )
 const HamburgerIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round">
+  <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" style={{ display: 'block', width: '100%', height: '100%' }}>
     <path d="M2 4h14M2 9h14M2 14h14" />
   </svg>
 )
-/* Exact paths from the provided icon files — stroke uses currentColor */
+/* Exact paths from the provided icon files */
 const SunIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ display: 'block', width: '100%', height: '100%' }}>
     <path d="M12 2V4M12 20V22M4 12H2M6.31412 6.31412L4.8999 4.8999M17.6859 6.31412L19.1001 4.8999M6.31412 17.69L4.8999 19.1042M17.6859 17.69L19.1001 19.1042M22 12H20M17 12C17 14.7614 14.7614 17 12 17C9.23858 17 7 14.7614 7 12C7 9.23858 9.23858 7 12 7C14.7614 7 17 9.23858 17 12Z" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round"/>
   </svg>
 )
 const MoonIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ display: 'block', width: '100%', height: '100%' }}>
     <path d="M22 15.8442C20.6866 16.4382 19.2286 16.7688 17.6935 16.7688C11.9153 16.7688 7.23116 12.0847 7.23116 6.30654C7.23116 4.77135 7.5618 3.3134 8.15577 2C4.52576 3.64163 2 7.2947 2 11.5377C2 17.3159 6.68414 22 12.4623 22C16.7053 22 20.3584 19.4742 22 15.8442Z" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round"/>
   </svg>
+)
+
+/* Icon slot wrapper — 20px × 20px, matches Alloy LG artwork size */
+const IconSlot = ({ children }) => (
+  <span style={{ display: 'inline-flex', width: 20, height: 20, flexShrink: 0 }}>
+    {children}
+  </span>
 )
 
 /* ── Shell ───────────────────────────────────────────────────────────────────── */
@@ -231,19 +238,20 @@ export default function ComponentPreview() {
           letter-spacing: var(--tracking-tight);
         }
 
-        /* ─────────────── Alloy Button · tertiary · icon-only (sidebar) ─────────────── */
+        /* ─────────────── Alloy Button · tertiary · icon-only · LG (48px) ─────────────── */
         .alloy-icon-btn {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          width: 32px;
-          height: 32px;
+          width: 48px;
+          height: 48px;
           border-radius: var(--radius-md);
           border: 1px solid var(--color-border-opaque);
           background: var(--color-bg-primary);
           color: var(--color-content-primary);
           cursor: pointer;
           flex-shrink: 0;
+          padding: 0;
           transition:
             background-color var(--duration-fast) var(--ease-default),
             border-color     var(--duration-fast) var(--ease-default),
@@ -418,11 +426,7 @@ export default function ComponentPreview() {
             gap: 6px;
           }
 
-          /* Mobile top-nav icon buttons inherit .alloy-icon-btn */
-          .alloy-icon-btn {
-            width: 36px;
-            height: 36px;
-          }
+          /* Mobile top-nav icon buttons — same 48px LG size as desktop */
 
           /* Mobile search bar (full-width, below top-nav) */
           .preview-mobile-search-bar {
@@ -539,13 +543,13 @@ export default function ComponentPreview() {
               aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
               onClick={() => setIsDark(d => !d)}
             >
-              {isDark ? <SunIcon /> : <MoonIcon />}
+              <IconSlot>{isDark ? <SunIcon /> : <MoonIcon />}</IconSlot>
             </button>
           </div>
 
           {/* Search */}
           <div className="preview-search-wrap">
-            <span className="preview-search-icon-pos"><SearchIcon /></span>
+            <span className="preview-search-icon-pos" style={{ width: 14, height: 14 }}><SearchIcon /></span>
             <input
               ref={searchInputRef}
               className="preview-search-input"
@@ -587,7 +591,7 @@ export default function ComponentPreview() {
               aria-pressed={searchOpen}
               onClick={() => setSearchOpen(s => !s)}
             >
-              {searchOpen ? <CloseIcon /> : <SearchIcon />}
+              <IconSlot>{searchOpen ? <CloseIcon /> : <SearchIcon />}</IconSlot>
             </button>
             {/* Dark/light toggle */}
             <button
@@ -595,7 +599,7 @@ export default function ComponentPreview() {
               aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
               onClick={() => setIsDark(d => !d)}
             >
-              {isDark ? <SunIcon /> : <MoonIcon />}
+              <IconSlot>{isDark ? <SunIcon /> : <MoonIcon />}</IconSlot>
             </button>
             {/* Hamburger */}
             <button
@@ -604,14 +608,14 @@ export default function ComponentPreview() {
               aria-expanded={menuOpen}
               onClick={() => setMenuOpen(true)}
             >
-              <HamburgerIcon />
+              <IconSlot><HamburgerIcon /></IconSlot>
             </button>
           </div>
         </header>
 
         {/* Mobile search bar (slides in below top-nav) */}
         <div className={`preview-mobile-search-bar${searchOpen ? '' : ' hidden'}`} style={{ position: 'relative' }}>
-          <span className="preview-mobile-search-icon"><SearchIcon /></span>
+          <span className="preview-mobile-search-icon" style={{ width: 16, height: 16 }}><SearchIcon /></span>
           <input
             ref={mobileSearchRef}
             className="preview-mobile-search-input"
@@ -643,7 +647,7 @@ export default function ComponentPreview() {
               aria-label="Close navigation"
               onClick={() => setMenuOpen(false)}
             >
-              <CloseIcon />
+              <IconSlot><CloseIcon /></IconSlot>
             </button>
           </div>
 
