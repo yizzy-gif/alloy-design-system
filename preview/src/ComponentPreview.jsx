@@ -174,7 +174,14 @@ export default function ComponentPreview() {
   /* Focus search input when opened */
   useEffect(() => {
     if (searchOpen && mobileSearchRef.current) mobileSearchRef.current.focus()
+    if (!searchOpen) setSearch('')
   }, [searchOpen])
+
+  function selectFromSearch(id) {
+    setActiveTab(id)
+    setSearchOpen(false)
+    setSearch('')
+  }
 
   /* Close drawer on Escape */
   useEffect(() => {
@@ -448,26 +455,88 @@ export default function ComponentPreview() {
           .preview-mobile-search-bar.hidden {
             display: none;
           }
-          .preview-mobile-search-input {
+          .preview-mobile-search-wrap {
+            position: relative;
             flex: 1;
-            height: 34px;
-            padding: 0 10px 0 32px;
+          }
+          .preview-mobile-search-input {
+            width: 100%;
+            /* Alloy MD size: 36px height */
+            height: 36px;
+            padding: 0 var(--space-3) 0 36px;
             border-radius: var(--radius-md);
             border: 1px solid var(--color-border-selected);
             background: var(--color-bg-secondary);
             font-family: var(--font-sans);
-            font-size: var(--text-sm);
+            /* 16px prevents iOS auto-zoom on focus */
+            font-size: 16px;
             color: var(--color-content-primary);
             outline: none;
+            box-sizing: border-box;
           }
           .preview-mobile-search-input::placeholder { color: var(--color-content-disabled); }
           .preview-mobile-search-icon {
             position: absolute;
-            left: 26px;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
             color: var(--color-content-disabled);
             pointer-events: none;
             display: flex;
             align-items: center;
+            width: 16px;
+            height: 16px;
+          }
+
+          /* Search results dropdown */
+          .preview-search-dropdown {
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 0;
+            right: 0;
+            background: var(--color-bg-primary);
+            border: 1px solid var(--color-border-opaque);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-below-md);
+            z-index: 110;
+            overflow: hidden;
+            max-height: 60vh;
+            overflow-y: auto;
+          }
+          .preview-search-dropdown-group-label {
+            font-family: var(--font-sans);
+            font-size: 10px;
+            font-weight: var(--font-weight-semibold);
+            letter-spacing: var(--tracking-wider);
+            text-transform: uppercase;
+            color: var(--color-content-disabled);
+            padding: 10px 14px 4px;
+            display: block;
+          }
+          .preview-search-dropdown-item {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 9px 14px;
+            border: none;
+            background: none;
+            font-family: var(--font-sans);
+            font-size: var(--text-sm);
+            font-weight: var(--font-weight-medium);
+            color: var(--color-content-primary);
+            text-align: left;
+            cursor: pointer;
+            transition: background var(--duration-fast) var(--ease-default);
+          }
+          .preview-search-dropdown-item:hover {
+            background: var(--color-bg-secondary);
+          }
+          .preview-search-dropdown-empty {
+            font-family: var(--font-sans);
+            font-size: var(--text-sm);
+            color: var(--color-content-disabled);
+            padding: 16px 14px;
+            text-align: center;
           }
 
           /* Drawer overlay (backdrop) */
@@ -619,16 +688,48 @@ export default function ComponentPreview() {
         </header>
 
         {/* Mobile search bar (slides in below top-nav) */}
-        <div className={`preview-mobile-search-bar${searchOpen ? '' : ' hidden'}`} style={{ position: 'relative' }}>
-          <span className="preview-mobile-search-icon" style={{ width: 16, height: 16 }}><SearchIcon /></span>
-          <input
-            ref={mobileSearchRef}
-            className="preview-mobile-search-input"
-            type="search"
-            placeholder="Search components…"
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-          />
+        <div className={`preview-mobile-search-bar${searchOpen ? '' : ' hidden'}`}>
+          <div className="preview-mobile-search-wrap">
+            <span className="preview-mobile-search-icon"><SearchIcon /></span>
+            <input
+              ref={mobileSearchRef}
+              className="preview-mobile-search-input"
+              type="search"
+              placeholder="Search components…"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck={false}
+            />
+
+            {/* Dropdown — shown when search has text */}
+            {search.trim() && (
+              <div className="preview-search-dropdown" role="listbox">
+                {filteredGroups.length === 0 ? (
+                  <p className="preview-search-dropdown-empty">No results for "{search}"</p>
+                ) : (
+                  filteredGroups.map(group => (
+                    <div key={group.label}>
+                      <span className="preview-search-dropdown-group-label">{group.label}</span>
+                      {group.items.map(tab => (
+                        <button
+                          key={tab.id}
+                          role="option"
+                          className="preview-search-dropdown-item"
+                          aria-selected={activeTab === tab.id}
+                          onMouseDown={e => { e.preventDefault(); selectFromSearch(tab.id) }}
+                        >
+                          {tab.label}
+                        </button>
+                      ))}
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* ── Drawer overlay ─────────────────────────────────────────────── */}
