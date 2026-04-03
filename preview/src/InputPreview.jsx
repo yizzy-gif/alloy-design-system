@@ -609,6 +609,98 @@ function HRow({ label, description, hint, error, children }) {
   )
 }
 
+/* ── Specimen helpers ────────────────────────────────────────────────────────── */
+function SpecimenGroup({ label }) {
+  return (
+    <div style={{
+      padding:      '9px 20px 8px',
+      borderTop:    '1px solid var(--color-border-opaque)',
+      borderBottom: '1px solid var(--color-border-opaque)',
+      background:   'var(--color-bg-secondary)',
+    }}>
+      <span style={{
+        fontFamily:    'var(--font-sans)',
+        fontSize:      '10px',
+        fontWeight:    700,
+        letterSpacing: '0.1em',
+        textTransform: 'uppercase',
+        color:         'var(--color-content-disabled)',
+      }}>{label}</span>
+    </div>
+  )
+}
+
+function SpecimenRow({ label, tags = [], note, isMobile, children }) {
+  return (
+    <div style={{
+      display:             'grid',
+      gridTemplateColumns: isMobile ? '1fr' : '200px 1fr',
+      alignItems:          'center',
+      borderBottom:        '1px solid var(--color-border-opaque)',
+      minHeight:           '52px',
+    }}>
+      <div style={{
+        padding:     '12px 20px',
+        borderRight: '1px solid var(--color-border-opaque)',
+        display:     'flex',
+        alignItems:  'center',
+        gap:         '8px',
+        flexWrap:    'wrap',
+      }}>
+        <span style={{
+          fontFamily: 'var(--font-sans)',
+          fontSize:   'var(--text-sm)',
+          fontWeight: 'var(--font-weight-medium)',
+          color:      'var(--color-content-primary)',
+          lineHeight: 1,
+        }}>{label}</span>
+        {tags.map(t => (
+          <span key={t} style={{
+            fontFamily:   'var(--font-mono)',
+            fontSize:     '10.5px',
+            fontWeight:   500,
+            color:        'var(--color-content-tertiary)',
+            background:   'var(--color-bg-secondary)',
+            border:       '1px solid var(--color-border-opaque)',
+            borderRadius: 'var(--radius-sm)',
+            padding:      '1px 6px',
+            lineHeight:   1.6,
+          }}>{t}</span>
+        ))}
+        {note && (
+          <span style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize:   'var(--text-xs)',
+            color:      'var(--color-content-disabled)',
+            width:      '100%',
+            marginTop:  '2px',
+          }}>{note}</span>
+        )}
+      </div>
+      <div style={{ padding: '12px 20px', overflowX: 'auto' }}>
+        {children}
+      </div>
+    </div>
+  )
+}
+
+function InputImportRow() {
+  return (
+    <div style={{
+      padding:      '14px 20px',
+      borderBottom: '1px solid var(--color-border-opaque)',
+      fontFamily:   'var(--font-mono)',
+      fontSize:     '12.5px',
+      color:        'var(--color-content-secondary)',
+    }}>
+      <span className="specimen-import-kw">import </span>
+      <span className="specimen-import-exp">{'{ TextField, TextArea, PasswordField, SearchField, SelectField, EmailField, NumberField, FileUploader, MultiSelectField }'}</span>
+      <span className="specimen-import-kw"> from </span>
+      <span className="specimen-import-src">'alloy-design-system'</span>
+    </div>
+  )
+}
+
 /* ── Preview component ───────────────────────────────────────────────────────── */
 export default function InputPreview() {
   const isMobile = useIsMobile()
@@ -664,6 +756,11 @@ export default function InputPreview() {
         /* ─ Search input — hide browser clear ─ */
         .fi-shell input[type=search]::-webkit-search-decoration,
         .fi-shell input[type=search]::-webkit-search-cancel-button { -webkit-appearance: none; }
+
+        /* ─ Specimen ─ */
+        .specimen-import-kw  { color: var(--color-content-disabled); }
+        .specimen-import-exp { color: var(--color-content-primary); font-weight: 500; }
+        .specimen-import-src { color: var(--color-content-secondary); }
 
         /* ─ Grid helpers ─ */
         .fi-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
@@ -1006,6 +1103,169 @@ export default function InputPreview() {
                 <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', color: 'var(--color-content-tertiary)', marginBottom: 6 }}>error</p>
                 <FileUploaderInline state="error" errorMessage="Unsupported file type." fieldVariant="underlined" />
               </div>
+            </div>
+          </Section>
+
+          {/* 10 — Specimen */}
+          <Section title="Specimen" note="Quick-reference prop matrix — all variants, field types, sizes, states, icon slots, layouts, multi-select, and file uploader behaviors">
+            <div style={{
+              background:   'var(--color-bg-primary)',
+              borderRadius: 'var(--radius-lg)',
+              border:       '1px solid var(--color-border-opaque)',
+              overflow:     'hidden',
+            }}>
+
+              {/* Package */}
+              <SpecimenGroup label="Package" />
+              <InputImportRow />
+
+              {/* Variant */}
+              <SpecimenGroup label="Variant" />
+              <SpecimenRow label="outlined" tags={['variant="outlined"', 'default']} isMobile={isMobile}>
+                <TextField placeholder="Outlined field" variant="outlined" style={{ maxWidth: 400 }} />
+              </SpecimenRow>
+              <SpecimenRow label="underlined" tags={['variant="underlined"']} isMobile={isMobile}>
+                <TextField placeholder="Underlined field" variant="underlined" style={{ maxWidth: 400 }} />
+              </SpecimenRow>
+
+              {/* Field Type */}
+              <SpecimenGroup label="Field Type" />
+              <SpecimenRow label="TextField" tags={['type="text"']} isMobile={isMobile}>
+                <TextField placeholder="Single-line text" style={{ maxWidth: 400 }} />
+              </SpecimenRow>
+              <SpecimenRow label="TextArea" tags={['multiline', 'resize="vertical"']} isMobile={isMobile}>
+                <TextArea placeholder="Multi-line text…" style={{ maxWidth: 400 }} />
+              </SpecimenRow>
+              <SpecimenRow label="PasswordField" tags={['toggles visibility']} isMobile={isMobile}>
+                <PasswordField placeholder="Enter password" style={{ maxWidth: 400 }} />
+              </SpecimenRow>
+              <SpecimenRow label="SearchField" tags={['leadingIcon', 'clearable']} isMobile={isMobile}>
+                <SearchField placeholder="Search anything…" value={searchVal} onChange={e => setSearchVal(e.target.value)} onClear={() => setSearchVal('')} style={{ maxWidth: 400 }} />
+              </SpecimenRow>
+              <SpecimenRow label="SelectField" tags={['native <select>']} isMobile={isMobile}>
+                <SelectField options={[{value:'a',label:'Option A'},{value:'b',label:'Option B'},{value:'c',label:'Option C'}]} style={{ maxWidth: 400 }} />
+              </SpecimenRow>
+
+              {/* Size */}
+              <SpecimenGroup label="Size" />
+              <SpecimenRow label="sm — 32px" tags={['size="sm"']} isMobile={isMobile}>
+                <TextField size="sm" placeholder="Small" leadingIcon={<UserIcon />} style={{ maxWidth: 400 }} />
+              </SpecimenRow>
+              <SpecimenRow label="md — 40px" tags={['size="md"', 'default']} isMobile={isMobile}>
+                <TextField size="md" placeholder="Medium (default)" leadingIcon={<UserIcon />} style={{ maxWidth: 400 }} />
+              </SpecimenRow>
+              <SpecimenRow label="lg — 48px" tags={['size="lg"']} isMobile={isMobile}>
+                <TextField size="lg" placeholder="Large" leadingIcon={<UserIcon />} style={{ maxWidth: 400 }} />
+              </SpecimenRow>
+
+              {/* State */}
+              <SpecimenGroup label="State" />
+              <SpecimenRow label="default" isMobile={isMobile}>
+                <TextField placeholder="Idle, waiting for input" style={{ maxWidth: 400 }} />
+              </SpecimenRow>
+              <SpecimenRow label="error" tags={['error="..."']} isMobile={isMobile}>
+                <TextField defaultValue="bad-value" error="Please enter a valid email address" style={{ maxWidth: 400 }} />
+              </SpecimenRow>
+              <SpecimenRow label="success" tags={['success="..."']} isMobile={isMobile}>
+                <TextField defaultValue="jane@company.com" success="Email address verified" style={{ maxWidth: 400 }} />
+              </SpecimenRow>
+              <SpecimenRow label="disabled" tags={['disabled']} isMobile={isMobile}>
+                <TextField placeholder="Cannot be interacted with" disabled style={{ maxWidth: 400 }} />
+              </SpecimenRow>
+              <SpecimenRow label="read-only" tags={['readOnly']} isMobile={isMobile}>
+                <TextField value="Read-only value" readOnly onChange={() => {}} style={{ maxWidth: 400 }} />
+              </SpecimenRow>
+              <SpecimenRow label="required" tags={['required']} isMobile={isMobile}>
+                <TextField label="Field label" placeholder="Required field" required hint="Asterisk marks required" style={{ maxWidth: 400 }} />
+              </SpecimenRow>
+              <SpecimenRow label="hint" tags={['hint="..."']} isMobile={isMobile}>
+                <TextField placeholder="With hint text" hint="Helper text appears below the field" style={{ maxWidth: 400 }} />
+              </SpecimenRow>
+
+              {/* Icon Slots */}
+              <SpecimenGroup label="Icon Slots" />
+              <SpecimenRow label="leading icon" tags={['leadingIcon']} isMobile={isMobile}>
+                <TextField placeholder="Email address" leadingIcon={<MailIcon />} style={{ maxWidth: 400 }} />
+              </SpecimenRow>
+              <SpecimenRow label="trailing icon" tags={['trailingIcon']} isMobile={isMobile}>
+                <TextField placeholder="Website URL" trailingIcon={<GlobeIcon />} style={{ maxWidth: 400 }} />
+              </SpecimenRow>
+              <SpecimenRow label="leading + trailing" tags={['leadingIcon', 'trailingIcon']} isMobile={isMobile}>
+                <TextField placeholder="Search users" leadingIcon={<SearchIcon />} trailingIcon={<XIcon />} style={{ maxWidth: 400 }} />
+              </SpecimenRow>
+
+              {/* Layout */}
+              <SpecimenGroup label="Layout" />
+              <SpecimenRow label="vertical" tags={['layout="vertical"', 'default']} isMobile={isMobile}>
+                <TextField label="Full name" placeholder="Jane Smith" hint="Label stacked above field" style={{ maxWidth: 400 }} />
+              </SpecimenRow>
+              <SpecimenRow label="horizontal" tags={['layout="horizontal"']} note="Label pinned left, control on the right" isMobile={isMobile}>
+                <SelectField label="Timezone" labelDescription="All dates in this zone." layout="horizontal" defaultValue="utc" options={[{value:'utc',label:'UTC'},{value:'pacific',label:'Pacific (UTC–8)'},{value:'eastern',label:'Eastern (UTC–5)'}]} />
+              </SpecimenRow>
+
+              {/* Multi-Select */}
+              <SpecimenGroup label="Multi-Select" />
+              <SpecimenRow label="sm — 32px" tags={['size="sm"']} isMobile={isMobile}>
+                <MultiSelectField size="sm" options={TAG_OPTIONS} placeholder="Select tags…" style={{ maxWidth: 400 }} />
+              </SpecimenRow>
+              <SpecimenRow label="md — 40px" tags={['size="md"', 'default']} isMobile={isMobile}>
+                <MultiSelectField size="md" options={TAG_OPTIONS} placeholder="Select tags…" style={{ maxWidth: 400 }} />
+              </SpecimenRow>
+              <SpecimenRow label="lg — 48px" tags={['size="lg"']} isMobile={isMobile}>
+                <MultiSelectField size="lg" options={TAG_OPTIONS} placeholder="Select tags…" style={{ maxWidth: 400 }} />
+              </SpecimenRow>
+              <SpecimenRow label="underlined" tags={['variant="underlined"']} isMobile={isMobile}>
+                <MultiSelectField variant="underlined" options={TAG_OPTIONS} placeholder="Select tags…" style={{ maxWidth: 400 }} />
+              </SpecimenRow>
+              <SpecimenRow label="with selection" tags={['defaultValue']} isMobile={isMobile}>
+                <MultiSelectField options={TAG_OPTIONS} defaultValue={['frontend', 'backend']} placeholder="Select tags…" style={{ maxWidth: 400 }} />
+              </SpecimenRow>
+              <SpecimenRow label="disabled" tags={['disabled']} isMobile={isMobile}>
+                <MultiSelectField options={TAG_OPTIONS} defaultValue={['frontend']} placeholder="Disabled" disabled style={{ maxWidth: 400 }} />
+              </SpecimenRow>
+              <SpecimenRow label="error" tags={['error="..."']} isMobile={isMobile}>
+                <MultiSelectField options={TAG_OPTIONS} error="At least one tag is required" style={{ maxWidth: 400 }} />
+              </SpecimenRow>
+
+              {/* File Uploader — area */}
+              <SpecimenGroup label="File Uploader — area" />
+              <SpecimenRow label="empty" tags={['state="empty"']} isMobile={isMobile}>
+                <FileUploaderArea state="empty" />
+              </SpecimenRow>
+              <SpecimenRow label="drag hover" tags={['dragHover']} isMobile={isMobile}>
+                <FileUploaderArea state="empty" dragHover />
+              </SpecimenRow>
+              <SpecimenRow label="uploading" tags={['state="uploading"', 'progress={60}']} isMobile={isMobile}>
+                <FileUploaderArea state="uploading" progress={60} file={{ name: 'project-report.pdf', type: 'application/pdf' }} />
+              </SpecimenRow>
+              <SpecimenRow label="complete" tags={['state="complete"']} isMobile={isMobile}>
+                <FileUploaderArea state="complete" file={{ name: 'project-report.pdf', type: 'application/pdf' }} />
+              </SpecimenRow>
+              <SpecimenRow label="error" tags={['state="error"', 'errorMessage']} isMobile={isMobile}>
+                <FileUploaderArea state="error" errorMessage="File exceeds the 50 MB limit. Please choose a smaller file." />
+              </SpecimenRow>
+              <SpecimenRow label="disabled" tags={['disabled']} isMobile={isMobile}>
+                <FileUploaderArea state="empty" disabled />
+              </SpecimenRow>
+
+              {/* File Uploader — inline */}
+              <SpecimenGroup label="File Uploader — inline" />
+              <SpecimenRow label="empty" tags={['state="empty"']} isMobile={isMobile}>
+                <FileUploaderInline state="empty" />
+              </SpecimenRow>
+              <SpecimenRow label="uploading" tags={['state="uploading"', 'progress={40}']} isMobile={isMobile}>
+                <FileUploaderInline state="uploading" progress={40} file={{ name: 'hero-banner.png', type: 'image/png' }} />
+              </SpecimenRow>
+              <SpecimenRow label="complete" tags={['state="complete"']} isMobile={isMobile}>
+                <FileUploaderInline state="complete" file={{ name: 'hero-banner.png', type: 'image/png' }} />
+              </SpecimenRow>
+              <SpecimenRow label="error" tags={['state="error"', 'errorMessage']} isMobile={isMobile}>
+                <FileUploaderInline state="error" errorMessage="Unsupported file type." />
+              </SpecimenRow>
+              <SpecimenRow label="underlined variant" tags={['fieldVariant="underlined"']} isMobile={isMobile}>
+                <FileUploaderInline state="empty" fieldVariant="underlined" />
+              </SpecimenRow>
+
             </div>
           </Section>
 
