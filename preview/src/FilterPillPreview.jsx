@@ -100,6 +100,99 @@ const ConditionIcon = () => (
   </svg>
 )
 
+/* ── Specimen sub-components ─────────────────────────────────────────────────── */
+
+function SpecimenGroup({ label: groupLabel }) {
+  return (
+    <div style={{
+      padding:      '9px 20px 8px',
+      borderTop:    '1px solid var(--color-border-opaque)',
+      borderBottom: '1px solid var(--color-border-opaque)',
+      background:   'var(--color-bg-secondary)',
+    }}>
+      <span style={{
+        fontFamily:    'var(--font-sans)',
+        fontSize:      '10px',
+        fontWeight:    700,
+        letterSpacing: '0.1em',
+        textTransform: 'uppercase',
+        color:         'var(--color-content-disabled)',
+      }}>{groupLabel}</span>
+    </div>
+  )
+}
+
+function SpecimenRow({ label, tags = [], note, isMobile, children }) {
+  return (
+    <div style={{
+      display:             'grid',
+      gridTemplateColumns: isMobile ? '1fr' : '200px 1fr',
+      alignItems:          'center',
+      borderBottom:        '1px solid var(--color-border-opaque)',
+      minHeight:           '52px',
+    }}>
+      <div style={{
+        padding:     '12px 20px',
+        borderRight: '1px solid var(--color-border-opaque)',
+        display:     'flex',
+        alignItems:  'center',
+        gap:         '8px',
+        flexWrap:    'wrap',
+      }}>
+        <span style={{
+          fontFamily: 'var(--font-sans)',
+          fontSize:   'var(--text-sm)',
+          fontWeight: 'var(--font-weight-medium)',
+          color:      'var(--color-content-primary)',
+          lineHeight: 1,
+        }}>{label}</span>
+        {tags.map(t => (
+          <span key={t} style={{
+            fontFamily:   'var(--font-mono)',
+            fontSize:     '10.5px',
+            fontWeight:   500,
+            color:        'var(--color-content-tertiary)',
+            background:   'var(--color-bg-secondary)',
+            border:       '1px solid var(--color-border-opaque)',
+            borderRadius: 'var(--radius-sm)',
+            padding:      '1px 6px',
+            lineHeight:   1.6,
+          }}>{t}</span>
+        ))}
+        {note && (
+          <span style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize:   'var(--text-xs)',
+            color:      'var(--color-content-disabled)',
+            width:      '100%',
+            marginTop:  '2px',
+          }}>{note}</span>
+        )}
+      </div>
+      <div style={{ padding: '12px 20px', overflowX: 'auto' }}>
+        {children}
+      </div>
+    </div>
+  )
+}
+
+function ImportRow() {
+  return (
+    <div style={{
+      padding:      '14px 20px',
+      borderBottom: '1px solid var(--color-border-opaque)',
+      fontFamily:   'var(--font-mono)',
+      fontSize:     '12.5px',
+      color:        'var(--color-content-secondary)',
+    }}>
+      <span className="specimen-import-kw">import </span>
+      <span className="specimen-import-exp">{'{ FilterPill }'}</span>
+      <span className="specimen-import-kw"> from </span>
+      <span className="specimen-import-src">'alloy-design-system'</span>
+    </div>
+  )
+}
+
 /* ── Section wrapper ──────────────────────────────────────────────────────── */
 
 function Section({ label, description, children }) {
@@ -173,6 +266,9 @@ export default function FilterPillPreview() {
           outline: 2px solid var(--color-border-focus);
           outline-offset: 2px;
         }
+        .specimen-import-kw  { color: var(--color-content-disabled); }
+        .specimen-import-exp { color: var(--color-content-primary); font-weight: 500; }
+        .specimen-import-src { color: var(--color-content-secondary); }
       `}</style>
 
       <div className="fp-demo" style={{
@@ -332,6 +428,80 @@ export default function FilterPillPreview() {
               <FilterPill active onRemove={() => {}}>Role: Engineer</FilterPill>
               <FilterPill onRemove={() => {}}>Location: Remote</FilterPill>
             </Row>
+          </div>
+        </Section>
+
+        {/* Specimen */}
+        <Section
+          label="Specimen"
+          description="Quick-reference table — scan to identify the exact prop combination to name when prompting."
+        >
+          <div style={{
+            background:   'var(--color-bg-primary)',
+            borderRadius: 'var(--radius-lg)',
+            border:       '1px solid var(--color-border-opaque)',
+            overflow:     'hidden',
+            margin:       '-20px',
+          }}>
+
+            {/* ── Package ── */}
+            <SpecimenGroup label="Package" />
+            <ImportRow />
+
+            {/* ── Size ── */}
+            <SpecimenGroup label="Size" />
+            <SpecimenRow label="SM" tags={['size="sm"', '22px height', 'default']} isMobile={isMobile}>
+              <FilterPill size="sm">Label</FilterPill>
+            </SpecimenRow>
+            <SpecimenRow label="MD" tags={['size="md"', '26px height']} isMobile={isMobile}>
+              <FilterPill size="md">Label</FilterPill>
+            </SpecimenRow>
+
+            {/* ── Active state ── */}
+            <SpecimenGroup label="Active" />
+            <SpecimenRow label="Inactive" tags={['active={false}', 'default']} isMobile={isMobile}>
+              <FilterPill>Label</FilterPill>
+            </SpecimenRow>
+            <SpecimenRow label="Active" tags={['active']} isMobile={isMobile}>
+              <FilterPill active>Label</FilterPill>
+            </SpecimenRow>
+
+            {/* ── Icon ── */}
+            <SpecimenGroup label="Leading icon" />
+            <SpecimenRow label="No icon" tags={['icon omitted', 'default']} isMobile={isMobile}>
+              <FilterPill>Trigger</FilterPill>
+            </SpecimenRow>
+            <SpecimenRow label="With icon" tags={['icon={…}']} note="10×10 SVG glyph aligned to label baseline" isMobile={isMobile}>
+              <FilterPill icon={<TriggerIcon />}>Trigger</FilterPill>
+            </SpecimenRow>
+            <SpecimenRow label="Icon + active" tags={['icon', 'active']} isMobile={isMobile}>
+              <FilterPill icon={<TriggerIcon />} active>Trigger</FilterPill>
+            </SpecimenRow>
+
+            {/* ── Removable ── */}
+            <SpecimenGroup label="Removable" />
+            <SpecimenRow label="Without remove" tags={['onRemove omitted', 'default']} isMobile={isMobile}>
+              <FilterPill>Status: Active</FilterPill>
+            </SpecimenRow>
+            <SpecimenRow label="Inactive + removable" tags={['onRemove']} isMobile={isMobile}>
+              <FilterPill onRemove={() => {}}>Status: Active</FilterPill>
+            </SpecimenRow>
+            <SpecimenRow label="Active + removable" tags={['active', 'onRemove']} isMobile={isMobile}>
+              <FilterPill active onRemove={() => {}}>Status: Active</FilterPill>
+            </SpecimenRow>
+
+            {/* ── State ── */}
+            <SpecimenGroup label="State" />
+            <SpecimenRow label="Default" tags={[]} isMobile={isMobile}>
+              <FilterPill>Label</FilterPill>
+            </SpecimenRow>
+            <SpecimenRow label="Disabled" tags={['disabled']} note="Opacity 0.4, cursor not-allowed" isMobile={isMobile}>
+              <FilterPill disabled>Label</FilterPill>
+            </SpecimenRow>
+            <SpecimenRow label="Disabled active" tags={['disabled', 'active']} isMobile={isMobile}>
+              <FilterPill disabled active>Label</FilterPill>
+            </SpecimenRow>
+
           </div>
         </Section>
 
