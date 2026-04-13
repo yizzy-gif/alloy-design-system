@@ -2,7 +2,7 @@ name: Deploy Preview to GitHub Pages
 
 on:
   push:
-    branches: [specimens]
+    branches: [main]
 
 permissions:
   contents: read
