@@ -15,8 +15,9 @@ A React + TypeScript component library and design system. Provides reusable UI p
 Alloy/
 ├── src/
 │   ├── components/          # UI component implementations
-│   │   ├── ai/
-│   │   │   └── AILoader/    # Teambridge AI animated loader
+│   │   ├── ai/              # Teambridge AI components
+│   │   │   ├── AILoader/    # Animated AI star mark loader
+│   │   │   └── AICoreButton/ # AI action button (copy, read-aloud, feedback)
 │   │   ├── Alert/
 │   │   ├── Badge/
 │   │   ├── Breadcrumb/
@@ -27,6 +28,7 @@ Alloy/
 │   │   ├── DataCard/
 │   │   ├── Divider/
 │   │   ├── DropdownMenu/
+│   │   ├── Eyebrow/
 │   │   ├── FileUploader/
 │   │   ├── FilterPill/
 │   │   ├── Input/           # TextField, TextArea, SelectField, and variants
@@ -41,16 +43,21 @@ Alloy/
 │   │   ├── Table/
 │   │   ├── Tabs/
 │   │   ├── Tag/
+│   │   ├── Toast/
 │   │   ├── ToggleButton/
 │   │   ├── Tooltip/
 │   │   ├── ValueChangeLabel/
-│   │   └── icons/           # 50+ SVG icon components
+│   │   └── icons/           # 78 SVG icon components
 │   ├── tokens/              # Design token definitions (TS)
+│   │   ├── colors.ts        # Palette color scales
+│   │   ├── gradients.ts     # Gradient definitions
+│   │   ├── shadows.ts       # Shadow / elevation tokens
+│   │   ├── typography.ts    # Font scales and text styles
+│   │   └── index.ts         # Token barrel export
 │   ├── styles/
 │   │   ├── tokens.css       # CSS custom properties (all tokens)
 │   │   ├── typography.css   # Geist / Geist Mono font imports
-│   │   ├── reset.css        # Minimal CSS reset
-│   │   └── global.css       # Global base styles
+│   │   └── artwork.css      # SVG and artwork styles
 │   └── index.ts             # Main entry — re-exports all public API
 ├── preview/                 # Live component preview app (Vite + React)
 │   ├── src/
@@ -58,9 +65,15 @@ Alloy/
 │   │   └── *Preview.jsx           # One page per component
 │   ├── vite.config.js
 │   └── package.json
+├── specimens/               # Component specimen documentation
+│   └── TagSpecimen.tsx
+├── .github/
+│   └── workflows/
+│       └── deploy-preview.yml   # Auto-deploy preview to GitHub Pages
 ├── package.json
 ├── tsconfig.json
-└── vite.config.ts
+├── vite.config.ts
+└── CHANGELOG.md
 ```
 
 ---
@@ -111,6 +124,7 @@ import 'alloy-design-system/styles/typography.css';
 | Component | Description |
 |---|---|
 | `AILoader` | Animated Teambridge AI star mark that morphs between star and circle. Six color variants: `gradient`, `gradient-fill`, `inverse`, `inverse-light`, `stroke`, `stroke-light`. Five sizes: xs (16 px) → xl (64 px). Fixed 2.2 s ambient spin. |
+| `AICoreButton` | AI action button for copy, read-aloud, and feedback (thumbs up/down) interactions. Integrates ThumbsUp, ThumbsDown, and VolumeMax icons. |
 
 ### Actions
 
@@ -164,6 +178,7 @@ import 'alloy-design-system/styles/typography.css';
 | `Badge` | Compact pill for counts, labels, and semantic state indicators. |
 | `Tag` | Multi-color, multi-variant labeling chip with optional dismiss. |
 | `StatusTag` | Semantic status indicator with colored dot and label. |
+| `Eyebrow` | Small uppercase label used for section headings and category markers. |
 
 ### Feedback
 
@@ -172,7 +187,8 @@ import 'alloy-design-system/styles/typography.css';
 | `Alert` | Notification banner for error, warning, success, info, and feature states. Dismissible. |
 | `Dialog` | Modal overlay with `DialogHeader`, `DialogContent`, and `DialogFooter` sub-components. Three sizes: sm / md / lg. |
 | `DropdownMenu` | Floating panel with grouped options, toggle actions, and custom trailing slots. |
-| `Tooltip` | Hover/focus hint overlay. top / bottom / left / right placement. Configurable delay. |
+| `Toast` | Ephemeral notification with auto-dismiss. |
+| `Tooltip` | Hover/focus hint overlay. top / bottom / left / right placement. Configurable delay and content slot. |
 
 ### Layout
 
@@ -367,7 +383,7 @@ import 'alloy-design-system/styles/typography.css';
 
 ## Icons
 
-50+ SVG icons exported as React components from `alloy-design-system`. Each accepts `size` (default 16), `color` (default `currentColor`), and all standard SVG props. Stroke width is auto-scaled by size.
+78 SVG icons exported as React components from `alloy-design-system`. Each accepts `size` (default 16), `color` (default `currentColor`), and all standard SVG props. Stroke width is auto-scaled by size.
 
 ```tsx
 import { ChevronDownIcon, AlertTriangleIcon, TeambridgeAIIcon } from 'alloy-design-system';
@@ -375,3 +391,20 @@ import { ChevronDownIcon, AlertTriangleIcon, TeambridgeAIIcon } from 'alloy-desi
 <ChevronDownIcon size={20} />
 <AlertTriangleIcon size={16} color="var(--color-error-content)" />
 ```
+
+<details>
+<summary>Full icon list</summary>
+
+`AlertCircleIcon` `AlertIcon` `AlertTriangleIcon` `Announcement02Icon` `ArrowCircleBrokenRightIcon` `ArrowNarrowDownIcon` `ArrowNarrowRightIcon` `ArrowNarrowUpIcon` `ArrowUpRightIcon` `BankIcon` `BankNote01Icon` `BankNote02Icon` `BarChart02Icon` `Bell01Icon` `BookOpen01Icon` `BookmarkIcon` `Camera01Icon` `CheckCircleDashedIcon` `CheckCircleIcon` `CheckIcon` `ChevronDownIcon` `ChevronLeftIcon` `ChevronRightIcon` `ClipboardCheckIcon` `ClockIcon` `CloudUploadIcon` `Code02Icon` `Coins04Icon` `CoinsHandIcon` `CoinsStacked03Icon` `Columns01Icon` `CreditCard01Icon` `CreditCard02Icon` `CreditCardCheckIcon` `CurrencyDollarIcon` `Edit03Icon` `EyeIcon` `EyeOffIcon` `FeatherIcon` `File04Icon` `File05Icon` `GitBranch01Icon` `Globe01Icon` `Grid01Icon` `Home02Icon` `HomeLineIcon` `Image01Icon` `InfoCircleIcon` `InfoIcon` `LineChartUp01Icon` `LineChartUp02Icon` `ListBulletIcon` `Mail01Icon` `Map01Icon` `MessageDotsSquareIcon` `MessageNotificationCircleIcon` `MessageNotificationSquareIcon` `Microphone02Icon` `MoneyIcon` `PackageIcon` `PieChart01Icon` `PlusIcon` `PlusSquareIcon` `PuzzlePiece01Icon` `PuzzlePiece02Icon` `QrCode01Icon` `SearchSmIcon` `SettingsGearIcon` `SunIcon` `Target04Icon` `TeambridgeAIIcon` `ThumbsDownIcon` `ThumbsUpIcon` `Trash03Icon` `Users03Icon` `VolumeMaxIcon` `XIcon`
+
+</details>
+
+---
+
+## Deployment
+
+The preview app is automatically deployed to **GitHub Pages** when changes are pushed to the `specimens` branch.
+
+- **Live preview:** [yizzy-gif.github.io/alloy-design-system](https://yizzy-gif.github.io/alloy-design-system/)
+- **Workflow:** `.github/workflows/deploy-preview.yml`
+- **Stack:** Ubuntu, Node 20, Vite build
