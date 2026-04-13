@@ -388,7 +388,7 @@ export default function ColorTokensPreview() {
             color: 'var(--color-content-disabled)',
             marginBottom: 6,
           }}>
-            Alloy Design System
+            Foundation
           </p>
           <h1 style={{
             fontSize: 'var(--text-4xl)',

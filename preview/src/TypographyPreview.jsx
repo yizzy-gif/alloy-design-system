@@ -166,7 +166,7 @@ export default function TypographyPreview() {
             textTransform: 'uppercase',
             color: 'var(--color-content-tertiary)',
             margin: '0 0 8px',
-          }}>Alloy Design System</p>
+          }}>Foundation</p>
           <h1 style={{
             fontFamily: 'var(--font-sans)',
             fontSize: 'var(--text-4xl)',

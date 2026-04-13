@@ -18,7 +18,7 @@
 
 /* ─ Sizes ─ */
 .sm {
-  --li-min-height:  40px;
+  --li-min-height:  36px;
   --li-py:          var(--space-2);
   --li-px:          var(--space-3);
   --li-gap:         var(--space-2);

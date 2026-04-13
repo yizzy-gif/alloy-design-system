@@ -6,6 +6,7 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { useIsMobile } from './useIsMobile.js'
+import { Eyebrow } from '../../src/components/Eyebrow/Eyebrow'
 
 /* ── Icons ────────────────────────────────────────────────────────────────── */
 const ChevronRightIcon = ({ size = 16 }) => (
@@ -288,11 +289,11 @@ function GroupSection({ group, size, closeOnSelect, onClose }) {
           onClick={group.collapsible ? () => setExpanded(v => !v) : undefined}
           aria-expanded={group.collapsible ? expanded : undefined}
         >
-          <span className="dm-group-heading-label">{group.heading}</span>
+          <Eyebrow className="dm-group-heading-label">{group.heading}</Eyebrow>
           {group.collapsible && (
             <span className="dm-group-chevron" data-expanded={expanded || undefined} aria-hidden="true">
-              <span className="alloy-icon-slot" style={{ width: 12, height: 12 }}>
-                <ChevronRightIcon size={12} />
+              <span className="alloy-icon-slot" style={{ width: 16, height: 16 }}>
+                <ChevronRightIcon size={16} />
               </span>
             </span>
           )}
@@ -847,14 +848,11 @@ export default function DropdownMenuPreview() {
         /* ─ Group heading ─ */
         .dm-group-heading {
           display: flex; align-items: center; gap: var(--space-2);
-          padding: var(--space-2) var(--space-4);
+          padding: var(--space-2) var(--space-3);
         }
         .dm-group-heading-label {
           flex: 1; min-width: 0;
-          font-family: var(--font-sans); font-size: var(--text-xs);
-          font-weight: var(--font-weight-medium);
-          letter-spacing: var(--tracking-wider); text-transform: uppercase;
-          color: var(--color-content-disabled); line-height: var(--line-height-snug);
+          color: var(--color-content-disabled);
         }
         .dm-group-heading-collapsible {
           cursor: pointer; user-select: none; border-radius: var(--radius-sm);
@@ -985,7 +983,7 @@ export default function DropdownMenuPreview() {
 
         {/* Header */}
         <div style={{ marginBottom: 40 }}>
-          <p style={{ fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wider)', textTransform: 'uppercase', color: 'var(--color-content-disabled)', marginBottom: 6 }}>Alloy Design System</p>
+          <p style={{ fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wider)', textTransform: 'uppercase', color: 'var(--color-content-disabled)', marginBottom: 6 }}>Feedback</p>
           <h1 style={{ fontSize: 'var(--text-4xl)', fontWeight: 'var(--font-weight-regular)', lineHeight: 'var(--line-height-snug)', color: 'var(--color-content-primary)', marginBottom: 8 }}>Dropdown Menu</h1>
           <p style={{ fontSize: 'var(--text-base)', color: 'var(--color-content-tertiary)', lineHeight: 1.6 }}>floating panel · group headings · collapsible groups · all trailing actions · click outside / Escape to close</p>
         </div>

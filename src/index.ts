@@ -10,6 +10,9 @@ export type { EyebrowProps } from './components/Eyebrow';
 export { AILoader } from './components/ai';
 export type { AILoaderProps, AILoaderSize, AILoaderVariant } from './components/ai';
 
+export { AICoreButton } from './components/ai';
+export type { AICoreButtonProps, AICoreButtonSize } from './components/ai';
+
 export { DataCard } from './components/DataCard';
 export type { DataCardProps, DataCardColor } from './components/DataCard';
 
@@ -133,6 +136,9 @@ export type { CheckboxGroupProps, CheckboxGroupOption } from './components/Check
 
 export { MultiSelectField } from './components/Input';
 export type { MultiSelectFieldProps, MultiSelectOption } from './components/Input';
+
+export { Table, TableHeader, TableBody, TableRow, TableHead, TableCell, CellText } from './components/Table';
+export type { TableProps, TableSize, TableHeadProps, TableSortDirection, TableCellAlign, TableRowProps, TableCellProps, CellTextProps } from './components/Table';
 
 // ── Charts ───────────────────────────────────────────────────────────────────
 

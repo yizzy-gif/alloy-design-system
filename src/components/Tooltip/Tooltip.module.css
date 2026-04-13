@@ -20,7 +20,7 @@
    z-index uses --z-overlay so it appears above sticky headers and dropdowns.  */
 
 .tooltip {
-  position: absolute;
+  position: absolute; /* overridden to fixed by .portal */
   background: var(--color-bg-inverse-primary);
   color: var(--color-content-inverse-primary);
 
@@ -34,9 +34,7 @@
   /* Layout */
   padding: 5px 8px;
   border-radius: var(--radius-sm);
-  min-width: 80px;
-  white-space: normal;
-  word-break: break-word;
+  white-space: nowrap;
   pointer-events: none;
   z-index: var(--z-overlay);
 
@@ -52,23 +50,25 @@
   opacity: 1;
 }
 
-/* ── Placement: top (default) ────────────────────────────────────────────── */
+/* ── Portal mode — fixed position, coords injected via inline style ──────── */
+
+.portal {
+  position: fixed;
+}
+
+/* ── Placement: top ──────────────────────────────────────────────────────── */
 
 .top {
-  bottom: calc(100% + 6px);
-  left: 50%;
-  transform: translateX(-50%) translateY(4px);
+  transform: translateX(-50%) translateY(calc(-100% + 4px));
 }
 
 .top[data-visible] {
-  transform: translateX(-50%) translateY(0);
+  transform: translateX(-50%) translateY(-100%);
 }
 
 /* ── Placement: bottom ───────────────────────────────────────────────────── */
 
 .bottom {
-  top: calc(100% + 6px);
-  left: 50%;
   transform: translateX(-50%) translateY(-4px);
 }
 
@@ -79,23 +79,19 @@
 /* ── Placement: left ─────────────────────────────────────────────────────── */
 
 .left {
-  right: calc(100% + 6px);
-  top: 50%;
-  transform: translateY(-50%) translateX(4px);
+  transform: translateX(calc(-100% + 4px)) translateY(-50%);
 }
 
 .left[data-visible] {
-  transform: translateY(-50%) translateX(0);
+  transform: translateX(-100%) translateY(-50%);
 }
 
 /* ── Placement: right ────────────────────────────────────────────────────── */
 
 .right {
-  left: calc(100% + 6px);
-  top: 50%;
-  transform: translateY(-50%) translateX(-4px);
+  transform: translateX(-4px) translateY(-50%);
 }
 
 .right[data-visible] {
-  transform: translateY(-50%) translateX(0);
+  transform: translateX(0) translateY(-50%);
 }

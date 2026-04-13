@@ -153,7 +153,7 @@ export default function ValueChangeLabelPreview() {
       {/* Header */}
       <div style={{ marginBottom: '40px' }}>
         <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-medium)', letterSpacing: 'var(--tracking-wider)', textTransform: 'uppercase', color: 'var(--color-content-tertiary)', marginBottom: '8px' }}>
-          ALLOY DESIGN SYSTEM
+          DATA DISPLAY
         </p>
         <h1 style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-4xl)', fontWeight: 'var(--font-weight-bold)', color: 'var(--color-content-primary)', lineHeight: 'var(--line-height-tight)', marginBottom: '12px' }}>
           Value Change Label

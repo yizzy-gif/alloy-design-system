@@ -30,9 +30,11 @@ import DataCardPreview            from './DataCardPreview.jsx'
 import ValueChangeLabelPreview    from './ValueChangeLabelPreview.jsx'
 import DividerPreview             from './DividerPreview.jsx'
 import AILoaderPreview         from './AILoaderPreview.jsx'
+import AICoreButtonPreview     from './AICoreButtonPreview.jsx'
 import DialogPreview           from './DialogPreview.jsx'
 import AreaButtonPreview       from './AreaButtonPreview.jsx'
 import EyebrowPreview          from './EyebrowPreview.jsx'
+import { Eyebrow }             from '../../src/components/Eyebrow/Eyebrow.tsx'
 
 /* ── Component registry (grouped) ───────────────────────────────────────────── */
 const GROUPS = [
@@ -107,7 +109,8 @@ const GROUPS = [
   {
     label: 'Teambridge AI',
     items: [
-      { id: 'ai-loader', label: 'AI Loader', component: AILoaderPreview },
+        { id: 'ai-loader',      label: 'AI Loader',       component: AILoaderPreview },
+      { id: 'ai-core-button', label: 'AI Core Button',  component: AICoreButtonPreview },
     ],
   },
 ]
@@ -116,19 +119,18 @@ const ALL_TABS = GROUPS.flatMap(g => g.items)
 
 /* ── Icon atoms — no fixed w/h or strokeWidth; slot CSS applies --icon-stroke-width ── */
 const SearchIcon = () => (
-  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeLinecap="round" style={{ display: 'block', width: '100%', height: '100%' }}>
-    <circle cx="6.5" cy="6.5" r="4" />
-    <path d="M10 10l3 3" />
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'block', width: '100%', height: '100%' }}>
+    <path d="M21 21L15.0001 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" />
   </svg>
 )
 const CloseIcon = () => (
-  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeLinecap="round" style={{ display: 'block', width: '100%', height: '100%' }}>
-    <path d="M3 3l10 10M13 3L3 13" />
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'block', width: '100%', height: '100%' }}>
+    <path d="M18 6L6 18M6 6L18 18" />
   </svg>
 )
 const HamburgerIcon = () => (
-  <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeLinecap="round" style={{ display: 'block', width: '100%', height: '100%' }}>
-    <path d="M2 4h14M2 9h14M2 14h14" />
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" style={{ display: 'block', width: '100%', height: '100%' }}>
+    <path d="M3 6h18M3 12h18M3 18h18" />
   </svg>
 )
 /* Exact paths from the provided icon files */
@@ -448,12 +450,21 @@ export default function ComponentPreview() {
             padding: 10px 16px;
             background: var(--color-bg-primary);
             border-bottom: 1px solid var(--color-border-opaque);
-            position: sticky;
-            top: 0;
+            position: fixed;
+            top: 64px;
+            left: 0;
+            right: 0;
             z-index: 99;
+            opacity: 1;
+            transform: translateY(0);
+            transition:
+              opacity var(--duration-base) var(--ease-default),
+              transform var(--duration-base) var(--ease-default);
           }
           .preview-mobile-search-bar.hidden {
-            display: none;
+            opacity: 0;
+            transform: translateY(-6px);
+            pointer-events: none;
           }
           .preview-mobile-search-wrap {
             position: relative;
@@ -562,40 +573,88 @@ export default function ComponentPreview() {
             position: fixed;
             top: 0;
             left: 0;
+            right: 0;
             bottom: 0;
-            width: 280px;
-            max-width: 85vw;
+            width: 100%;
             background: var(--color-bg-primary);
-            border-right: 1px solid var(--color-border-opaque);
             z-index: 201;
             padding: 0;
-            transform: translateX(-100%);
-            transition: transform var(--duration-base) var(--ease-default);
-            overflow: hidden;
+            opacity: 0;
+            transform: translateY(-48px);
+            visibility: hidden;
+            transition: opacity 300ms var(--ease-in), transform 300ms var(--ease-in), visibility 0ms linear 300ms;
           }
           .preview-drawer.open {
-            transform: translateX(0);
+            opacity: 1;
+            transform: translateY(0);
+            visibility: visible;
+            transition: opacity 420ms var(--ease-default), transform 420ms var(--ease-default), visibility 0ms linear 0ms;
           }
 
           .preview-drawer-header {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 14px 16px;
+            gap: 12px;
+            padding: 12px 16px;
             border-bottom: 1px solid var(--color-border-opaque);
             flex-shrink: 0;
           }
-          .preview-drawer-title {
-            font-family: var(--font-sans);
-            font-size: var(--text-sm);
-            font-weight: var(--font-weight-semibold);
-            color: var(--color-content-primary);
+          .preview-drawer-search-wrap {
+            position: relative;
+            flex: 1;
           }
+          .preview-drawer-search-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-content-disabled);
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            width: 16px;
+            height: 16px;
+          }
+          .preview-drawer-search-input {
+            width: 100%;
+            height: 36px;
+            padding: 0 var(--space-3) 0 36px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border-opaque);
+            background: var(--color-bg-secondary);
+            font-family: var(--font-sans);
+            font-size: 16px;
+            color: var(--color-content-primary);
+            outline: none;
+            box-sizing: border-box;
+            transition: border-color var(--duration-fast) var(--ease-default);
+          }
+          .preview-drawer-search-input::placeholder { color: var(--color-content-disabled); }
+          .preview-drawer-search-input:focus { border-color: var(--color-border-selected); }
 
           .preview-drawer-body {
             flex: 1;
             overflow-y: auto;
-            padding: 12px 10px;
+            padding: 20px 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+          }
+
+          /* Drawer-specific nav overrides */
+          .preview-drawer-body .preview-nav-group {
+            width: 100%;
+            max-width: 320px;
+            align-items: center;
+          }
+          .preview-drawer-label {
+            text-align: center;
+          }
+          .preview-drawer-body .preview-nav-item {
+            justify-content: center;
+            text-align: center;
+            font-size: var(--text-base);
+            padding: 10px 16px;
           }
 
           .preview-content {
@@ -656,17 +715,8 @@ export default function ComponentPreview() {
 
         {/* ── Mobile top-nav ─────────────────────────────────────────────── */}
         <header className="preview-topnav" aria-label="Component previews navigation">
-          <span className="preview-topnav-wordmark">Alloy</span>
+          <span className="preview-topnav-wordmark">Alloy Design System</span>
           <div className="preview-topnav-actions">
-            {/* Search icon */}
-            <button
-              className="alloy-icon-btn"
-              aria-label="Search components"
-              aria-pressed={searchOpen}
-              onClick={() => setSearchOpen(s => !s)}
-            >
-              <IconSlot>{searchOpen ? <CloseIcon /> : <SearchIcon />}</IconSlot>
-            </button>
             {/* Dark/light toggle */}
             <button
               className="alloy-icon-btn"
@@ -747,27 +797,43 @@ export default function ComponentPreview() {
           aria-label="Component navigation"
         >
           <div className="preview-drawer-header">
-            <span className="preview-drawer-title">Components</span>
+            <div className="preview-drawer-search-wrap">
+              <span className="preview-drawer-search-icon"><SearchIcon /></span>
+              <input
+                className="preview-drawer-search-input"
+                type="search"
+                placeholder="Search…"
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                autoComplete="off"
+                autoCorrect="off"
+                autoCapitalize="off"
+                spellCheck={false}
+              />
+            </div>
             <button
               className="alloy-icon-btn"
               aria-label="Close navigation"
-              onClick={() => setMenuOpen(false)}
+              onClick={() => { setMenuOpen(false); setSearch('') }}
             >
               <IconSlot><CloseIcon /></IconSlot>
             </button>
           </div>
 
           <div className="preview-drawer-body">
-            {GROUPS.map(group => (
+            {filteredGroups.length === 0 && (
+              <p className="preview-no-results">No results</p>
+            )}
+            {filteredGroups.map(group => (
               <div key={group.label} className="preview-nav-group">
-                <span className="preview-sidebar-label">{group.label}</span>
+                <Eyebrow className="preview-drawer-label">{group.label}</Eyebrow>
                 {group.items.map(tab => (
                   <button
                     key={tab.id}
                     role="tab"
                     className="preview-nav-item"
                     aria-selected={activeTab === tab.id}
-                    onClick={() => selectTab(tab.id)}
+                    onClick={() => { selectTab(tab.id); setSearch('') }}
                   >
                     {tab.label}
                   </button>

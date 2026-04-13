@@ -361,7 +361,7 @@ export default function AILoaderPreview() {
       {/* ── Footer ── */}
       <div style={dynFooter}>
         <strong style={{ color: 'var(--color-content-secondary)' }}>AILoader</strong>
-        {' — '}Teambridge AI · Alloy Design System
+        {' — '}Teambridge AI
       </div>
     </div>
   )

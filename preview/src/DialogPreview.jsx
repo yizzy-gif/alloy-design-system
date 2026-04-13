@@ -86,7 +86,7 @@ export default function DialogPreview() {
 
       {/* Header */}
       <div style={{ marginBottom: 40 }}>
-        <p style={{ fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wider)', textTransform: 'uppercase', color: 'var(--color-content-disabled)', marginBottom: 6 }}>Alloy Design System</p>
+        <p style={{ fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wider)', textTransform: 'uppercase', color: 'var(--color-content-disabled)', marginBottom: 6 }}>Feedback</p>
         <h1 style={{ fontSize: 'var(--text-4xl)', fontWeight: 'var(--font-weight-bold)', lineHeight: 'var(--line-height-tight)', color: 'var(--color-content-primary)', marginBottom: 8 }}>Dialog</h1>
         <p style={{ fontSize: 'var(--text-lg)', color: 'var(--color-content-secondary)' }}>
           DialogHeader · DialogContent · DialogFooter — composable lego blocks

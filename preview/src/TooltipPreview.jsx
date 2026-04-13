@@ -109,7 +109,7 @@ export default function TooltipPreview() {
       {/* ── Page header ─────────────────────────────────────────────────────── */}
       <div style={{ marginBottom: 20 }}>
         <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-xs)', letterSpacing: 'var(--tracking-wider)', textTransform: 'uppercase', color: 'var(--color-content-disabled)', marginBottom: 6 }}>
-          Alloy Design System
+          Feedback
         </p>
         <h1 style={{ fontSize: 'var(--text-4xl)', fontWeight: 'var(--font-weight-regular)', lineHeight: 'var(--line-height-snug)', color: 'var(--color-content-primary)', marginBottom: 8 }}>
           Tooltip

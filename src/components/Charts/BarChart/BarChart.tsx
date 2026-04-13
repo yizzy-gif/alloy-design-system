@@ -95,7 +95,7 @@ export const BarChart = forwardRef<HTMLDivElement, BarChartProps>(
     }, []);
 
     /* ── Layout constants ─── */
-    const L = 52; // left pad for y-axis labels
+    const L = 24; // left pad: enough for short y-axis labels + 8px gap
     const B = 28; // bottom pad for x-axis labels
     const T = 8;  // top pad
     const W = svgWidth;
@@ -256,7 +256,7 @@ export const BarChart = forwardRef<HTMLDivElement, BarChartProps>(
                   {showGrid && (
                     <line x1={L} y1={y} x2={W} y2={y} className={styles.gridLine} />
                   )}
-                  <text x={L - 6} y={y + 4} className={styles.axisLabel} textAnchor="end">
+                  <text x={L - 8} y={y + 4} className={styles.axisLabel} textAnchor="end">
                     {formatValue(tick)}{yUnit}
                   </text>
                 </g>
@@ -269,6 +269,12 @@ export const BarChart = forwardRef<HTMLDivElement, BarChartProps>(
 
               if (variant === 'stacked') {
                 let cumulative = 0;
+                // Find the last series with a non-zero value for this column so
+                // border-radius applies to the actual topmost visible segment.
+                let topIdx = -1;
+                for (let i = series.length - 1; i >= 0; i--) {
+                  if ((series[i].data[ci] ?? 0) > 0) { topIdx = i; break; }
+                }
                 return (
                   <g key={lbl}>
                     {series.map((s, si) => {
@@ -283,7 +289,7 @@ export const BarChart = forwardRef<HTMLDivElement, BarChartProps>(
                           y={y}
                           width={barW}
                           height={barH}
-                          rx={si === series.length - 1 ? barRadius : 0}
+                          rx={si === topIdx ? barRadius : 0}
                           fill={seriesColors[si]}
                         />
                       );

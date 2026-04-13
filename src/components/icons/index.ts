@@ -10,6 +10,9 @@ export type { InfoIconProps }              from './InfoIcon';
 export { CheckCircleIcon }       from './CheckCircleIcon';
 export type { CheckCircleIconProps }       from './CheckCircleIcon';
 
+export { ClockIcon }             from './ClockIcon';
+export type { ClockIconProps }             from './ClockIcon';
+
 export { CloudUploadIcon }       from './CloudUploadIcon';
 
 export { InfoCircleIcon }        from './InfoCircleIcon';
@@ -140,3 +143,12 @@ export { PackageIcon }                   from './PackageIcon';
 export { PuzzlePiece01Icon }             from './PuzzlePiece01Icon';
 export { PuzzlePiece02Icon }             from './PuzzlePiece02Icon';
 export { QrCode01Icon }                  from './QrCode01Icon';
+
+export { VolumeMaxIcon }                 from './VolumeMaxIcon';
+export type { VolumeMaxIconProps }       from './VolumeMaxIcon';
+
+export { ThumbsUpIcon }                  from './ThumbsUpIcon';
+export type { ThumbsUpIconProps }        from './ThumbsUpIcon';
+
+export { ThumbsDownIcon }                from './ThumbsDownIcon';
+export type { ThumbsDownIconProps }      from './ThumbsDownIcon';
