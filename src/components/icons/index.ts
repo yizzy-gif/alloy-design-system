@@ -94,6 +94,9 @@ export type { ArrowCircleBrokenRightIconProps }      from './ArrowCircleBrokenRi
 export { CheckIcon }                       from './CheckIcon';
 export type { CheckIconProps }             from './CheckIcon';
 
+export { RefreshCw04Icon }                 from './RefreshCw04Icon';
+export type { RefreshCw04IconProps }       from './RefreshCw04Icon';
+
 export { BankIcon }              from './BankIcon';
 export type { BankIconProps }    from './BankIcon';
 

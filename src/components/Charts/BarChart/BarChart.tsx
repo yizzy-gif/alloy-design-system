@@ -196,7 +196,7 @@ export const BarChart = forwardRef<HTMLDivElement, BarChartProps>(
                 const value = values[i] ?? 0;
                 const bw = (value / hMax) * hChartW;
                 return (
-                  <g key={lbl}>
+                  <g key={i}>
                     <text x={HL - 8} y={y + BAR_H / 2 + 4} className={styles.axisLabel} textAnchor="end">
                       {lbl}
                     </text>
@@ -276,7 +276,7 @@ export const BarChart = forwardRef<HTMLDivElement, BarChartProps>(
                   if ((series[i].data[ci] ?? 0) > 0) { topIdx = i; break; }
                 }
                 return (
-                  <g key={lbl}>
+                  <g key={ci}>
                     {series.map((s, si) => {
                       const value = s.data[ci] ?? 0;
                       const barH = (value / yNiceMax) * chartH;
@@ -305,7 +305,7 @@ export const BarChart = forwardRef<HTMLDivElement, BarChartProps>(
               const totalBarsW = series.length * barW + (series.length - 1) * BAR_GAP;
               const startX = gx + (groupW - totalBarsW) / 2;
               return (
-                <g key={lbl}>
+                <g key={ci}>
                   {series.map((s, si) => {
                     const value = s.data[ci] ?? 0;
                     const barH = (value / yNiceMax) * chartH;
