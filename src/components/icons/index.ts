@@ -155,3 +155,15 @@ export type { ThumbsUpIconProps }        from './ThumbsUpIcon';
 
 export { ThumbsDownIcon }                from './ThumbsDownIcon';
 export type { ThumbsDownIconProps }      from './ThumbsDownIcon';
+
+export { FilterLinesIcon }               from './FilterLinesIcon';
+export type { FilterLinesIconProps }     from './FilterLinesIcon';
+
+export { CircularArrowIcon }             from './CircularArrowIcon';
+export type { CircularArrowIconProps }   from './CircularArrowIcon';
+
+export { TriangleUpIcon }                from './TriangleUpIcon';
+export type { TriangleUpIconProps }      from './TriangleUpIcon';
+
+export { PlayIcon }                      from './PlayIcon';
+export type { PlayIconProps }            from './PlayIcon';

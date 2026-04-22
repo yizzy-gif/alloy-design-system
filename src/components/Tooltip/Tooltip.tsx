@@ -20,6 +20,10 @@ export interface TooltipProps {
   disabled?: boolean;
   /** Max width of the bubble; use for long-text tooltips. @default 280 */
   maxWidth?: number | string;
+  /** Extra pixels of distance between the bubble and the trigger, on top of
+   *  the default 6px gap. Use when the trigger has visual padding that makes
+   *  the bubble feel too close. @default 0 */
+  offset?: number;
   /** The element that acts as the trigger. Must be a single ReactElement. */
   children: ReactElement;
 }
@@ -32,6 +36,7 @@ export const Tooltip = ({
   delay = 0,
   disabled = false,
   maxWidth = 280,
+  offset = 0,
   children,
 }: TooltipProps) => {
   const [visible, setVisible] = useState(false);
@@ -43,7 +48,7 @@ export const Tooltip = ({
   const computeCoords = useCallback(() => {
     if (!wrapperRef.current) return;
     const rect = wrapperRef.current.getBoundingClientRect();
-    const GAP = 6;
+    const GAP = 6 + offset;
     let top = 0;
     let left = 0;
     switch (placement) {
@@ -65,7 +70,7 @@ export const Tooltip = ({
         break;
     }
     setCoords({ top, left });
-  }, [placement]);
+  }, [placement, offset]);
 
   const show = useCallback(() => {
     if (disabled) return;
