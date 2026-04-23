@@ -253,6 +253,14 @@ export default function ButtonPreview() {
         .v-secondary:hover:not(:disabled) { background-color:var(--color-bg-tertiary); border-color:var(--color-border-hover); }
         .v-secondary:active:not(:disabled) { filter:brightness(0.97); }
 
+        .dark .v-secondary { background-color: var(--Alloy-slate-600); }
+        .dark .v-secondary:hover:not(:disabled) { background-color: var(--Alloy-slate-500); }
+        .dark .v-secondary:active:not(:disabled) { background-color: var(--Alloy-slate-500); filter: brightness(1.05); }
+
+        .dark .v-destructive-secondary { background-color: var(--Alloy-red-800); color: var(--Alloy-red-100); }
+        .dark .v-destructive-secondary:hover:not(:disabled) { background-color: var(--Alloy-red-700); }
+        .dark .v-destructive-secondary:active:not(:disabled) { background-color: var(--Alloy-red-700); filter: brightness(1.05); }
+
         .v-tertiary { background-color:var(--color-bg-primary); color:var(--color-content-primary); border-color:var(--color-border-opaque); }
         .v-tertiary:hover:not(:disabled) { background-color:var(--color-bg-secondary); border-color:var(--color-border-hover); }
         .v-tertiary:active:not(:disabled) { background-color:var(--color-bg-tertiary); }

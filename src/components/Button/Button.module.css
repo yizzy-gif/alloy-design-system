@@ -294,3 +294,59 @@
 :global(.dark) .primary:active:not(:disabled) {
   background-color: var(--color-bg-tertiary);
 }
+
+/* ── Dark mode: secondary ────────────────────────────────────────────────── */
+/* Lighter fill so the button stands forward of the page surface.            */
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) .secondary {
+    background-color: var(--Alloy-slate-600);
+  }
+  :root:not(.light) .secondary:hover:not(:disabled) {
+    background-color: var(--Alloy-slate-500);
+  }
+  :root:not(.light) .secondary:active:not(:disabled) {
+    background-color: var(--Alloy-slate-500);
+    filter:           brightness(1.05);
+  }
+}
+
+:global(.dark) .secondary {
+  background-color: var(--Alloy-slate-600);
+}
+:global(.dark) .secondary:hover:not(:disabled) {
+  background-color: var(--Alloy-slate-500);
+}
+:global(.dark) .secondary:active:not(:disabled) {
+  background-color: var(--Alloy-slate-500);
+  filter:           brightness(1.05);
+}
+
+/* ── Dark mode: destructive secondary ────────────────────────────────────── */
+/* Brighter red tint so the button stands forward of the dark page surface.  */
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) .destructiveSecondary {
+    background-color: var(--Alloy-red-800);
+    color:            var(--Alloy-red-100);
+  }
+  :root:not(.light) .destructiveSecondary:hover:not(:disabled) {
+    background-color: var(--Alloy-red-700);
+  }
+  :root:not(.light) .destructiveSecondary:active:not(:disabled) {
+    background-color: var(--Alloy-red-700);
+    filter:           brightness(1.05);
+  }
+}
+
+:global(.dark) .destructiveSecondary {
+  background-color: var(--Alloy-red-800);
+  color:            var(--Alloy-red-100);
+}
+:global(.dark) .destructiveSecondary:hover:not(:disabled) {
+  background-color: var(--Alloy-red-700);
+}
+:global(.dark) .destructiveSecondary:active:not(:disabled) {
+  background-color: var(--Alloy-red-700);
+  filter:           brightness(1.05);
+}

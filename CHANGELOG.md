@@ -5,6 +5,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.1.1] — 2026-04-23
+
+### Changed
+- `Button` dark mode — `secondary` variant fill lifted from `slate-900` to `slate-600` (hover `slate-500`) so the button stands forward of the dark page surface
+- `Button` dark mode — `destructive-secondary` variant fill lifted from `red-950` to `red-800` with `red-100` label (hover `red-700`) for matching brighter emphasis
+
+---
+
 ## [1.1.0] — 2026-03-31
 
 ### Added

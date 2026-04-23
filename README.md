@@ -403,7 +403,7 @@ import { ChevronDownIcon, AlertTriangleIcon, TeambridgeAIIcon } from 'alloy-desi
 
 ## Deployment
 
-The preview app is automatically deployed to **GitHub Pages** when changes are pushed to the `specimens` branch.
+The preview app is automatically deployed to **GitHub Pages** when changes are pushed to the `main` branch.
 
 - **Live preview:** [yizzy-gif.github.io/alloy-design-system](https://yizzy-gif.github.io/alloy-design-system/)
 - **Workflow:** `.github/workflows/deploy-preview.yml`
