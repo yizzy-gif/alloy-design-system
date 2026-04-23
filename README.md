@@ -123,7 +123,7 @@ import 'alloy-design-system/styles/typography.css';
 
 | Component | Description |
 |---|---|
-| `AILoader` | Animated Teambridge AI star mark that morphs between star and circle. Six color variants: `gradient`, `gradient-fill`, `inverse`, `inverse-light`, `stroke`, `stroke-light`. Five sizes: xs (16 px) → xl (64 px). Fixed 2.2 s ambient spin. |
+| `AILoader` | Animated Teambridge AI star mark. Two states: `loading` (default — 2.2 s spin + star ↔ circle morph) and `ready` (static star with a slow 3.2 s breathing pulse, for end-of-turn / awaiting-input moments). Six color variants: `gradient`, `gradient-fill`, `inverse`, `inverse-light`, `stroke`, `stroke-light`. Five sizes: xs (16 px) → xl (64 px). Respects `prefers-reduced-motion`. |
 | `AICoreButton` | AI action button for copy, read-aloud, and feedback (thumbs up/down) interactions. Integrates ThumbsUp, ThumbsDown, and VolumeMax icons. |
 
 ### Actions

@@ -86,10 +86,68 @@
 :global(.dark)  .variant-stroke-light { color: var(--color-content-primary); }
 :global(.light) .variant-stroke-light { color: var(--color-content-inverse); }
 
+/* ── Ready state ──────────────────────────────────────────────────────────
+   Attentive, calm, available — end of a chat turn, awaiting user input.
+   No rotation, no morph: the static star breathes with a slow opacity +
+   scale pulse. Quiet enough not to compete with the input field.          */
+.state-ready {
+  animation: none;
+}
+.state-ready .path {
+  animation: ai-breathe 3.2s ease-in-out infinite;
+  transform-origin: 50% 50%;
+  /* Pin the static star shape — overrides the morph keyframe's `d` */
+  d: path('M22.2808 11.6847C17.6641 9.97486 14.0252 6.33591 12.3153 1.71918C12.2076 1.42694 11.7937 1.42694 11.6847 1.71918C9.97486 6.33591 6.33591 9.97482 1.71918 11.6847C1.42694 11.7924 1.42694 12.2063 1.71918 12.3153C6.33591 14.0251 9.97482 17.6641 11.6847 22.2808C11.7924 22.5731 12.2063 22.5731 12.3153 22.2808C14.0251 17.6641 17.6641 14.0252 22.2808 12.3153C22.5731 12.2076 22.5731 11.7937 22.2808 11.6847Z');
+}
+.state-ready .ghost {
+  animation: none;
+  d: path('M22.2808 11.6847C17.6641 9.97486 14.0252 6.33591 12.3153 1.71918C12.2076 1.42694 11.7937 1.42694 11.6847 1.71918C9.97486 6.33591 6.33591 9.97482 1.71918 11.6847C1.42694 11.7924 1.42694 12.2063 1.71918 12.3153C6.33591 14.0251 9.97482 17.6641 11.6847 22.2808C11.7924 22.5731 12.2063 22.5731 12.3153 22.2808C14.0251 17.6641 17.6641 14.0252 22.2808 12.3153C22.5731 12.2076 22.5731 11.7937 22.2808 11.6847Z');
+}
+
+/* ── Responding state ─────────────────────────────────────────────────────
+   Alive, working, calm. The mark morphs between a diamond and a circle
+   via SVG path interpolation (not crossfade) while a coordinated scale
+   pulse breathes slightly larger at the circle apex, smaller at the
+   diamond. No rotation. Duration is intentionally slower than `loading`
+   so the cycle reads as thoughtful rather than urgent — it can run for
+   many seconds at a stretch without becoming distracting.
+   Both paths share the M + 8×C + Z command structure so CSS interpolates
+   each control point independently.                                        */
+.state-responding {
+  /* Replaces the default `.root` spin with the coordinated scale pulse. */
+  animation: ai-respond-scale 2.8s ease-in-out infinite;
+  transform-origin: 50% 50%;
+}
+.state-responding .path,
+.state-responding .ghost {
+  animation: ai-respond-morph 2.8s ease-in-out infinite;
+}
+
+/* ── Reduced motion ───────────────────────────────────────────────────────
+   Fall back to a fully static star in both states for users who prefer
+   reduced motion. Shape and color are preserved; only motion is removed. */
+@media (prefers-reduced-motion: reduce) {
+  .root,
+  .path,
+  .ghost {
+    animation: none !important;
+  }
+  .path,
+  .ghost {
+    d: path('M22.2808 11.6847C17.6641 9.97486 14.0252 6.33591 12.3153 1.71918C12.2076 1.42694 11.7937 1.42694 11.6847 1.71918C9.97486 6.33591 6.33591 9.97482 1.71918 11.6847C1.42694 11.7924 1.42694 12.2063 1.71918 12.3153C6.33591 14.0251 9.97482 17.6641 11.6847 22.2808C11.7924 22.5731 12.2063 22.5731 12.3153 22.2808C14.0251 17.6641 17.6641 14.0252 22.2808 12.3153C22.5731 12.2076 22.5731 11.7937 22.2808 11.6847Z');
+  }
+}
+
 /* ── Keyframes ───────────────────────────────────────────────────────────── */
 @keyframes ai-spin {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
+}
+
+/* Slow breathing pulse for the `ready` state — symmetric opacity + scale. */
+@keyframes ai-breathe {
+  0%, 100% { opacity: 1;    transform: scale(1);    }
+  50%      { opacity: 0.72; transform: scale(0.94); }
 }
 
 /* ── Morph keyframe ──────────────────────────────────────────────────────── */

@@ -8,7 +8,7 @@ export type { EyebrowProps } from './components/Eyebrow';
 
 // ── Teambridge AI ─────────────────────────────────────────────────────────────
 export { AILoader } from './components/ai';
-export type { AILoaderProps, AILoaderSize, AILoaderVariant } from './components/ai';
+export type { AILoaderProps, AILoaderSize, AILoaderVariant, AILoaderState } from './components/ai';
 
 export { AICoreButton } from './components/ai';
 export type { AICoreButtonProps, AICoreButtonSize } from './components/ai';
@@ -139,6 +139,25 @@ export type { MultiSelectFieldProps, MultiSelectOption } from './components/Inpu
 
 export { Table, TableHeader, TableBody, TableRow, TableHead, TableCell, CellText } from './components/Table';
 export type { TableProps, TableSize, TableHeadProps, TableSortDirection, TableCellAlign, TableRowProps, TableCellProps, CellTextProps } from './components/Table';
+
+// ── Composer ─────────────────────────────────────────────────────────────────
+
+export {
+  ComposerActions,
+  ComposerSendButton,
+  ComposerAttachment,
+  ComposerVoiceButton,
+} from './components/ComposerActions';
+export type {
+  ComposerActionsProps,
+  ComposerSendButtonProps,
+  ComposerAttachmentProps,
+  ComposerVoiceButtonProps,
+  ComposerActionsSize,
+  ComposerSendState,
+  ComposerAttachmentState,
+  ComposerVoiceState,
+} from './components/ComposerActions';
 
 // ── Charts ───────────────────────────────────────────────────────────────────
 

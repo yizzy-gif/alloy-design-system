@@ -1,0 +1,246 @@
+/* ── ComposerButton (internal) ────────────────────────────────────────────
+   Shared base for the three composer action buttons. The only differences
+   between send / attachment / voice are:
+     - resting background / border / foreground
+     - which icon sits inside
+   All three share footprint, radius, hit target, transition timing, and
+   pressed/disabled semantics. Inherited directly from the Automation_2.0
+   composer baseline (24×24, 6 px radius, var(--duration-fast) transitions).
+   ─────────────────────────────────────────────────────────────────────────── */
+
+.base {
+  width: var(--composer-btn-size, 24px);
+  height: var(--composer-btn-size, 24px);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--composer-btn-radius, var(--radius-button));
+  padding: 0;
+  cursor: pointer;
+  flex-shrink: 0;
+  outline: none;
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border-opaque);
+  color: var(--color-content-secondary);
+  transition:
+    background  var(--duration-fast),
+    color       var(--duration-fast),
+    border-color var(--duration-fast),
+    opacity     var(--duration-fast);
+}
+
+/* Consistent with Alloy Button — no focus outline; focus state is inherited
+   from browser default when JS a11y demands it. Kept for parity with the
+   rest of the system. */
+.base:focus-visible {
+  outline: none;
+}
+
+.base:disabled {
+  cursor: not-allowed;
+}
+
+/* The icon slot sizes via CSS custom property set on the outer container.
+   Each component points this at its own --composer-btn-icon-* variable. */
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--composer-btn-icon-size, 12px);
+  height: var(--composer-btn-icon-size, 12px);
+}
+
+.icon > svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Send button
+   ────────────────────────────────────────────────────────────────────────── */
+
+/* Enabled — dark inverse fill */
+.sendReady,
+.sendStreaming {
+  background: var(--color-bg-inverse-primary);
+  border-color: var(--color-bg-inverse-primary);
+  color: var(--color-content-inverse-primary);
+}
+.sendReady:hover,
+.sendStreaming:hover {
+  opacity: 0.82;
+}
+
+/* Disabled / invalid — muted fill + muted foreground (A2.0 disabled baseline) */
+.sendDisabled {
+  background: var(--color-bg-tertiary);
+  border-color: var(--color-border-opaque);
+  color: var(--color-content-tertiary);
+}
+
+/* Error — inverse fill with error accent icon */
+.sendError {
+  background: var(--color-bg-inverse-primary);
+  border-color: var(--color-bg-inverse-primary);
+  color: var(--color-error-fill);
+}
+.sendError:hover { opacity: 0.82; }
+
+/* Pressed feedback — applied briefly on click in error → ready transition.
+   Implemented via data-pressed attribute toggled by the component. */
+.base[data-pressed="true"] {
+  transform: scale(0.94);
+  transition:
+    transform  var(--duration-fast),
+    background var(--duration-fast),
+    color      var(--duration-fast);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Attachment button
+   ────────────────────────────────────────────────────────────────────────── */
+
+.attachIdle {
+  background: transparent;
+  border-color: var(--color-border-opaque);
+  color: var(--color-content-secondary);
+}
+.attachIdle:hover {
+  background: var(--color-bg-secondary);
+  color: var(--color-content-primary);
+}
+
+.attachUploading {
+  background: var(--color-bg-secondary);
+  border-color: var(--color-border-opaque);
+  color: var(--color-content-primary);
+}
+
+.attachDisabled {
+  background: transparent;
+  border-color: var(--color-border-opaque);
+  color: var(--color-content-tertiary);
+  opacity: 0.7;
+}
+
+.attachError {
+  background: transparent;
+  border-color: var(--color-error-border);
+  color: var(--color-error-content);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Voice button
+   ────────────────────────────────────────────────────────────────────────── */
+
+.voiceIdle {
+  background: var(--color-bg-primary);
+  border-color: var(--color-border-opaque);
+  color: var(--color-content-secondary);
+}
+.voiceIdle:hover {
+  background: var(--color-bg-secondary);
+  color: var(--color-content-primary);
+}
+
+.voiceRecording {
+  background: var(--color-bg-primary);
+  border-color: var(--color-border-opaque);
+  color: var(--color-content-link);
+}
+.voiceRecording .icon {
+  animation: composer-voice-pulse 2.4s ease-in-out infinite;
+  transform-origin: 50% 50%;
+}
+
+.voiceDisabled {
+  background: var(--color-bg-primary);
+  border-color: var(--color-border-opaque);
+  color: var(--color-content-tertiary);
+  opacity: 0.7;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Icon morph — send button ready ↔ streaming ↔ error.
+   The two icons are stacked and crossfade; container styling stays put.
+   ────────────────────────────────────────────────────────────────────────── */
+.iconStack {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--composer-btn-icon-size, 12px);
+  height: var(--composer-btn-icon-size, 12px);
+}
+
+.iconStack > .iconLayer {
+  position: absolute;
+  inset: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.85);
+  transition:
+    opacity   var(--duration-base, 150ms) var(--ease-default, ease),
+    transform var(--duration-base, 150ms) var(--ease-default, ease);
+}
+
+.iconStack > .iconLayer[data-active="true"] {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.iconStack > .iconLayer > svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Upload spinner overlay (attachment uploading state)
+   ────────────────────────────────────────────────────────────────────────── */
+.spinnerRing {
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  pointer-events: none;
+  /* Conic gradient stroke simulated via two radial gradients masked to a ring */
+  background:
+    conic-gradient(from 0deg, var(--color-content-link) 0%, transparent 70%);
+  mask: radial-gradient(circle at center, transparent 8px, black 9px);
+  -webkit-mask: radial-gradient(circle at center, transparent 8px, black 9px);
+  animation: composer-spin 900ms linear infinite;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Keyframes
+   ────────────────────────────────────────────────────────────────────────── */
+
+@keyframes composer-voice-pulse {
+  0%, 100% { opacity: 1;    transform: scale(1);    }
+  50%      { opacity: 0.65; transform: scale(0.92); }
+}
+
+@keyframes composer-spin {
+  from { transform: rotate(0deg);   }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── Reduced motion fallback ─────────────────────────────────────────────
+   Collapse every animated effect to a static visual. Icon crossfade remains
+   but duration is zeroed so the swap is instant. */
+@media (prefers-reduced-motion: reduce) {
+  .voiceRecording .icon,
+  .spinnerRing {
+    animation: none !important;
+  }
+  .iconStack > .iconLayer {
+    transition: none !important;
+  }
+  .base[data-pressed="true"] {
+    transform: none !important;
+    transition: none !important;
+  }
+}

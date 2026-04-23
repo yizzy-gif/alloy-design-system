@@ -9,6 +9,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+**Components**
+- `AILoader` — new `state` prop (`'loading' | 'ready'`, default `'loading'`). `ready` renders a static star with a slow 3.2 s breathing pulse for end-of-turn / awaiting-input moments; sets `aria-label="AI ready for input"` and `aria-live="polite"`. Both states collapse to a static star under `prefers-reduced-motion: reduce`. New `AILoaderState` type exported.
+
 **Icons (+192 — total now 274)**
 
 Bulk addition sourced from the shared icon set. All follow the existing component pattern (24×24 viewBox, `size` / `color` / `strokeWidth` props, auto-scaled stroke).

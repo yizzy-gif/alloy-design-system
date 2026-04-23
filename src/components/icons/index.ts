@@ -97,6 +97,12 @@ export type { CheckIconProps }             from './CheckIcon';
 export { RefreshCw04Icon }                 from './RefreshCw04Icon';
 export type { RefreshCw04IconProps }       from './RefreshCw04Icon';
 
+export { StopIcon }                        from './StopIcon';
+export type { StopIconProps }              from './StopIcon';
+
+export { RecordingIcon }                   from './RecordingIcon';
+export type { RecordingIconProps }         from './RecordingIcon';
+
 export { BankIcon }              from './BankIcon';
 export type { BankIconProps }    from './BankIcon';
 

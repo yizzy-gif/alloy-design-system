@@ -1,0 +1,55 @@
+/* ── ComposerActions ──────────────────────────────────────────────────────
+   Layout + shared sizing for the three composer action buttons.
+   Canonical order (left → right): attachment · voice · send.
+   Send is pinned right via flex; the rest flow from the left.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+.root {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  width: 100%;
+}
+
+/* Separate the "send" child so it always pins right, even if other actions
+   are omitted. Uses `:last-child` heuristic + an explicit data attribute. */
+.root > [data-composer-action="send"] {
+  margin-left: auto;
+}
+
+/* ── Sizes ─────────────────────────────────────────────────────────────────
+   Drives the shared button footprint via CSS custom properties consumed
+   by ComposerButton.module.css.                                              */
+.size-sm {
+  --composer-btn-size: 20px;
+  --composer-btn-radius: var(--radius-sm);
+  --composer-btn-icon-send: 10px;
+  --composer-btn-icon-voice: 12px;
+  --composer-btn-icon-attach: 8px;
+  --composer-btn-icon-stop: 10px;
+  --composer-btn-icon-retry: 10px;
+}
+
+.size-md {
+  --composer-btn-size: 24px;
+  --composer-btn-radius: var(--radius-button);
+  --composer-btn-icon-send: 12px;
+  --composer-btn-icon-voice: 14px;
+  --composer-btn-icon-attach: 10px;
+  --composer-btn-icon-stop: 12px;
+  --composer-btn-icon-retry: 12px;
+}
+
+/* ── Hidden status region ─────────────────────────────────────────────────
+   Single aria-live=polite region; children announce transitions through it. */
+.status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

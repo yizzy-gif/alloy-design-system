@@ -126,7 +126,9 @@ export default function AILoaderPreview() {
         <h1 style={title}>AI Loader</h1>
         <p style={subtitle}>
           An animated star loader that morphs between the Teambridge AI mark and a circle.
-          Combines a smooth shape morph with a steady clockwise rotation for a fluid loading state.
+          Two states — <code style={{ fontFamily: 'var(--font-mono)', fontSize: '0.92em' }}>loading</code> for active
+          processing and <code style={{ fontFamily: 'var(--font-mono)', fontSize: '0.92em' }}>ready</code> for
+          attentive, available moments at the end of a chat turn.
         </p>
       </div>
 
@@ -146,6 +148,64 @@ export default function AILoaderPreview() {
               <span style={cellLabel}>{l}</span>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* ── Section 1.5: States ── */}
+      <div style={dynSection()}>
+        <p style={sectionTitle}>States</p>
+        <div style={dynRow({ alignItems: 'flex-start' })}>
+          {[
+            {
+              state: 'loading',
+              label: 'loading',
+              note: 'Default — active processing. Spin + star ↔ circle morph. Use while the AI is thinking, generating, or streaming.',
+            },
+            {
+              state: 'ready',
+              label: 'ready',
+              note: 'End of a chat turn, awaiting input. Static star with a slow breathing pulse — attentive and available, not competing with the input field.',
+            },
+          ].map(({ state, label: l, note }) => (
+            <div key={state} style={cell({ alignItems: 'flex-start', gap: '8px' })}>
+              <div style={{
+                width: 120,
+                height: 120,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: 'var(--radius-lg)',
+                backgroundColor: 'var(--color-bg-secondary)',
+                border: '1px solid var(--color-border-opaque)',
+              }}>
+                <AILoader size="xl" state={state} />
+              </div>
+              <span style={{ ...cellLabel, color: 'var(--color-content-primary)', fontWeight: 'var(--font-weight-semibold)' }}>{l}</span>
+              <span style={{ ...cellLabel, color: 'var(--color-content-tertiary)', maxWidth: 240 }}>{note}</span>
+            </div>
+          ))}
+        </div>
+
+        <div style={divider} />
+
+        {/* Chat turn end — ready in context */}
+        <div>
+          <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-content-tertiary)', marginBottom: '12px', fontWeight: 'var(--font-weight-semibold)', letterSpacing: 'var(--tracking-wide)', textTransform: 'uppercase' }}>At the end of a chat turn</p>
+          <div style={{
+            padding: '20px 24px',
+            borderRadius: 'var(--radius-lg)',
+            border: '1px solid var(--color-border-opaque)',
+            backgroundColor: 'var(--color-bg-secondary)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+          }}>
+            <AILoader size="md" state="ready" />
+            <div>
+              <p style={{ margin: 0, fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-semibold)', color: 'var(--color-content-primary)' }}>Ready when you are</p>
+              <p style={{ margin: 0, fontSize: 'var(--text-xs)', color: 'var(--color-content-tertiary)' }}>Ask a follow-up or start a new thread.</p>
+            </div>
+          </div>
         </div>
       </div>
 

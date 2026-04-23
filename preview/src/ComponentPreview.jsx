@@ -31,6 +31,7 @@ import ValueChangeLabelPreview    from './ValueChangeLabelPreview.jsx'
 import DividerPreview             from './DividerPreview.jsx'
 import AILoaderPreview         from './AILoaderPreview.jsx'
 import AICoreButtonPreview     from './AICoreButtonPreview.jsx'
+import ComposerActionsPreview  from './ComposerActionsPreview.jsx'
 import DialogPreview           from './DialogPreview.jsx'
 import AreaButtonPreview       from './AreaButtonPreview.jsx'
 import EyebrowPreview          from './EyebrowPreview.jsx'
@@ -111,6 +112,7 @@ const GROUPS = [
     items: [
         { id: 'ai-loader',      label: 'AI Loader',       component: AILoaderPreview },
       { id: 'ai-core-button', label: 'AI Core Button',  component: AICoreButtonPreview },
+      { id: 'composer-actions', label: 'Composer Actions', component: ComposerActionsPreview },
     ],
   },
 ]

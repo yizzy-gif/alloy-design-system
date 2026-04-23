@@ -5,6 +5,7 @@ import styles from './AILoader.module.css';
 
 export type AILoaderSize    = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 export type AILoaderVariant = 'gradient' | 'gradient-fill' | 'inverse' | 'inverse-light' | 'stroke' | 'stroke-light';
+export type AILoaderState   = 'loading' | 'ready' | 'responding';
 
 const SIZE_PX: Record<AILoaderSize, number> = {
   xs: 16, sm: 24, md: 32, lg: 48, xl: 64,
@@ -17,6 +18,7 @@ const STROKE_WIDTH: Record<AILoaderSize, number> = {
 export interface AILoaderProps extends Omit<SVGProps<SVGSVGElement>, 'width' | 'height'> {
   size?:    AILoaderSize | number;
   variant?: AILoaderVariant;
+  state?:   AILoaderState;
   className?: string;
 }
 
@@ -27,7 +29,7 @@ const isSolid  = (v: AILoaderVariant) => v === 'inverse'       || v === 'inverse
 const isStroke = (v: AILoaderVariant) => v === 'stroke'        || v === 'stroke-light';
 
 export const AILoader = forwardRef<SVGSVGElement, AILoaderProps>(
-  ({ size = 'md', variant = 'gradient', className, style, ...props }, ref) => {
+  ({ size = 'md', variant = 'gradient-fill', state = 'loading', className, style, 'aria-label': ariaLabel, ...props }, ref) => {
     const uid    = useId().replace(/[^a-z0-9]/gi, '');
     const gradId = `aigrad-${uid}`;
     const glowId = `aiglow-${uid}`;
@@ -60,9 +62,15 @@ export const AILoader = forwardRef<SVGSVGElement, AILoaderProps>(
         height={px}
         viewBox="0 0 24 24"
         fill="none"
-        className={clsx(styles.root, styles[`variant-${variant}`], className)}
+        className={clsx(styles.root, styles[`variant-${variant}`], styles[`state-${state}`], className)}
         style={style}
-        aria-label="Loading"
+        data-state={state}
+        aria-label={ariaLabel ?? (
+          state === 'ready'      ? 'AI ready for input' :
+          state === 'responding' ? 'AI responding'       :
+          'Loading'
+        )}
+        aria-live={(state === 'ready' || state === 'responding') ? 'polite' : undefined}
         role="status"
         {...props}
       >
