@@ -5,6 +5,39 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.2.0] — 2026-04-23
+
+### Added
+
+**Icons (+192 — total now 274)**
+
+Bulk addition sourced from the shared icon set. All follow the existing component pattern (24×24 viewBox, `size` / `color` / `strokeWidth` props, auto-scaled stroke).
+
+- **Buildings & places** — `Building01Icon`–`Building08Icon`, `Home01Icon`/`Home03Icon`/`Home04Icon`/`Home05Icon`/`HomeSmileIcon`, `AnchorIcon`
+- **Check family** — `CheckCircleBrokenIcon`, `CheckDone01Icon`/`CheckDone02Icon`, `CheckHeartIcon`, `CheckSmallIcon`, `CheckSquareIcon`/`CheckSquareBrokenIcon`, `CheckVerified01Icon`–`CheckVerified03Icon`
+- **Copy, edit, save** — `Copy01Icon`–`Copy07Icon`, `Edit01Icon`/`Edit02Icon`/`Edit04Icon`/`Edit05Icon`, `Save01Icon`–`Save03Icon`
+- **Bookmarks** — `BookmarkAddIcon`, `BookmarkCheckIcon`, `BookmarkMinusIcon`, `BookmarkXIcon`
+- **Hearts** — `HeartIcon`, `HeartsIcon`, `HeartCircleIcon`, `HeartHandIcon`, `HeartHexagonIcon`, `HeartOctagonIcon`, `HeartRoundedIcon`, `HeartSquareIcon`, `ActivityHeartIcon`, `ActivityIcon`
+- **Status shapes** — `HelpCircleIcon`/`HelpHexagonIcon`/`HelpOctagonIcon`/`HelpSquareIcon`, `InfoHexagonIcon`/`InfoOctagonIcon`/`InfoSquareIcon`, `SlashCircle01Icon`/`SlashCircle02Icon`/`SlashOctagonIcon`/`SlashDividerIcon`, `XCircleIcon`/`XCloseIcon`/`XSquareIcon`, `MinusIcon`/`MinusCircleIcon`/`MinusSmallIcon`/`MinusSquareIcon`, `PlusCircleIcon`, `Asterisk01Icon`/`Asterisk02Icon`
+- **Toggles & settings** — `Toggle01LeftIcon`/`Toggle01RightIcon`/`Toggle02LeftIcon`/`Toggle02RightIcon`/`Toggle03LeftIcon`/`Toggle03RightIcon`, `Settings01Icon`–`Settings04Icon`, `Tool01Icon`/`Tool02Icon`
+- **Menus & dots** — `Menu01Icon`–`Menu05Icon`, `DotsGridIcon`/`DotsGrid2x3Icon`/`DotsGrid2x3SIcon`, `DotsHorizontalIcon`/`DotsVerticalIcon`, `DotIcon`/`DotSmallIcon`, `CircleDotIcon`
+- **Upload / download** — `Upload01Icon`–`Upload04Icon`, `UploadCloud01Icon`/`UploadCloud02Icon`, `Download01Icon`–`Download04Icon`, `DownloadCloud01Icon`/`DownloadCloud02Icon`
+- **Auth & identity** — `LogIn01Icon`–`LogIn04Icon`, `LogOut01Icon`–`LogOut04Icon`, `AtSignIcon`, `Hash01Icon`/`Hash02Icon`
+- **Links & share** — `Link01Icon`–`Link05Icon`, `LinkBroken01Icon`/`LinkBroken02Icon`, `LinkExternal01Icon`/`LinkExternal02Icon`, `Share01Icon`–`Share07Icon`
+- **Zap, speed, loading** — `ZapIcon`/`ZapCircleIcon`/`ZapFastIcon`/`ZapOffIcon`/`ZapSquareIcon`, `Speedometer01Icon`–`Speedometer04Icon`, `Loading01Icon`–`Loading03Icon`
+- **Math & format** — `EqualIcon`/`EqualNotIcon`, `Divide01Icon`–`Divide03Icon`, `Percent01Icon`–`Percent03Icon`, `Translate01Icon`/`Translate02Icon`
+- **Files & layout** — `ArchiveIcon`, `Inbox01Icon`, `NotificationBoxIcon`, `LayoutAlt03Icon`, `PlaceholderIcon`
+- **Pointers & targets** — `Pin01Icon`/`Pin02Icon`, `Target01Icon`–`Target03Icon`/`Target05Icon`, `SearchLgIcon`/`SearchMdIcon`/`SearchRefractionIcon`
+- **Trash** — `Trash01Icon`/`Trash02Icon`/`Trash04Icon`
+- **Clouds & cards** — `CloudBlank01Icon`/`CloudBlank02Icon`, `ReceiptCheckIcon`
+- **Filters** — `FilterFunnel01Icon`/`FilterFunnel02Icon`
+- **Medical & misc** — `MedicalCircleIcon`/`MedicalCrossIcon`/`MedicalSquareIcon`, `LifeBuoy01Icon`/`LifeBuoy02Icon`, `VirusIcon`, `GoogleChromeIcon`, `Moon01Icon`, `MessageCircle02Icon`, `ZoomInIcon`/`ZoomOutIcon`
+
+### Changed
+- `README.md` — icon count updated from 78 → 274; full icon list refreshed
+
+---
+
 ## [1.1.1] — 2026-04-23
 
 ### Changed

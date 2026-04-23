@@ -1,6 +1,6 @@
 {
   "name": "alloy-design-system",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Alloy — Teambridge design system: components, tokens, and styles",
   "type": "module",
   "main": "src/index.ts",
